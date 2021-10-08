@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * @date 10/8/2021 11:02 AM
  */
 @Entity
-@Table(name = "`SystemMasterData`")
+@Table(name = "tbl_system_master_data")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SystemMasterData extends BaseEntity {

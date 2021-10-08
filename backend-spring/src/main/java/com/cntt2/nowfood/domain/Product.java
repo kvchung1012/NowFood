@@ -15,7 +15,7 @@ import java.util.List;
  * @date 10/6/2021 12:08 AM
  */
 @Entity
-@Table(name = "tbl_Product")
+@Table(name = "tbl_product")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Product extends BaseEntity{

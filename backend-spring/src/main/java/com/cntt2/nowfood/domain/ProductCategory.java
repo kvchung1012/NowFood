@@ -11,7 +11,7 @@ import javax.persistence.*;
  * @date 10/8/2021 8:51 AM
  */
 @Entity
-@Table(name = "tbl_ProductCategory")
+@Table(name = "tbl_product_category")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ProductCategory extends BaseEntity{

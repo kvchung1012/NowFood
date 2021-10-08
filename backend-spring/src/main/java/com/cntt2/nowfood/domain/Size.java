@@ -15,7 +15,7 @@ import java.util.List;
  * @date 10/8/2021 8:50 AM
  */
 @Entity
-@Table(name = "tbl_Size")
+@Table(name = "tbl_size")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Size extends BaseEntity {
