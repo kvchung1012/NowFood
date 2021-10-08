@@ -10,8 +10,8 @@ import javax.persistence.*;
  * @version 1.0
  * @date 10/8/2021 8:51 AM
  */
-@Entity
-@Table(name = "tbl_ProductCategory")
+@Entity(name = "ProductCategory")
+@Table
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ProductCategory extends BaseEntity{

@@ -9,8 +9,8 @@ import javax.persistence.Table;
  * @version 1.0
  * @date 10/8/2021 9:15 AM
  */
-@Entity
-@Table(name = "tbl_User")
+@Entity(name = "User")
+@Table
 public class User extends BaseEntity {
 
     @OneToOne(mappedBy = "owner")

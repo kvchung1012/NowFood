@@ -14,8 +14,8 @@ import java.util.List;
  * @version 1.0
  * @date 10/8/2021 8:51 AM
  */
-@Entity
-@Table(name = "tbl_Category")
+@Entity(name = "Category")
+@Table
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Category extends BaseEntity {

@@ -12,8 +12,8 @@ import javax.persistence.Table;
  * @version 1.0
  * @date 10/8/2021 11:02 AM
  */
-@Entity
-@Table(name = "`SystemMasterData`")
+@Entity(name = "`SystemMasterData`")
+@Table
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SystemMasterData extends BaseEntity {
