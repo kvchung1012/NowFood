@@ -18,7 +18,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchDto {
-    private UUID id;
+    private Integer id;
+    private UUID uuid;
     private Integer pageIndex;
     private Integer pageSize;
     private String keyword;
