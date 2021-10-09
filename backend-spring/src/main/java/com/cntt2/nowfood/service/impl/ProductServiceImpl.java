@@ -25,8 +25,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Product getOne(UUID uuid) {
-        return productRepository.findById(uuid).get();
+    public Product getOne(Integer id) {
+        return productRepository.findById(id).get();
     }
 
     @Override

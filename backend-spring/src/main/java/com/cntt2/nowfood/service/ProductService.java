@@ -12,6 +12,6 @@ import java.util.UUID;
  * @date 10/6/2021 12:10 AM
  */
 public interface ProductService {
-    Product getOne(UUID uuid);
+    Product getOne(Integer id);
     Page<Product> getPage(SearchDto product);
 }
