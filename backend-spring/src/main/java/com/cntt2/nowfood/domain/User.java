@@ -1,6 +1,7 @@
 package com.cntt2.nowfood.domain;
 
 import com.cntt2.nowfood.config.security.UserPrincipal;
+import com.cntt2.nowfood.dto.user.UserRegisterDto;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Vanh
@@ -43,14 +42,26 @@ public class User extends BaseEntity {
     @Column(name = "Address")
     private String address;
 
+    @Column(name = "Email")
+    private String email;
+
     @Column(name = "LoginDate")
     private Date loginDate;
 
     @Column(name = "ForgotCode",length=50)
     private String forgotCode;
 
+    @Column(name = "RefreshToken",length=1000)
+    private String refreshToken;
+
+    @Column(name = "ExpriedToken")
+    private Date expriedToken;
+
     @Column(name = "ExpriedForgot")
     private Date expriedForgot;
+
+    @Column(name = "LoginIP")
+    private String loginIp;
 
     @OneToOne(mappedBy = "owner")
     private Shop shop;

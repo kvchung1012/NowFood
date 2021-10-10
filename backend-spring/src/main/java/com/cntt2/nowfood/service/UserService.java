@@ -2,6 +2,7 @@ package com.cntt2.nowfood.service;
 
 import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.domain.User;
+import com.cntt2.nowfood.dto.user.UserRegisterDto;
 
 import java.util.Date;
 
@@ -11,6 +12,6 @@ import java.util.Date;
  * @date 10/9/2021 12:04 AM
  */
 public interface UserService {
-    User createUser(User user);
+    UserRegisterDto createUser(UserRegisterDto userDto);
     UserPrincipal findByUsername(String username);
 }

@@ -4,6 +4,8 @@ import com.cntt2.nowfood.config.security.JwtUtil;
 import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.domain.Token;
 import com.cntt2.nowfood.domain.User;
+import com.cntt2.nowfood.dto.user.UserRegisterDto;
+import com.cntt2.nowfood.mapper.UserMapper;
 import com.cntt2.nowfood.service.TokenService;
 import com.cntt2.nowfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * @author Vanh
  * @version 1.0
@@ -21,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class AuthController {
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private UserService userService;
@@ -32,11 +39,8 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public User register(@RequestBody User user){
-        user.setHashPassword(new BCryptPasswordEncoder().encode(user.getHashPassword()));
-        user.setShop(null);
-        user.setRole(null);
-        return userService.createUser(user);
+    public UserRegisterDto register(@Valid @RequestBody UserRegisterDto userDto){
+        return userService.createUser(userDto);
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user){

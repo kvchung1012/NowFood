@@ -13,4 +13,8 @@ import org.mapstruct.Mapper;
 public interface UserMapper {
     User userRegisterToUser(UserRegisterDto dto);
     UserRegisterDto toUserRegisterDto(User user);
+    default UserRegisterDto toUser(User user){
+        //body
+        return new UserRegisterDto();
+    }
 }

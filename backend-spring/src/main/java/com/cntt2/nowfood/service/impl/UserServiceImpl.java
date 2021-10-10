@@ -2,9 +2,13 @@ package com.cntt2.nowfood.service.impl;
 
 import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.domain.User;
+import com.cntt2.nowfood.dto.user.UserRegisterDto;
+import com.cntt2.nowfood.mapper.UserMapper;
+import com.cntt2.nowfood.repository.ProductRepository;
 import com.cntt2.nowfood.repository.UserRepository;
 import com.cntt2.nowfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,11 +24,17 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Override
-    public User createUser(User user) {
-        return userRepository.saveAndFlush(user);
+    public UserRegisterDto createUser(UserRegisterDto userDto) {
+        userDto.setHashPassword(new BCryptPasswordEncoder().encode(userDto.getHashPassword()));
+        User user = userMapper.userRegisterToUser(userDto);
+        UserRegisterDto result = userMapper.toUserRegisterDto(userRepository.saveAndFlush(user));
+        return result;
     }
 
     @Override
