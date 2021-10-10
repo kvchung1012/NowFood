@@ -19,7 +19,7 @@ import java.util.UUID;
  * @date 10/6/2021 12:10 AM
  */
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl extends GenericServiceImpl<Product,Integer> implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;

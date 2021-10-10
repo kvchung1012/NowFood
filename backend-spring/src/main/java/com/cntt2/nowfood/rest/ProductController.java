@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author Vanh
  * @version 1.0
@@ -26,9 +28,16 @@ public class ProductController {
 
     @GetMapping(value = "/search")
     @PreAuthorize("hasAnyAuthority('USER_READ')")
-    public ResponseEntity<Page<Product>> searchByPage() {
+    public ResponseEntity<Page<Product>> getByPage() {
         // todos: test api get product
         Page<Product> page = this.productService.getPage(new SearchDto(1,5));
         return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('USER_CREATE')")
+    public ResponseEntity getAll() {
+        // todos: test api get product
+        List<Product> products = this.productService.getAll();
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

@@ -23,4 +23,8 @@ public class SearchDto {
     private Integer pageIndex;
     private Integer pageSize;
     private String keyword;
+    public SearchDto(Integer pageSize,Integer pageIndex){
+        this.pageSize = pageSize;
+        this.pageIndex = pageIndex;
+    }
 }

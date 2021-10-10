@@ -11,7 +11,7 @@ import java.util.UUID;
  * @version 1.0
  * @date 10/6/2021 12:10 AM
  */
-public interface ProductService {
+public interface ProductService extends GenericService<Product,Integer> {
     Product getOne(Integer id);
     Page<Product> getPage(SearchDto product);
 }
