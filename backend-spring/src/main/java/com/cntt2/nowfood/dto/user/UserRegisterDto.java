@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 /**
@@ -24,12 +21,12 @@ public class UserRegisterDto extends BaseDto {
     private String fullName;
 
     @NotEmpty(message = "username không được để trống")
-    @Min(value = 8, message = "username phải từ 8 kí tự trở lên")
+    @Size(min = 8, message = "username phải từ 8 kí tự trở lên")
     private String username;
 
     @JsonProperty("password")
     @NotEmpty(message = "Password không được để trống")
-    @Min(value = 8, message = "Password phải từ 8 kí tự trở lên")
+    @Size(min = 8, message = "Password phải từ 8 kí tự trở lên")
     private String hashPassword;
 
     @Email(message = "Email không hợp lệ")
