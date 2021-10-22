@@ -24,11 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/register").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers("/api/v2/api-docs").permitAll()
-                //.anyRequest().authenticated()
+                .antMatchers("/api/login").anonymous()
+                .antMatchers("/api/register").anonymous()
+                .antMatchers("/swagger-ui/**").anonymous()
+                .antMatchers("/api/v2/api-docs").anonymous()
+                .anyRequest().authenticated()
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }
