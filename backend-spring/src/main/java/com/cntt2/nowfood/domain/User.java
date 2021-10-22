@@ -1,8 +1,9 @@
 package com.cntt2.nowfood.domain;
 
 import com.cntt2.nowfood.config.security.UserPrincipal;
-import com.cntt2.nowfood.dto.user.UserRegisterDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import java.util.Date;
 @Table(name = "tbl_user")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseEntity {
 
@@ -29,11 +31,11 @@ public class User extends BaseEntity {
     @NotNull
     private String username;
 
-    @Column(name = "HashPassword",length=512)
+    @Column(name = "HashPassword", length = 512)
     @NotNull
     private String hashPassword;
 
-    @Column(name = "PhoneNumber",length=50)
+    @Column(name = "PhoneNumber", length = 50)
     private String phoneNumber;
 
     @Column(name = "BirthDate")
@@ -48,10 +50,10 @@ public class User extends BaseEntity {
     @Column(name = "LoginDate")
     private Date loginDate;
 
-    @Column(name = "ForgotCode",length=50)
+    @Column(name = "ForgotCode", length = 50)
     private String forgotCode;
 
-    @Column(name = "RefreshToken",length=1000)
+    @Column(name = "RefreshToken", length = 1000)
     private String refreshToken;
 
     @Column(name = "ExpriedToken")
@@ -63,11 +65,12 @@ public class User extends BaseEntity {
     @Column(name = "LoginIP")
     private String loginIp;
 
-    @OneToOne(mappedBy = "owner")
+    @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Shop shop;
 
     // user n-n roles
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "RoleId", referencedColumnName = "id")
     private Role role;
 

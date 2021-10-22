@@ -1,7 +1,6 @@
 package com.cntt2.nowfood.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,7 +11,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "tbl_product_category")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ProductCategory extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,4 +28,9 @@ public class ProductCategory extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CategoryByShopId")
     private CategoryByShop categoryByShop;
+
+    public ProductCategory(Product product, Category category) {
+        this.product = product;
+        this.category = category;
+    }
 }

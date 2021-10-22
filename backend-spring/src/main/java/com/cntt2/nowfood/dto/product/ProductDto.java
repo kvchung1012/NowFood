@@ -1,9 +1,29 @@
 package com.cntt2.nowfood.dto.product;
 
+import com.cntt2.nowfood.dto.BaseDto;
+import com.cntt2.nowfood.dto.shop.ShopFormDto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.io.Serializable;
+
 /**
  * @author Vanh
  * @version 1.0
- * @date 10/6/2021 1:00 AM
+ * @date 10/21/2021 9:30 PM
  */
-public class ProductDto {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductDto extends BaseDto implements Serializable {
+    private String name;
+    private String image;
+    private String slug;
+    private String description;
+    private Boolean isMain;
+    private Double rate;
+    private ShopFormDto shop;
 }
