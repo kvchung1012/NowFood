@@ -1,7 +1,6 @@
 package com.cntt2.nowfood.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,7 +11,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "tbl_product_size")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ProductSize extends BaseEntity {
 
@@ -29,4 +31,5 @@ public class ProductSize extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SizeId")
     private Size size;
+
 }

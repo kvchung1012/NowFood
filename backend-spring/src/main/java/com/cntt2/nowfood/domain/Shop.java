@@ -16,14 +16,17 @@ import java.util.List;
  */
 @Entity
 @Table(name = "tbl_shop")
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Shop extends BaseEntity {
     private static final long serialVersionUID = 1L;
     @Column(name = "ShopName")
     private String shopName;
 
-    @Column(name = "ShopImage",length=512)
+    @Column(name = "ShopImage", length = 512)
     private String shopImage;
 
     @Column(name = "Slug")
@@ -54,13 +57,13 @@ public class Shop extends BaseEntity {
     private Boolean isMain;
 
     // 1 user - 1 shop
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "OwnerId")
     @NotFound(action = NotFoundAction.IGNORE)
     private User owner;
 
     @OneToMany(
-            mappedBy = "createdByShop",
+            mappedBy = "shop",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )

@@ -17,6 +17,7 @@
         <java.version>11</java.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.12</org.projectlombok.version>
+        <com.joda.time.version>2.10.10</com.joda.time.version>
     </properties>
     <dependencies>
         <dependency>
@@ -83,6 +84,18 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
             <version>3.0.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${com.joda.time.version}</version>
+        </dependency>
+        <!-- Failed to instantiate SLF4J LoggerFactory -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
         </dependency>
     </dependencies>
 

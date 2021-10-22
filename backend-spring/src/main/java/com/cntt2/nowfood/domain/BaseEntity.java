@@ -42,8 +42,7 @@ public class BaseEntity implements Serializable {
     )
     private UUID uuid;
     @Column(
-            name = "voided",
-            nullable = true
+            name = "voided"
     )
     private Boolean voided;
 

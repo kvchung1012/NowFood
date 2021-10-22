@@ -1,6 +1,8 @@
 package com.cntt2.nowfood.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -15,6 +17,8 @@ import javax.persistence.Table;
 @Table(name = "tbl_permission")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Permission extends BaseEntity {
 
     private String permissionName;
