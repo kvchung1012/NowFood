@@ -1,7 +1,9 @@
 package com.cntt2.nowfood.mapper;
 
 import com.cntt2.nowfood.domain.Product;
+import com.cntt2.nowfood.dto.product.ProductDetailDto;
 import com.cntt2.nowfood.dto.product.ProductDto;
+import com.cntt2.nowfood.dto.product.ProductFormDto;
 import org.mapstruct.Mapper;
 
 /**
@@ -11,5 +13,8 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-    Product productDtoToEntity(ProductDto dto);
+    Product formToEntity(ProductFormDto form);
+    ProductFormDto toFormDto(Product entity);
+    ProductDto toDto(Product entity);
+    ProductDetailDto toDetailDto(Product entity);
 }

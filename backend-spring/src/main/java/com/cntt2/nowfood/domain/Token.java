@@ -1,6 +1,8 @@
 package com.cntt2.nowfood.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -17,6 +19,8 @@ import java.util.Date;
 @Table(name = "tbl_token")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Token extends BaseEntity {
 
     @Column(name="Token",length = 1000)
