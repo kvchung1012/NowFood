@@ -91,6 +91,12 @@
             <artifactId>joda-time</artifactId>
             <version>${com.joda.time.version}</version>
         </dependency>
+        <!-- Failed to instantiate SLF4J LoggerFactory -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
