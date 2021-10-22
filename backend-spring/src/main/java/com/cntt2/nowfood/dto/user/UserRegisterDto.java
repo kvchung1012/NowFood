@@ -5,7 +5,7 @@ import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.BaseDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.*;
 import java.util.Date;
@@ -15,7 +15,10 @@ import java.util.Date;
  * @version 1.0
  * @date 10/9/2021 4:06 PM
  */
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegisterDto extends BaseDto {
     @NotEmpty(message = "Họ và tên không được để trống")
     private String fullName;
@@ -38,9 +41,5 @@ public class UserRegisterDto extends BaseDto {
     private Date birthDate;
 
     private String address;
-
-    private Date loginDate;
-
-    private String loginIp;
 
 }
