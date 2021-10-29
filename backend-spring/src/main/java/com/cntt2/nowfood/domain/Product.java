@@ -1,5 +1,6 @@
 package com.cntt2.nowfood.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -16,7 +17,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "tbl_product")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Product extends BaseEntity{
     private static final long serialVersionUID = 1L;
@@ -41,7 +45,7 @@ public class Product extends BaseEntity{
     // Todos: Mapping to Restaurant
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="createdByShop")
-    private Shop createdByShop;
+    private Shop shop;
 
     // Product n - n Size => {Product 1 - n ProductSize n - 1 Size}
     @OneToMany(

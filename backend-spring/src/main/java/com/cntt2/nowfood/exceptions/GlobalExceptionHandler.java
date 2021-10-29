@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({EntityNotFoundException.class})
     protected ResponseEntity<MessageEntity> handleNotFound(final RuntimeException ex) {
         ex.printStackTrace();
-        MessageEntity msg = new MessageEntity((String)null, "Không tìm thấy đối tượng được yêu cầu!", MessageType.ERROR);
+        MessageEntity msg = new MessageEntity((String)null, ex.getMessage(), MessageType.ERROR);
         return new ResponseEntity(msg, HttpStatus.NOT_FOUND);
     }
 
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({NullPointerException.class, IllegalArgumentException.class, IllegalStateException.class})
     public ResponseEntity<MessageEntity> handleInternal(final RuntimeException ex, Locale locale) {
         ex.printStackTrace();
-        MessageEntity msg = new MessageEntity(null, "500 Internal Server Error", MessageType.ERROR);
+        MessageEntity msg = new MessageEntity(null, ex.getMessage(), MessageType.ERROR);
         return new ResponseEntity(msg, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

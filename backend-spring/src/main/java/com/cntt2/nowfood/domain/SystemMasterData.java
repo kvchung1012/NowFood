@@ -1,7 +1,6 @@
 package com.cntt2.nowfood.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tbl_system_master_data")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class SystemMasterData extends BaseEntity {
 

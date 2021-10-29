@@ -1,7 +1,6 @@
 package com.cntt2.nowfood.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,7 +11,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "tbl_product_option")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ProductOption extends BaseEntity {
 
