@@ -1,0 +1,20 @@
+// Here you can add other styles
+.sidebar-nav::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  .sidebar-nav::-webkit-scrollbar-track {
+    background: #4f5d73; 
+    opacity: 1;
+  }
+   
+  /* Handle */
+  .sidebar-nav::-webkit-scrollbar-thumb {
+    background: #9da5b1; 
+  }
+  
+  /* Handle on hover */
+  .sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: #9da5b1; 
+  }
