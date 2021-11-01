@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
 import { Redirect } from 'react-router'
 
