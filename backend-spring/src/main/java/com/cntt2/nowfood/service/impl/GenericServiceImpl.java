@@ -29,7 +29,7 @@ public class GenericServiceImpl<T, Idt extends Serializable> implements GenericS
     }
 
     public T delete(Idt id) {
-        T result = this.repository.findById(id).get();
+        T result = this.repository.findById(id).orElse(null);
         if (result != null) {
             this.repository.deleteById(id);
         }
@@ -38,8 +38,7 @@ public class GenericServiceImpl<T, Idt extends Serializable> implements GenericS
     }
 
     public T save(T t) {
-        T result = this.repository.save(t);
-        return result;
+        return this.repository.save(t);
     }
 
     public Page<T> getList(int pageIndex, int pageSize) {
@@ -53,7 +52,7 @@ public class GenericServiceImpl<T, Idt extends Serializable> implements GenericS
     }
 
     public T getById(Idt id) {
-        return this.repository.findById(id).get();
+        return this.repository.findById(id).orElse(null);
     }
 }
 

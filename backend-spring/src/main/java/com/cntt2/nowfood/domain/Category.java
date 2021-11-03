@@ -1,5 +1,7 @@
 package com.cntt2.nowfood.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -34,5 +36,6 @@ public class Category extends BaseEntity {
             orphanRemoval = true
     )
     @NotFound(action = NotFoundAction.IGNORE)
+    @JsonIgnore
     private List<ProductCategory> productCategories = new ArrayList<>();
 }
