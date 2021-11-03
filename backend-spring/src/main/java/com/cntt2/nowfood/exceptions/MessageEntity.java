@@ -22,6 +22,11 @@ public class MessageEntity implements Serializable {
     private MessageType type;
     private HttpHeaders httpHeaders;
 
+    public MessageEntity(int code,String message) {
+        this.code = code;
+        this.message = message;
+    }
+
     public MessageEntity(String field, String message, MessageType type) {
         this.field = field;
         this.message = message;

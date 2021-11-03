@@ -20,14 +20,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
-
+    private static final String[] SWAGGER_2_WHITELIST = {
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/login").anonymous()
-                .antMatchers("/api/register").anonymous()
-                .antMatchers("/swagger-ui/**").anonymous()
-                .antMatchers("/api/v2/api-docs").anonymous()
+                .antMatchers("/api/auth/**").anonymous()
+                .antMatchers(SWAGGER_2_WHITELIST).anonymous()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();

@@ -22,6 +22,8 @@ public class UserPrincipal implements UserDetails {
     private Integer userId;
     private String username;
     private String password;
+    private Boolean enabled;
+    private Boolean voided;
     private Collection authorities;
 
     @Override
