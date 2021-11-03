@@ -5,9 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,6 +36,11 @@ public class Role extends BaseEntity {
     private Set<Permission> permissions = new HashSet<>();
 
     @JsonIgnore
-    @OneToOne(mappedBy = "role")
-    private User user;
+    @OneToMany(
+            mappedBy = "role",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @NotFound(action = NotFoundAction.IGNORE)
+    private List<User> users;
 }
