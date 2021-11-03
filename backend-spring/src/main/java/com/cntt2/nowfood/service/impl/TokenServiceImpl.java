@@ -25,4 +25,9 @@ public class TokenServiceImpl implements TokenService {
     public Token findByToken(String token) {
         return tokenRepository.findByToken(token);
     }
+
+    @Override
+    public void revokeToken(Token token) {
+        tokenRepository.delete(token);
+    }
 }
