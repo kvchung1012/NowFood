@@ -53,11 +53,14 @@ public class ShopServiceImpl extends GenericServiceImpl<Shop,Integer> implements
     }
 
     @Override
-    public Optional<Shop> getOwner() {
+    public Optional<Shop> getOwnerLogin() {
         UserPrincipal user = SecurityUtils.getCurrentUser();
         if(null != user){
+            boolean isAdmin = user.getAuthorities().contains("ADMIN");
             Optional<Shop> owner = shopRepository.findByOwner(user.getUsername());
-            if (owner.isEmpty())
+            if(isAdmin){
+                owner = Optional.empty();
+            } else if (owner.isEmpty())
                 throw new EntityNotFoundException("Tài khoản chưa liên kết với cửa hàng !");
             return owner;
         }

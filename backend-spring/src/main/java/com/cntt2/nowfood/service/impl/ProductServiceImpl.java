@@ -55,7 +55,9 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   @Override
   public Page<ProductDto> findByAdvSearch(SearchDto dto, Shop shop) {
     Pageable pageable = PageRequest.of(dto.getPageIndex() - 1, dto.getPageSize());
-    Page<Product> entities = productRepository.findByShop(shop.getId(), pageable);
+    Integer shopId = null;
+    if(null != shop) shopId = shop.getId();
+    Page<Product> entities = productRepository.findByShop(shopId, pageable);
     return entities
             .map(productMapper::toDto);
   }
@@ -110,7 +112,7 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
     Product entity = this.productMapper.formToEntity(dto);
     // 2. Save
     // 2.1 get Shop by User login
-    Optional<Shop> owner = shopService.getOwner();
+    Optional<Shop> owner = shopService.getOwnerLogin();
     Shop shop = owner.orElseThrow();
     entity.setShop(shop);
     // 2.2: valid sizes,options,categories
