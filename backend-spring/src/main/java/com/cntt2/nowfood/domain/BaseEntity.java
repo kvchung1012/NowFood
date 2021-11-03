@@ -42,9 +42,10 @@ public class BaseEntity implements Serializable {
     )
     private UUID uuid;
     @Column(
-            name = "voided"
+            name = "voided",
+            columnDefinition = "boolean default false"
     )
-    private Boolean voided;
+    private Boolean voided = false;
 
     @CreatedBy
     @Column(name = "CreatedBy")

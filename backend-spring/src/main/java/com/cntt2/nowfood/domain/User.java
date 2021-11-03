@@ -1,7 +1,6 @@
 package com.cntt2.nowfood.domain;
 
 import com.cntt2.nowfood.config.security.UserPrincipal;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -65,8 +64,12 @@ public class User extends BaseEntity {
     @Column(name = "LoginIP")
     private String loginIp;
 
+    @Column(name = "Enabled",
+            columnDefinition = "boolean default false"
+    )
+    private Boolean enabled = false;
+
     @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
-    @JsonBackReference
     private Shop shop;
 
     // user n-n roles
