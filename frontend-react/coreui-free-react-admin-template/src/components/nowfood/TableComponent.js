@@ -1,14 +1,15 @@
-import { React, useState, useEffect } from 'react'
+import { React, useState } from 'react'
 import { AgGridColumn, AgGridReact } from 'ag-grid-react'
 
 import { CPagination, CPaginationItem } from '@coreui/react';
 
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
+import { CButton } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilBell,cilTrash,cilPencil } from '@coreui/icons'
+import { cilTrash, cilPencil } from '@coreui/icons'
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import HeaderTable from './HeaderTable';
 
 const TableComponent = () => {
     const head = [
@@ -16,86 +17,81 @@ const TableComponent = () => {
             field: 'Id',
             flex: 1,
             sort: null,
-            resizable:true,
+            resizable: true,
             hide: false,
-            pinned: '',
-            filters: [{  // tìm kiếm 
-                operator : 'like',
-                alias : 'and',
-                value : ''
-            }]
+            pinned: ''
         },
         {
             field: 'Code',
             flex: 1,
             sort: null,
-            resizable:true,
+            resizable: true,
             hide: false,
-            pinned: '',
-            filters: true
+            pinned: ''
         },
         {
             field: 'Name',
             flex: 1,
             sort: null,
-            resizable:true,
+            resizable: true,
             hide: false,
-            pinned: '',
-            filters: true
+            pinned: ''
         },
         {
             field: 'Action',
             width: 120,
             sortable: false,
             hide: false,
-            resizable:false,
+            resizable: false,
             pinned: 'right',
-            cellRenderer:"cellActionComponent"
+            cellRenderer: "cellActionComponent"
         }
     ]
-
     const data = [
         {
-            Id : 1,
-            Code : 'C00',
-            Name : 'Khuất văn Chung'
+            Id: 1,
+            Code: 'C00',
+            Name: 'Khuất văn Chung'
         },
         {
-            Id : 2,
-            Code : 'C02',
-            Name : 'Khuất văn Chung'
+            Id: 2,
+            Code: 'C02',
+            Name: 'Khuất văn Chung'
         },
         {
-            Id : 3,
-            Code : 'C03',
-            Name : 'Khuất văn Chung'
+            Id: 3,
+            Code: 'C03',
+            Name: 'Khuất văn Chung'
         },
         {
-            Id : 4,
-            Code : 'C04',
-            Name : 'Khuất văn Chung'
+            Id: 4,
+            Code: 'C04',
+            Name: 'Khuất văn Chung'
         },
         {
-            Id : 5,
-            Code : 'C05',
-            Name : 'Khuất văn Chung'
+            Id: 5,
+            Code: 'C05',
+            Name: 'Khuất văn Chung'
         },
     ]
-
     const pagination = {
-        pageNumber : 1,
-        pageCount : 3
-    }   
+        pageNumber: 1,
+        pageCount: 3
+    }
 
     const [rowData, setRowData] = useState(data);
     const [header, setHeader] = useState(head);
 
-    const deleteRow = (node)=>{
+    const deleteRow = (node) => {
         alert(JSON.stringify(node.data));
     }
 
-    const editRow = (node)=>{
+    const editRow = (node) => {
         alert(JSON.stringify(node.data));
+    }
+
+    const changeView = (data) => {
+        setHeader(data);
     }
 
     const onGridReady = (params) => {
@@ -103,92 +99,97 @@ const TableComponent = () => {
             setRowData(data);
         };
 
+        const tableEvent = (columns) => {
+            setHeader(columns.map((e, i) => {
+                if (head[e.instanceId].field !== "Action")
+                    return {
+                        field: head[e.instanceId].field,
+                        width: e.actualWidth,
+                        sort: e.sort,
+                        resizable: head[e.instanceId].resizable,
+                        hide: !e.visible,
+                        pinned: e.pinned,
+                    }
+                else
+                    return {
+                        field: head[e.instanceId].field,
+                        width: e.actualWidth,
+                        sort: e.sort,
+                        resizable: false,
+                        hide: false,
+                        pinned: 'right',
+                        cellRenderer: "cellActionComponent"
+                    }
+            }))
+        }
+
         updateData(data)
 
         // config sort in server
-        head.forEach((el,i)=>{
+        head.forEach((el, i) => {
             // add lắng nghe sự kiện cho từng header
             const column = params.columnApi.getColumn(el.field);
-            column.addEventListener('sortChanged',function(e){
-                let sort = e.column.sort==='asc' || e.column.sort==null?true:false;
-                updateData(sort?data:data.sort((a,b)=>data[a] - data[b]))
+            column.addEventListener('sortChanged', function (e) {
+                let sort = e.column.sort === 'asc' || e.column.sort == null ? true : false;
+                updateData(sort ? data : data.sort((a, b) => data[a] - data[b]))
             });
 
-            column.addEventListener('movingChanged',function(e){
-                if(!e.column.moving){
+            column.addEventListener('visibleChanged', function (e) {
+                let columns = params.columnApi.columnModel.gridColumns;
+                tableEvent(columns);
+            });
+
+            column.addEventListener('movingChanged', function (e) {
+                if (!e.column.moving) {
                     let columns = params.columnApi.columnModel.gridColumns;
-                    setHeader(columns.map((e,i)=>{
-                        console.log(e);
-                        if(head[e.instanceId].field !== "Action")
-                            return {
-                                field: head[e.instanceId].field,
-                                width: e.actualWidth,
-                                sort: e.sort,
-                                resizable : head[e.instanceId].resizable,
-                                hide: !e.visible,
-                                pinned: e.pinned,
-                                filters: '',
-                            }
-                        else
-                            return {
-                                field: head[e.instanceId].field,
-                                width: e.actualWidth,
-                                sort: e.sort,
-                                resizable : false,
-                                hide: false,
-                                pinned: 'right',
-                                filters: '',
-                                cellRenderer :"cellActionComponent"
-                            }
-                    }))
+                    tableEvent(columns);
                 }
             });
         })
     };
 
-
-
-    return <div className="ag-theme-alpine" style={{ height: 500 }}>
+    return <div className="ag-theme-alpine" style={{ height: 450 }}>
+        <HeaderTable prop={header} callback={changeView} />
         <AgGridReact
             rowData={rowData}
             onGridReady={onGridReady}
-            columnDefs={header}
             defaultColDef={{
                 sortable: true,
                 resizable: true,
             }}
             animateRows={true}
             frameworkComponents={{
-                cellActionComponent: (node)=>{
-                    return(
+                cellActionComponent: (node) => {
+                    return (
                         <div>
                             <CButton
-                                onClick={()=>editRow(node)}
+                                onClick={() => editRow(node)}
                                 color=""
                                 size="sm">
                                 <CIcon icon={cilPencil} className="" />
                             </CButton>
 
                             <CButton
-                                onClick={()=>deleteRow(node)}
+                                onClick={() => deleteRow(node)}
                                 color=""
                                 size="sm">
                                 <CIcon icon={cilTrash} className="text-danger" />
                             </CButton>
-                         </div>)},
+                        </div>)
+                },
             }}
         >
-            {/* {header.map(column => (<AgGridColumn {...column} key={column.field} />))} */}
+            {header.map(column => (<AgGridColumn {...column} key={column.field} hide={column.hide} />))}
         </AgGridReact>
 
 
-        <div className="w-100 bg-white">
-            <CPagination aria-label="Page navigation example" className="justify-content-end">
+        <div className="w-100 bg-white border-bottom border-start d-flex justify-content-end">
+            <CPagination aria-label="Page navigation example" className="align-items-center justify-content-end m-0">
                 <CPaginationItem aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </CPaginationItem>
                 {
-                    Array.from(Array(pagination.pageCount).keys()).map((value,i)=><CPaginationItem key={i} >{i+1}</CPaginationItem>)
+                    Array.from(Array(pagination.pageCount).keys()).map((value, i) => <CPaginationItem key={i} >{i + 1}</CPaginationItem>)
                 }
                 <CPaginationItem aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
