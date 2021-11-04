@@ -1,9 +1,6 @@
 package com.cntt2.nowfood.dto.user;
 
-import com.cntt2.nowfood.domain.Role;
-import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.BaseDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 

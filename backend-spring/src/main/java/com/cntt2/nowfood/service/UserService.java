@@ -14,4 +14,7 @@ import java.util.Date;
 public interface UserService {
     UserRegisterDto createUser(UserRegisterDto userDto);
     UserPrincipal findByUsername(String username);
+    String validUser(UserRegisterDto userDto);
+    String confirmToken(String token);
+    String refreshConfirm(String email);
 }
