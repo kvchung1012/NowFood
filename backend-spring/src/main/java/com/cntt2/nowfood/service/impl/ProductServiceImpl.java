@@ -5,6 +5,7 @@ import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.product.ProductDto;
 import com.cntt2.nowfood.dto.product.ProductFormDto;
 import com.cntt2.nowfood.dto.product.ProductSizeDto;
+import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.ProductMapper;
 import com.cntt2.nowfood.repository.CategoryByShopRepository;
 import com.cntt2.nowfood.repository.CategoryRepository;
@@ -113,12 +114,12 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
     // 2. Save
     // 2.1 get Shop by User login
     Optional<Shop> owner = shopService.getOwnerLogin();
-    Shop shop = owner.orElseThrow();
+    Shop shop = owner.orElse(null);
     entity.setShop(shop);
     // 2.2: valid sizes,options,categories
     String valid = validProduct(dto, shop.getId());
     if (!"".equals(valid)) {
-      throw new EntityNotFoundException(valid);
+      throw new ValidException(valid);
     }
     // 2.3: add sizes,options,categories to Product
     if (null != dto.getSizes()) {

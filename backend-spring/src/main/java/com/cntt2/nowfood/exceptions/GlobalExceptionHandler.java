@@ -33,12 +33,18 @@ public class GlobalExceptionHandler {
         MessageEntity msg = new MessageEntity(null, "Bạn không có quyền thực hiện chức năng này!", MessageType.ERROR);
         return new ResponseEntity(msg, HttpStatus.FORBIDDEN);
     }
+    @ExceptionHandler({ValidException.class})
+    protected ResponseEntity<MessageEntity> handleValid(final RuntimeException ex) {
+        ex.printStackTrace();
+        MessageEntity msg = new MessageEntity(null,400, ex.getMessage(), MessageType.ERROR);
+        return ResponseEntity.ok().body(msg);
+    }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     protected ResponseEntity<MessageEntity> processValidationError(MethodArgumentNotValidException ex, Locale locale) {
         BindingResult result = ex.getBindingResult();
         FieldError error = result.getFieldError();
-        return new ResponseEntity(this.processFieldError(error, locale), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.ok().body(this.processFieldError(error, locale));
     }
 
     @ExceptionHandler({EntityNotFoundException.class})
@@ -66,7 +72,7 @@ public class GlobalExceptionHandler {
         MessageEntity message = null;
         if (error != null) {
             String msg = error.getDefaultMessage();
-            message = new MessageEntity(error.getField(), msg, MessageType.ERROR);
+            message = new MessageEntity(error.getField(),400, msg, MessageType.ERROR);
         }
 
         return message;

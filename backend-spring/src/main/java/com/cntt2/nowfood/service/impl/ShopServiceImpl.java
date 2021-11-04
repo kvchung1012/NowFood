@@ -4,6 +4,7 @@ import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.shop.ShopFormDto;
+import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.ShopMapper;
 import com.cntt2.nowfood.repository.ShopRepository;
 import com.cntt2.nowfood.service.ShopService;
@@ -61,7 +62,7 @@ public class ShopServiceImpl extends GenericServiceImpl<Shop,Integer> implements
             if(isAdmin){
                 owner = Optional.empty();
             } else if (owner.isEmpty())
-                throw new EntityNotFoundException("Tài khoản chưa liên kết với cửa hàng !");
+                throw new ValidException("Tài khoản chưa liên kết với cửa hàng !");
             return owner;
         }
         return Optional.empty();

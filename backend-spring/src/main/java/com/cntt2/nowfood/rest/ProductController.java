@@ -4,6 +4,7 @@ import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.product.ProductDto;
 import com.cntt2.nowfood.dto.product.ProductFormDto;
+import com.cntt2.nowfood.exceptions.MessageEntity;
 import com.cntt2.nowfood.service.ProductService;
 import com.cntt2.nowfood.service.ShopService;
 import io.swagger.annotations.Api;
@@ -44,9 +45,8 @@ public class ProductController {
         SearchDto searchDto = new SearchDto();
         searchDto.setPageIndex(pageIndex);
         searchDto.setPageSize(pageSize);
-        Shop test = shop.orElse(null);
         Page<ProductDto> page = productService.findByAdvSearch(searchDto,shop.orElse(null));
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok().body(new MessageEntity(200,page));
     }
     @ApiOperation(value = "Danh sách sản phẩm [Phân trang nâng cao].")
     @PostMapping(value = "/searchAdv")
@@ -58,10 +58,10 @@ public class ProductController {
     }
     @ApiOperation(value = "Thêm mới sản phẩm, 1 sản phẩm có [0,n] size ___ [1,n] danh mục sản phẩm ___ [1,n] danh mục sản phẩm của cửa hàng")
     @PostMapping
-    public ResponseEntity<ProductFormDto> create(@Valid @RequestBody ProductFormDto form) {
+    public ResponseEntity<?> create(@Valid @RequestBody ProductFormDto form) {
         // todos: author
         ProductFormDto result = productService.create(form);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.ok().body(new MessageEntity(200,result));
     }
 
 }
