@@ -19,19 +19,29 @@ public class MessageEntity implements Serializable {
     private String field;
     private int code;
     private String message;
+    private Object data;
     private MessageType type;
     private HttpHeaders httpHeaders;
 
     public MessageEntity(int code,String message) {
         this.code = code;
         this.message = message;
+        if(code == 400){
+            this.type = MessageType.ERROR;
+        }
+    }
+
+    public MessageEntity(int code,Object data) {
+        this.code = code;
+        this.data = data;
+        if(code == 200)
+            this.type = MessageType.SUCCESS;
     }
 
     public MessageEntity(String field, String message, MessageType type) {
         this.field = field;
         this.message = message;
         this.type = type;
-        this.httpHeaders = null;
     }
 
     public MessageEntity(String field, int code, String message, MessageType type) {
@@ -39,7 +49,6 @@ public class MessageEntity implements Serializable {
         this.code = code;
         this.message = message;
         this.type = type;
-        this.httpHeaders = null;
     }
 
     public MessageEntity(String field, String message, HttpHeaders httpHeaders, MessageType type) {

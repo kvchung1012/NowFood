@@ -17,5 +17,5 @@ public interface ShopService extends GenericService<Shop,Integer> {
     ShopFormDto createShop(ShopFormDto shop);
     ShopFormDto findById(Integer id);
     Page<ShopFormDto> findByAdvSearch(SearchDto searchDto);
-    Optional<Shop> getOwner();
+    Optional<Shop> getOwnerLogin();
 }

@@ -73,8 +73,8 @@ public class User extends BaseEntity {
     private Shop shop;
 
     // user n-n roles
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "RoleId", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "RoleId")
     private Role role;
 
     public User(UserPrincipal user) {

@@ -1,12 +1,14 @@
 package com.cntt2.nowfood.rest;
 
-import com.cntt2.nowfood.domain.Product;
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.product.ProductDto;
 import com.cntt2.nowfood.dto.product.ProductFormDto;
+import com.cntt2.nowfood.exceptions.MessageEntity;
 import com.cntt2.nowfood.service.ProductService;
 import com.cntt2.nowfood.service.ShopService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,9 +25,9 @@ import java.util.Optional;
  * @date 10/5/2021 11:49 PM
  */
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/products")
+@Api( tags = "Products")
 public class ProductController {
-
     private final ProductService productService;
 
     private final ShopService shopService;
@@ -35,21 +37,31 @@ public class ProductController {
         this.productService = productService;
         this.shopService = shopService;
     }
-
-    @PostMapping(value = "/search")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<Page<ProductDto>> getByPage(@RequestBody SearchDto searchDto) {
-        Optional<Shop> shop = shopService.getOwner();
+    @ApiOperation(value = "Danh sách sản phẩm [Phân trang cơ bản].")
+    @GetMapping
+    public ResponseEntity<?> getList(@RequestParam("pageIndex") Integer pageIndex,
+                                     @RequestParam("pageSize") Integer pageSize) {
+        Optional<Shop> shop = shopService.getOwnerLogin();
+        SearchDto searchDto = new SearchDto();
+        searchDto.setPageIndex(pageIndex);
+        searchDto.setPageSize(pageSize);
+        Page<ProductDto> page = productService.findByAdvSearch(searchDto,shop.orElse(null));
+        return ResponseEntity.ok().body(new MessageEntity(200,page));
+    }
+    @ApiOperation(value = "Danh sách sản phẩm [Phân trang nâng cao].")
+    @PostMapping(value = "/searchAdv")
+    public ResponseEntity<?> getByPage(@RequestBody SearchDto searchDto) {
+        Optional<Shop> shop = shopService.getOwnerLogin();
         // todos: test api get product
         Page<ProductDto> page = productService.findByAdvSearch(searchDto,shop.orElse(null));
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
-
+    @ApiOperation(value = "Thêm mới sản phẩm, 1 sản phẩm có [0,n] size ___ [1,n] danh mục sản phẩm ___ [1,n] danh mục sản phẩm của cửa hàng")
     @PostMapping
-    public ResponseEntity<ProductFormDto> create(@Valid @RequestBody ProductFormDto form) {
+    public ResponseEntity<?> create(@Valid @RequestBody ProductFormDto form) {
         // todos: author
         ProductFormDto result = productService.create(form);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.ok().body(new MessageEntity(200,result));
     }
 
 }

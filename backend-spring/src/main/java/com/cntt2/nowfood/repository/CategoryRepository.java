@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Vanh
@@ -16,4 +17,6 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category,Integer> {
     @Query("select c from Category c where c.id in :ids")
     List<Category> findByIds(List<Integer> ids);
+
+    Optional<Category> findById(Integer id);
 }

@@ -10,4 +10,5 @@ import com.cntt2.nowfood.domain.Token;
 public interface TokenService {
     Token createToken(Token token);
     Token findByToken(String token);
+    void revokeToken(Token token);
 }
