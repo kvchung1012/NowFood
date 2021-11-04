@@ -14,17 +14,28 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class MessageEntity implements Serializable {
+public class MessageEntity<T> implements Serializable {
     private static final long serialVersionUID = 5498689480625016163L;
     private String field;
     private int code;
     private String message;
+    private T data;
     private MessageType type;
     private HttpHeaders httpHeaders;
 
     public MessageEntity(int code,String message) {
         this.code = code;
         this.message = message;
+        if(code == 400){
+            this.type = MessageType.ERROR;
+        }
+    }
+
+    public MessageEntity(int code,T data) {
+        this.code = code;
+        this.data = data;
+        if(code == 200)
+            this.type = MessageType.SUCCESS;
     }
 
     public MessageEntity(String field, String message, MessageType type) {

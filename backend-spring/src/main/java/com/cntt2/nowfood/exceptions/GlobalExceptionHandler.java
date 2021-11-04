@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<MessageEntity> processValidationError(MethodArgumentNotValidException ex, Locale locale) {
         BindingResult result = ex.getBindingResult();
         FieldError error = result.getFieldError();
-        return new ResponseEntity(this.processFieldError(error, locale), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.ok().body(this.processFieldError(error, locale));
     }
 
     @ExceptionHandler({EntityNotFoundException.class})
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
         MessageEntity message = null;
         if (error != null) {
             String msg = error.getDefaultMessage();
-            message = new MessageEntity(error.getField(), msg, MessageType.ERROR);
+            message = new MessageEntity(error.getField(),400, msg, MessageType.ERROR);
         }
 
         return message;

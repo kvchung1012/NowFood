@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegisterDto extends BaseDto {
+public class UserRegisterDto {
     @NotEmpty(message = "Họ và tên không được để trống")
     private String fullName;
 

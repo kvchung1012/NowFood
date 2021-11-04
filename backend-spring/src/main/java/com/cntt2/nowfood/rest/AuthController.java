@@ -49,10 +49,10 @@ public class AuthController {
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDto userDto) {
         String messValid = userService.validUser(userDto);
         if(!"".equals(messValid))
-            return ResponseEntity.badRequest().body(new MessageEntity(400,messValid));
-        return ResponseEntity.ok(userService.createUser(userDto));
+            return ResponseEntity.ok().body(new MessageEntity(400,messValid));
+        return ResponseEntity.ok(new MessageEntity(200,userService.createUser(userDto)));
     }
-    @GetMapping(path = "/logout123")
+    @GetMapping(path = "/logout")
     public ResponseEntity<?> revokeToken(HttpServletRequest request,HttpServletResponse response) {
         final String authorizationHeader = request.getHeader(authorization);
         Token token = null;
@@ -61,7 +61,7 @@ public class AuthController {
             // Get use form token
             token = tokenService.findByToken(jwt);
             if(null == token){
-                return ResponseEntity.badRequest().body("Token không tồn tại!");
+                return ResponseEntity.ok().body(new MessageEntity(400,"Token không tồn tại!"));
             }
             tokenService.revokeToken(token);
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -69,7 +69,7 @@ public class AuthController {
                 new SecurityContextLogoutHandler().logout(request, response, auth);
             }
         }else{
-            return ResponseEntity.badRequest().body("Header không tồn tại token!");
+            return ResponseEntity.ok().body(new MessageEntity(400,"Header không tồn tại token!"));
         }
         return ResponseEntity.ok("success");
     }
@@ -79,11 +79,11 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest login) {
         UserPrincipal userPrincipal = userService.findByUsername(login.getUsername());
         if (!new BCryptPasswordEncoder().matches(login.getPassword(), userPrincipal.getPassword())) {
-            return ResponseEntity.badRequest().body(new MessageEntity(400,"Tài khoản hoặc mật khẩu không chính xác !"));
+            return ResponseEntity.ok().body(new MessageEntity(400,"Tài khoản hoặc mật khẩu không chính xác !"));
         }else if(!userPrincipal.getEnabled()) {
-            return ResponseEntity.badRequest().body(new MessageEntity(400,"Tài khoản chưa được kích hoạt !"));
+            return ResponseEntity.ok().body(new MessageEntity(400,"Tài khoản chưa được kích hoạt !"));
         }else if(userPrincipal.getVoided()){
-            return ResponseEntity.badRequest().body(new MessageEntity(400,"Tài khoản của bạn đã bị khóa !"));
+            return ResponseEntity.ok().body(new MessageEntity(400,"Tài khoản của bạn đã bị khóa !"));
         }
         Token token = new Token();
         token.setToken(jwtUtil.generateToken(userPrincipal));
@@ -91,7 +91,7 @@ public class AuthController {
         token.setCreatedBy(userPrincipal.getUsername());
         tokenService.createToken(token);
         JwtResponse jwt = new JwtResponse(token.getToken(),userPrincipal.getUsername());
-        return ResponseEntity.ok(jwt);
+        return ResponseEntity.ok(new MessageEntity(200,jwt));
     }
     @GetMapping(path = "/confirm")
     public String confirm(@RequestParam("token") String token) {
