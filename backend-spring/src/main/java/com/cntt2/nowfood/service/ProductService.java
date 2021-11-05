@@ -5,8 +5,8 @@ import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.product.ProductDto;
 import com.cntt2.nowfood.dto.product.ProductFormDto;
+import com.cntt2.nowfood.dto.product.ProductSearchDto;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * @author Vanh
@@ -15,10 +15,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface ProductService extends GenericService<Product, Integer> {
     Product findById(Integer id);
-
-    Page<ProductDto> findByAdvSearch(SearchDto dto, Shop shop);
-
-    Page<ProductFormDto> findByShop(Integer id, Pageable pageable);
-
+    Page<ProductDto> findByShop(SearchDto dto, Shop shop);
+    Page<ProductDto> findByAdvSearch(ProductSearchDto dto);
     ProductFormDto create(ProductFormDto dto);
 }

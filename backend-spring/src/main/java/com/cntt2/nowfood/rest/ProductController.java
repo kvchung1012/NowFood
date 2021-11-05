@@ -4,6 +4,7 @@ import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.product.ProductDto;
 import com.cntt2.nowfood.dto.product.ProductFormDto;
+import com.cntt2.nowfood.dto.product.ProductSearchDto;
 import com.cntt2.nowfood.exceptions.MessageEntity;
 import com.cntt2.nowfood.service.ProductService;
 import com.cntt2.nowfood.service.ShopService;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,16 +45,15 @@ public class ProductController {
         SearchDto searchDto = new SearchDto();
         searchDto.setPageIndex(pageIndex);
         searchDto.setPageSize(pageSize);
-        Page<ProductDto> page = productService.findByAdvSearch(searchDto,shop.orElse(null));
+        Page<ProductDto> page = productService.findByShop(searchDto,shop.orElse(null));
         return ResponseEntity.ok().body(new MessageEntity(200,page));
     }
     @ApiOperation(value = "Danh sách sản phẩm [Phân trang nâng cao].")
     @PostMapping(value = "/searchAdv")
-    public ResponseEntity<?> getByPage(@RequestBody SearchDto searchDto) {
-        Optional<Shop> shop = shopService.getOwnerLogin();
+    public ResponseEntity<?> getByPage(@RequestBody ProductSearchDto searchDto) {
         // todos: test api get product
-        Page<ProductDto> page = productService.findByAdvSearch(searchDto,shop.orElse(null));
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        Page<ProductDto> page = productService.findByAdvSearch(searchDto);
+        return new ResponseEntity<>(new MessageEntity(200,page), HttpStatus.OK);
     }
     @ApiOperation(value = "Thêm mới sản phẩm, 1 sản phẩm có [0,n] size ___ [1,n] danh mục sản phẩm ___ [1,n] danh mục sản phẩm của cửa hàng")
     @PostMapping

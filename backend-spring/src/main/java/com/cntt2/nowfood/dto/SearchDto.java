@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class SearchDto implements Serializable {
     private Integer pageSize;
     private String keyword;
     private String  asc;
-    private String desc;
+    private String desc="createdDate";
     public SearchDto(Integer pageSize,Integer pageIndex){
         this.pageSize = pageSize;
         this.pageIndex = pageIndex;

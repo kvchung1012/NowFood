@@ -57,14 +57,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({InvalidDataAccessApiUsageException.class, DataAccessException.class})
     protected ResponseEntity<MessageEntity> handleConflict(final RuntimeException ex, Locale locale) {
         ex.printStackTrace();
-        MessageEntity msg = new MessageEntity(null, "409 Conflict", MessageType.ERROR);
+        MessageEntity msg = new MessageEntity(null,500, "409 Conflict", MessageType.ERROR);
         return new ResponseEntity(msg, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({NullPointerException.class, IllegalArgumentException.class, IllegalStateException.class})
     public ResponseEntity<MessageEntity> handleInternal(final RuntimeException ex, Locale locale) {
         ex.printStackTrace();
-        MessageEntity msg = new MessageEntity(null, ex.getMessage(), MessageType.ERROR);
+        MessageEntity msg = new MessageEntity(null,500, ex.getMessage(), MessageType.ERROR);
         return new ResponseEntity(msg, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

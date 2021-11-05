@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class ProductSize extends BaseEntity {
 
     @Column(name="Price",precision = 10,scale = 2)
