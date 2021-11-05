@@ -70,5 +70,18 @@ public class ProductController {
         ProductDetailDto product = productService.findDetailById(id);
         return ResponseEntity.ok().body(new MessageEntity(200,product));
     }
+    @ApiOperation(value = "Cập nhật sản phẩm")
+    @PutMapping
+    public ResponseEntity<?> update(@Valid @RequestBody ProductFormDto form) {
+        // todos: author
+        ProductFormDto result = productService.create(form);
+        return ResponseEntity.ok().body(new MessageEntity(200,result));
+    }
+    @ApiOperation(value = "Xóa sản phẩm")
+    @DeleteMapping(value ="/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        // todos: xóa sản phẩm
+        return ResponseEntity.ok().body(new MessageEntity(200,id.toString()));
+    }
 
 }
