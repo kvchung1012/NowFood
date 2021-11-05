@@ -1,8 +1,12 @@
 package com.cntt2.nowfood.utils;
 
+import com.cntt2.nowfood.dto.SearchDto;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.NumberUtils;
 
 import java.text.SimpleDateFormat;
@@ -17,6 +21,18 @@ public class CommonUtils {
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
     public CommonUtils() {
+    }
+    public static Pageable getPageRequest(SearchDto searchDto){
+        List<Sort.Order> orders = new ArrayList<>();
+        if(searchDto.getPageIndex()<1) searchDto.setPageIndex(0);
+        if(searchDto.getPageSize()<1) searchDto.setPageSize(10);
+        if(searchDto.getAsc() != ""){
+            orders.add(new Sort.Order(Sort.Direction.DESC,searchDto.getAsc()));
+        }
+        if(searchDto.getDesc() != ""){
+            orders.add(new Sort.Order(Sort.Direction.DESC,searchDto.getDesc()));
+        }
+        return PageRequest.of(searchDto.getPageIndex(), searchDto.getPageSize(), Sort.by(orders));
     }
 
     public static boolean isNull(Object obj) {

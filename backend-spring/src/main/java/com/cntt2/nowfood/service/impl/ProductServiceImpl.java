@@ -2,9 +2,8 @@ package com.cntt2.nowfood.service.impl;
 
 import com.cntt2.nowfood.domain.*;
 import com.cntt2.nowfood.dto.SearchDto;
-import com.cntt2.nowfood.dto.product.ProductDto;
-import com.cntt2.nowfood.dto.product.ProductFormDto;
-import com.cntt2.nowfood.dto.product.ProductSizeDto;
+import com.cntt2.nowfood.dto.product.*;
+import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.ProductMapper;
 import com.cntt2.nowfood.repository.CategoryByShopRepository;
 import com.cntt2.nowfood.repository.CategoryRepository;
@@ -12,17 +11,15 @@ import com.cntt2.nowfood.repository.ProductRepository;
 import com.cntt2.nowfood.repository.SizeRepository;
 import com.cntt2.nowfood.service.ProductService;
 import com.cntt2.nowfood.service.ShopService;
+import com.cntt2.nowfood.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,7 +50,13 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   }
 
   @Override
-  public Page<ProductDto> findByAdvSearch(SearchDto dto, Shop shop) {
+  public ProductDetailDto findDetailById(Integer id) {
+    Optional<Product> product = productRepository.findById(id);
+    return productMapper.toDetailDto(product.orElse(null));
+  }
+
+  @Override
+  public Page<ProductDto> findByShop(SearchDto dto, Shop shop) {
     Pageable pageable = PageRequest.of(dto.getPageIndex() - 1, dto.getPageSize());
     Integer shopId = null;
     if(null != shop) shopId = shop.getId();
@@ -63,8 +66,10 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   }
 
   @Override
-  public Page<ProductFormDto> findByShop(Integer id, Pageable pageable) {
-    return null;
+  public Page<ProductDto> findByAdvSearch(ProductSearchDto dto) {
+    Pageable pageable = CommonUtils.getPageRequest(dto);
+    Page<Product> entities = productRepository.findAdvSearch(dto,pageable);
+    return entities.map(productMapper::toDto);
   }
 
   private String validProduct(ProductFormDto dto, Integer shopId) {
@@ -113,12 +118,12 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
     // 2. Save
     // 2.1 get Shop by User login
     Optional<Shop> owner = shopService.getOwnerLogin();
-    Shop shop = owner.orElseThrow();
+    Shop shop = owner.orElse(null);
     entity.setShop(shop);
     // 2.2: valid sizes,options,categories
     String valid = validProduct(dto, shop.getId());
     if (!"".equals(valid)) {
-      throw new EntityNotFoundException(valid);
+      throw new ValidException(valid);
     }
     // 2.3: add sizes,options,categories to Product
     if (null != dto.getSizes()) {
@@ -134,7 +139,7 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
       this.productRepository.save(entity);
     }
     if (null != dto.getOptions()) {
-      List<ProductOption> options = new ArrayList<>();
+      Set<ProductOption> options = new HashSet<>();
       dto.getOptions().forEach(o -> {
                 Product product = new Product();
                 product.setId(o);
@@ -144,7 +149,7 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
       entity.setProductOptions(options);
     }
     if (null != dto.getCategories() && null != dto.getShopCategories()) {
-      List<ProductCategory> categories = new ArrayList<>();
+      Set<ProductCategory> categories = new HashSet<>();
       dto.getCategories().forEach(c -> {
                 Category category = new Category();
                 category.setId(c);

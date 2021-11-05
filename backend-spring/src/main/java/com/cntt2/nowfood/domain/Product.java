@@ -6,7 +6,9 @@ import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vanh
@@ -19,7 +21,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class Product extends BaseEntity{
     private static final long serialVersionUID = 1L;
     @Column(name = "Name")
@@ -48,7 +49,6 @@ public class Product extends BaseEntity{
     // Product n - n Size => {Product 1 - n ProductSize n - 1 Size}
     @OneToMany(
             mappedBy = "product",
-            cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     @NotFound(action = NotFoundAction.IGNORE)
@@ -57,18 +57,16 @@ public class Product extends BaseEntity{
     // Todos: Product 1 -n ProductOptions
     @OneToMany(
             mappedBy = "subProduct",
-            cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     @NotFound(action = NotFoundAction.IGNORE)
-    private List<ProductOption> productOptions = new ArrayList<>();
+    private Set<ProductOption> productOptions = new HashSet<>();
 
     @OneToMany(
             mappedBy = "product",
-            cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     @NotFound(action = NotFoundAction.IGNORE)
-    private List<ProductCategory> productCategories = new ArrayList<>();
+    private Set<ProductCategory> productCategories = new HashSet<>();
 
 }

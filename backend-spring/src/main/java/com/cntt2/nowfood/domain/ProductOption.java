@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class ProductOption extends BaseEntity {
 
     @Column(name="MainProductId")

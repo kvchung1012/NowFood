@@ -1,6 +1,8 @@
 package com.cntt2.nowfood.repository;
 
 import com.cntt2.nowfood.domain.Product;
+import com.cntt2.nowfood.dto.product.ProductDto;
+import com.cntt2.nowfood.dto.product.ProductSearchDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,8 +21,26 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByNameContaining(String name, Pageable page);
 
     @Query("select p from Product p where p.id in :ids and p.isMain = false and p.shop.id = :shop")
-    List<Product> findOptionsByIds(List<Integer> ids,Integer shop);
+    List<Product> findOptionsByIds(List<Integer> ids, Integer shop);
 
     @Query("select p from Product p where p.shop.id = :id or :id is null")
-    Page<Product> findByShop(Integer id,Pageable pageable);
+    Page<Product> findByShop(Integer id, Pageable pageable);
+
+    @Query(value = "select p from Product p " +
+            "left join p.productCategories pc " +
+            "left join p.shop s " +
+            "where (1=1) " +
+            "and (p.shop.id = :#{#dto.getShopId()} or :#{#dto.getShopId()} is null) " +
+            "and (p.id = :#{#dto.getId()} or :#{#dto.getId()} is null) " +
+            "and (p.uuid = :#{#dto.getUuid()} or :#{#dto.getUuid()} is null) " +
+            "and (p.name LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
+            "and (p.name LIKE %:#{#dto.getName()}% or :#{#dto.getName()} is null or :#{#dto.getName()} = '') " +
+            "and (p.isMain = :#{#dto.getIsMain()} or :#{#dto.getIsMain()} is null ) " +
+            "and (p.rate = :#{#dto.getRate()} or :#{#dto.getRate()} is null) " +
+            "and (s.shopName = :#{#dto.getKeyword()} or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '') "+
+            "and (s.shopAddress = :#{#dto.getKeyword()} or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '') "+
+            "and (pc.category.id = :#{#dto.getCategoryId()} or :#{#dto.getCategoryId()} is null ) "+
+            "and (pc.categoryByShop.id = :#{#dto.getCategoryShopId()} or :#{#dto.getCategoryShopId()} is null) "
+    )
+    Page<Product> findAdvSearch(ProductSearchDto dto,Pageable pageable);
 }
