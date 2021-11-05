@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router'
+import { useHistory } from "react-router-dom"
 import {
   CButton,
   CCard,
@@ -21,13 +22,14 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 import axios from 'axios'
 
 const Login = () => {
+  const history = useHistory()
+
   const dispatch = useDispatch()
   const isLogin = useSelector((state) => state.isLogin)
   const baseUrl = useSelector((state) => state.baseUrl);
 
   const [userName, setUserName] = useState('admin12345')
-  const [passWord, setPassWord] = useState('admin1234')
-  const [isAuth, setAuth] = useState(false)
+  const [passWord, setPassWord] = useState('')
   const [validated, setValidated] = useState(false)
 
   const ourRequest = axios.CancelToken.source()
@@ -47,17 +49,18 @@ const Login = () => {
         cancelToken: ourRequest.token,
       }).then(res => {
         console.log(res);
-        if(res.status===200){
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("userName", res.data.username);
+        if(res.data.code===200){
+          localStorage.setItem("token", res.data.data.token);
+          localStorage.setItem("userName", res.data.data.username);
           dispatch({ type: 'set', isLogin: true })
-          setAuth(true);
+          history.push("/")
         }
         else{
-          alert("Mật khẩu hoặc tài khoản không đúng");
+          alert(res.data.message);
         }
         
       }).catch(err => {
+        console.log(err);
         alert("Mật khẩu hoặc tài khoản không đúng");
       })
     }
@@ -73,9 +76,7 @@ const Login = () => {
 
   return isLogin ? (
     <Redirect to="/" />
-  ) : isAuth ? (
-    <Redirect to="/" />
-  ) : (
+    ) : (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">

@@ -20,6 +20,8 @@ import axios from 'axios'
 
 const Register = () => {
   const baseUrl = useSelector((state) => state.baseUrl);
+  const [fullName,setFullName] = useState('')
+  const [phone,setPhone] = useState('')
   const [userName,setUserName] = useState('')
   const [email,setEmail] = useState('')
   const [password,setPassWord] = useState('')
@@ -38,21 +40,33 @@ const Register = () => {
 
     }
      else {
-      var obj = {
-        fullName :"chung",
-        username: userName,
-        hashPassword: password,
-        email : email,
-        phoneNumber : '0962165344'
+      if(password === passwordConfirm){
+        var obj = {
+          fullName :fullName,
+          username: userName,
+          password: password,
+          email : email,
+          phoneNumber : phone
+        }
+        axios.post(baseUrl + "api/auth/register",obj, {
+          cancelToken: ourRequest.token,
+        }).then(res => {
+          console.log(res.data);
+          if(res.data.code===200){
+              alert("Đăng ký thành công vui lòng trở lại trang đăng nhập")
+          }
+          else{
+              alert(res.data.message)
+          }
+        }).catch(err => {
+          console.log(err);
+          alert("Thông tin còn thiếu");
+        })
       }
-      axios.post(baseUrl + "api/auth/register",obj, {
-        cancelToken: ourRequest.token,
-      }).then(res => {
-        console.log(res);
-      }).catch(err => {
-        console.log(err);
-        alert("Thông tin không chính xác");
-      })
+      else{
+        alert("Mật khẩu xác nhận không đúng")
+      }
+     
     }
 
     
@@ -84,8 +98,20 @@ const Register = () => {
                     </CInputGroupText>
                     <CFormInput 
                         required
+                        placeholder="Full Name" 
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                       />
+                      <CFormFeedback invalid>Bạn cần nhập tên của bạn</CFormFeedback>
+
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
+                    <CFormInput 
+                        required
                         placeholder="Username" 
-                        autoComplete="username"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                        />
@@ -97,11 +123,25 @@ const Register = () => {
                     <CFormInput
                         required 
                         placeholder="Email" 
-                        autoComplete="email" 
                         onChange={(e) => setEmail(e.target.value)}
                       />
                       <CFormFeedback invalid>Bạn cần nhập email</CFormFeedback>
                   </CInputGroup>
+
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
+                    <CFormInput 
+                        required
+                        placeholder="Phone number" 
+                        autoComplete="phone number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                       />
+                      <CFormFeedback invalid>Bạn cần nhập số điện thoại của bạn</CFormFeedback>
+                  </CInputGroup>
+
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilLockLocked} />

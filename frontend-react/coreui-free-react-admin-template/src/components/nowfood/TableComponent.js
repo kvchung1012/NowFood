@@ -10,77 +10,21 @@ import { cilTrash, cilPencil } from '@coreui/icons'
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import HeaderTable from './HeaderTable';
+import axios from 'axios'
+const TableComponent = (props) => {
 
-const TableComponent = () => {
-    const head = [
-        {
-            field: 'Id',
-            flex: 1,
-            sort: null,
-            resizable: true,
-            hide: false,
-            pinned: ''
-        },
-        {
-            field: 'Code',
-            flex: 1,
-            sort: null,
-            resizable: true,
-            hide: false,
-            pinned: ''
-        },
-        {
-            field: 'Name',
-            flex: 1,
-            sort: null,
-            resizable: true,
-            hide: false,
-            pinned: ''
-        },
-        {
-            field: 'Action',
-            width: 120,
-            sortable: false,
-            hide: false,
-            resizable: false,
-            pinned: 'right',
-            cellRenderer: "cellActionComponent"
-        }
-    ]
-    const data = [
-        {
-            Id: 1,
-            Code: 'C00',
-            Name: 'Khuất văn Chung'
-        },
-        {
-            Id: 2,
-            Code: 'C02',
-            Name: 'Khuất văn Chung'
-        },
-        {
-            Id: 3,
-            Code: 'C03',
-            Name: 'Khuất văn Chung'
-        },
-        {
-            Id: 4,
-            Code: 'C04',
-            Name: 'Khuất văn Chung'
-        },
-        {
-            Id: 5,
-            Code: 'C05',
-            Name: 'Khuất văn Chung'
-        },
-    ]
     const pagination = {
         pageNumber: 1,
-        pageCount: 3
+        pageCount: 3,
+        pageSize: 10
     }
 
-    const [rowData, setRowData] = useState(data);
-    const [header, setHeader] = useState(head);
+    // eslint-disable-next-line react/prop-types
+    const [fixHeader, setFixHeader] = useState(props.header);
+    // eslint-disable-next-line react/prop-types
+    const [urlConfig, setUrlConfig] = useState(props.url);
+    const [header, setHeader] = useState(fixHeader);
+    const [rowData, setRowData] = useState([]);
 
     const deleteRow = (node) => {
         alert(JSON.stringify(node.data));
@@ -96,23 +40,37 @@ const TableComponent = () => {
 
     const onGridReady = (params) => {
         const updateData = (data) => {
-            setRowData(data);
+            axios({
+                url: urlConfig.url,
+                method: 'get',
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token'),
+                    "Content-Type": 'application/json'
+                }
+            }).then(res => {
+                console.log(res)
+                setRowData(res.data)
+            }).catch(err => {
+                console.log(err);
+            })
         };
+
+        updateData([])
 
         const tableEvent = (columns) => {
             setHeader(columns.map((e, i) => {
-                if (head[e.instanceId].field !== "Action")
+                if (fixHeader[e.instanceId].field !== "Action")
                     return {
-                        field: head[e.instanceId].field,
+                        field: fixHeader[e.instanceId].field,
                         width: e.actualWidth,
                         sort: e.sort,
-                        resizable: head[e.instanceId].resizable,
+                        resizable: fixHeader[e.instanceId].resizable,
                         hide: !e.visible,
                         pinned: e.pinned,
                     }
                 else
                     return {
-                        field: head[e.instanceId].field,
+                        field: fixHeader[e.instanceId].field,
                         width: e.actualWidth,
                         sort: e.sort,
                         resizable: false,
@@ -123,15 +81,15 @@ const TableComponent = () => {
             }))
         }
 
-        updateData(data)
+        // updateData(data)
 
         // config sort in server
-        head.forEach((el, i) => {
+        fixHeader.forEach((el, i) => {
             // add lắng nghe sự kiện cho từng header
             const column = params.columnApi.getColumn(el.field);
             column.addEventListener('sortChanged', function (e) {
                 let sort = e.column.sort === 'asc' || e.column.sort == null ? true : false;
-                updateData(sort ? data : data.sort((a, b) => data[a] - data[b]))
+                updateData([])
             });
 
             column.addEventListener('visibleChanged', function (e) {

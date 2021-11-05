@@ -1,5 +1,6 @@
 import React from 'react'
 import TableComponent from './components/nowfood/TableComponent'
+import ProductComponent from './views/nowfood/product/ProductComponent'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -94,7 +95,7 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/notifications/toasts', name: 'Toasts', component: Toasts },
   { path: '/widgets', name: 'Widgets', component: Widgets },
-  { path: '/test', name: 'Test table', component: TableComponent },
+  { path: '/test', name: 'Test table', component: ProductComponent },
 ]
 
 export default routes

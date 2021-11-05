@@ -2,7 +2,7 @@ import { createStore } from 'redux'
 
 const initialState = {
   sidebarShow: true,
-  isLogin: false,
+  isLogin: true,
   baseUrl : 'http://localhost:8081/'
 }
 
