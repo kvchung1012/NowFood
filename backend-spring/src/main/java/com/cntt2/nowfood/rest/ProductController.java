@@ -1,7 +1,9 @@
 package com.cntt2.nowfood.rest;
 
+import com.cntt2.nowfood.domain.Product;
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
+import com.cntt2.nowfood.dto.product.ProductDetailDto;
 import com.cntt2.nowfood.dto.product.ProductDto;
 import com.cntt2.nowfood.dto.product.ProductFormDto;
 import com.cntt2.nowfood.dto.product.ProductSearchDto;
@@ -61,6 +63,12 @@ public class ProductController {
         // todos: author
         ProductFormDto result = productService.create(form);
         return ResponseEntity.ok().body(new MessageEntity(200,result));
+    }
+    @ApiOperation(value = "Chi tiết sản phẩm .")
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getDetail(@PathVariable Integer id) {
+        ProductDetailDto product = productService.findDetailById(id);
+        return ResponseEntity.ok().body(new MessageEntity(200,product));
     }
 
 }

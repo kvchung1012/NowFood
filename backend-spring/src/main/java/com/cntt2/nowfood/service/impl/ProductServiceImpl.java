@@ -2,10 +2,7 @@ package com.cntt2.nowfood.service.impl;
 
 import com.cntt2.nowfood.domain.*;
 import com.cntt2.nowfood.dto.SearchDto;
-import com.cntt2.nowfood.dto.product.ProductDto;
-import com.cntt2.nowfood.dto.product.ProductFormDto;
-import com.cntt2.nowfood.dto.product.ProductSearchDto;
-import com.cntt2.nowfood.dto.product.ProductSizeDto;
+import com.cntt2.nowfood.dto.product.*;
 import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.ProductMapper;
 import com.cntt2.nowfood.repository.CategoryByShopRepository;
@@ -50,6 +47,12 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   @Override
   public Product findById(Integer id) {
     return productRepository.findById(id).orElse(null);
+  }
+
+  @Override
+  public ProductDetailDto findDetailById(Integer id) {
+    Optional<Product> product = productRepository.findById(id);
+    return productMapper.toDetailDto(product.orElse(null));
   }
 
   @Override
