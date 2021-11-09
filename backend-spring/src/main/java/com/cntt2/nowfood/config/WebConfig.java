@@ -11,15 +11,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @version 1.0
  * @date 10/6/2021 11:14 AM
  */
-//@Configuration
-//@EnableWebMvc
-//public class WebConfig implements WebMvcConfigurer {
-public class WebConfig{
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
     @Value("${endpoints.cors.allowed-methods}")
-    private String methods;
+    private String[] methods;
 
     @Value("${localhost.path.client.user}")
-    private String origins;
+    private String[] origins;
 
     @Value("${endpoints.cors.max-age}")
     private long maxAge;
@@ -27,11 +26,12 @@ public class WebConfig{
     @Value("${endpoints.cors.allow-credentials}")
     private boolean allowCredentials;
 
-    //@Override
+    @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
+        registry.addMapping("/**")
                 .allowedOrigins(origins)
                 .allowedMethods(methods)
-                .allowCredentials(allowCredentials).maxAge(maxAge);
+                .allowCredentials(allowCredentials)
+                .maxAge(maxAge);
     }
 }
