@@ -28,8 +28,7 @@ public class CommonUtils {
         if(searchDto.getPageSize()<1) searchDto.setPageSize(10);
         if(null != searchDto.getAsc() && searchDto.getAsc() != ""){
             orders.add(new Sort.Order(Sort.Direction.ASC,searchDto.getAsc()));
-        }
-        if(searchDto.getDesc() != ""){
+        } else if(searchDto.getDesc() != ""){
             orders.add(new Sort.Order(Sort.Direction.DESC,searchDto.getDesc()));
         }
         return PageRequest.of(searchDto.getPageIndex()-1, searchDto.getPageSize(), Sort.by(orders));
