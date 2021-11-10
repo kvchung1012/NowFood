@@ -1,6 +1,9 @@
 package com.cntt2.nowfood.repository;
 
 import com.cntt2.nowfood.domain.Category;
+import com.cntt2.nowfood.dto.SearchDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,4 +22,13 @@ public interface CategoryRepository extends JpaRepository<Category,Integer> {
     List<Category> findByIds(List<Integer> ids);
 
     Optional<Category> findById(Integer id);
+
+    @Query(value = "select c from Category c " +
+            "where (1=1) " +
+            "and (c.id = :#{#dto.getId()} or :#{#dto.getId()} is null) " +
+            "and (c.uuid = :#{#dto.getUuid()} or :#{#dto.getUuid()} is null) " +
+            "and (c.name LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
+            "and (c.code LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '') "
+    )
+    Page<Category> findByAdvSearch(SearchDto dto, Pageable pageable);
 }

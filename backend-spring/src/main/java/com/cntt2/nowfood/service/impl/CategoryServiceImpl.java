@@ -1,10 +1,16 @@
 package com.cntt2.nowfood.service.impl;
 
 import com.cntt2.nowfood.domain.Category;
+import com.cntt2.nowfood.dto.SearchDto;
+import com.cntt2.nowfood.dto.category.CategoryDto;
 import com.cntt2.nowfood.dto.category.CategoryFormDto;
+import com.cntt2.nowfood.mapper.CategoryMapper;
 import com.cntt2.nowfood.repository.CategoryRepository;
 import com.cntt2.nowfood.service.CategoryService;
+import com.cntt2.nowfood.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +23,7 @@ import org.springframework.stereotype.Service;
 public class CategoryServiceImpl extends GenericServiceImpl<Category, Integer> implements
         CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     @Override
     public Category findById(Integer id) {
@@ -34,5 +41,12 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, Integer> i
         category.setCode(form.getCode());
         category.setName(form.getName());
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public Page<CategoryDto> findByAdvSearch(SearchDto dto) {
+        Pageable pageable = CommonUtils.getPageRequest(dto);
+        Page<Category> entities = categoryRepository.findByAdvSearch(dto,pageable);
+        return entities.map(categoryMapper::toDto);
     }
 }

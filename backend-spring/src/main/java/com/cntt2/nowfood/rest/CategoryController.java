@@ -1,11 +1,14 @@
 package com.cntt2.nowfood.rest;
 
 import com.cntt2.nowfood.domain.Category;
+import com.cntt2.nowfood.dto.SearchDto;
+import com.cntt2.nowfood.dto.category.CategoryDto;
 import com.cntt2.nowfood.dto.category.CategoryFormDto;
 import com.cntt2.nowfood.exceptions.MessageEntity;
 import com.cntt2.nowfood.service.CategoryService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,14 @@ public class CategoryController {
         List<Category> categories = categoryService.getAll();
         return new ResponseEntity<>(new MessageEntity(200,categories), HttpStatus.OK);
     }
+
+    @PostMapping(value = "/search-adv")
+    public ResponseEntity<?> getListAdv(@Valid @RequestBody SearchDto dto) {
+        Page<CategoryDto> result = categoryService.findByAdvSearch(dto);
+        return new ResponseEntity<>(new MessageEntity(200,result), HttpStatus.OK);
+    }
+
+
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CategoryFormDto form) {
         form.setId(null);
