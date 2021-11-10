@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router'
+import { useHistory } from "react-router-dom"
 import {
   CButton,
   CCard,
@@ -18,34 +19,64 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import axios from 'axios'
 
 const Login = () => {
+  const history = useHistory()
+
   const dispatch = useDispatch()
   const isLogin = useSelector((state) => state.isLogin)
+  const baseUrl = useSelector((state) => state.baseUrl);
 
-  const [userName, setUserName] = useState('')
+  const [userName, setUserName] = useState('admin12345')
   const [passWord, setPassWord] = useState('')
-  const [isAuth, setAuth] = useState(false)
   const [validated, setValidated] = useState(false)
+
+  const ourRequest = axios.CancelToken.source()
+
   const handleSubmit = (event) => {
+    setValidated(true)
     const form = event.currentTarget
     if (form.checkValidity() === false) {
       event.preventDefault()
       event.stopPropagation()
     } else {
-      if (userName === 'admin' && passWord === 'admin') {
-        setAuth(true)
-        dispatch({ type: 'set', isLogin: true })
+      var obj = {
+        username: userName,
+        password: passWord
       }
+      axios.post(baseUrl + "api/auth/login",obj, {
+        cancelToken: ourRequest.token,
+      }).then(res => {
+        console.log(res);
+        if(res.data.code===200){
+          localStorage.setItem("token", res.data.data.token);
+          localStorage.setItem("userName", res.data.data.username);
+          dispatch({ type: 'set', isLogin: true })
+          history.push("/")
+        }
+        else{
+          alert(res.data.message);
+        }
+        
+      }).catch(err => {
+        console.log(err);
+        alert("Mật khẩu hoặc tài khoản không đúng");
+      })
     }
     setValidated(true)
   }
 
+  useEffect(() => {
+    return () => {
+      ourRequest.cancel()
+    }
+  })
+
+
   return isLogin ? (
     <Redirect to="/" />
-  ) : isAuth ? (
-    <Redirect to="/" />
-  ) : (
+    ) : (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
@@ -68,6 +99,7 @@ const Login = () => {
                       <CFormInput
                         required
                         placeholder="Username"
+                        value={userName}
                         autoComplete="username"
                         onChange={(e) => setUserName(e.target.value)}
                       />
@@ -80,6 +112,7 @@ const Login = () => {
                       <CFormInput
                         required
                         type="password"
+                        value={passWord}
                         placeholder="Password"
                         autoComplete="current-password"
                         onChange={(e) => setPassWord(e.target.value)}

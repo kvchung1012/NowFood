@@ -3,6 +3,7 @@ import { createStore } from 'redux'
 const initialState = {
   sidebarShow: true,
   isLogin: true,
+  baseUrl : 'http://localhost:8081/'
 }
 
 const changeState = (state = initialState, { type, ...rest }) => {
