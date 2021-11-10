@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * @author Vanh
  * @version 1.0
- * @date 11/10/2021 2:59 PM
+ * @date 11/11/2021 12:53 AM
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShopDto extends BaseDto implements Serializable {
+public class ShopDetailDto extends BaseDto implements Serializable {
     private static final long serialVersionUID = 1L;
     private String shopName;
     private String shopImage;
@@ -35,4 +35,6 @@ public class ShopDto extends BaseDto implements Serializable {
     private Date closeTime;
     private Boolean isActive;
     private Boolean isMain;
+    private List<ProductDto> products = new ArrayList<>();
+    private List<SizeDto> sizes = new ArrayList<>();
 }
