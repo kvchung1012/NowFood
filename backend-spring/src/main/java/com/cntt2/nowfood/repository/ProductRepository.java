@@ -20,11 +20,14 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByNameContaining(String name, Pageable page);
 
-    @Query("select p from Product p where p.id in :ids and p.isMain = false and p.shop.id = :shop")
+    @Query("select p from Product p where p.id in :ids and p.isMain = false and (p.shop.id = :shop or :shop is null)")
     List<Product> findOptionsByIds(List<Integer> ids, Integer shop);
 
     @Query("select p from Product p where p.shop.id = :id or :id is null")
     Page<Product> findByShop(Integer id, Pageable pageable);
+
+    @Query("select p from Product p where p.shop.id = :id or :id is null")
+    List<Product> findByShop(Integer id);
 
     @Query(value = "select p from Product p " +
             "left join p.productCategories pc " +
