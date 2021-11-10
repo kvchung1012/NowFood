@@ -37,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/categories/**").permitAll()
                 .antMatchers("/api/shops/**").permitAll()
                 .antMatchers(SWAGGER_2_WHITELIST).permitAll()
-                .antMatchers(SWAGGER_2_WHITELIST).anonymous()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
