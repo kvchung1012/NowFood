@@ -24,7 +24,6 @@ import java.util.List;
  * @date 10/9/2021 11:09 PM
  */
 @Configuration
-@EnableSwagger2WebMvc
 public class SpringFoxConfig {
 
     @Value("${jwt.token.prefix}")

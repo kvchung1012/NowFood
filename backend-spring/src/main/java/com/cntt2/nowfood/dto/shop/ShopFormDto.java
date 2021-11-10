@@ -1,7 +1,7 @@
 package com.cntt2.nowfood.dto.shop;
 
 import com.cntt2.nowfood.domain.BaseEntity;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -14,7 +14,10 @@ import java.util.Date;
  * @version 1.0
  * @date 10/20/2021 3:54 PM
  */
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ShopFormDto implements Serializable {
 
     private Integer id;

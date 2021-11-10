@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtRequestFilter jwtRequestFilter;
     private static final String[] SWAGGER_2_WHITELIST = {
             "/swagger-resources/**",
+            "/swagger-ui/index.html",
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v2/api-docs",
@@ -32,7 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/products/**").permitAll()
+                .antMatchers("/api/categories/**").permitAll()
+                .antMatchers("/api/shops/**").permitAll()
                 .antMatchers(SWAGGER_2_WHITELIST).permitAll()
+                .antMatchers(SWAGGER_2_WHITELIST).anonymous()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();

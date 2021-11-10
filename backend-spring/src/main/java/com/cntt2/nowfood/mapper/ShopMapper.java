@@ -1,6 +1,7 @@
 package com.cntt2.nowfood.mapper;
 
 import com.cntt2.nowfood.domain.Shop;
+import com.cntt2.nowfood.dto.shop.ShopDto;
 import com.cntt2.nowfood.dto.shop.ShopFormDto;
 import org.mapstruct.Mapper;
 
@@ -13,4 +14,5 @@ import org.mapstruct.Mapper;
 public interface ShopMapper {
     Shop formToEntity(ShopFormDto form);
     ShopFormDto toFormDto(Shop entity);
+    ShopDto toDto(Shop entity);
 }
