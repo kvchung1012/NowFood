@@ -14,6 +14,6 @@ import java.util.List;
  */
 @Repository
 public interface SizeRepository extends JpaRepository<Size,Integer> {
-    @Query(value = "select s from Size s where s.id in :ids and s.createdByShop.id = :shop")
+    @Query(value = "select s from Size s where s.id in :ids and (s.createdByShop.id = :shop or :shop is null)")
     List<Size> findByIds(List<Integer> ids,Integer shop);
 }

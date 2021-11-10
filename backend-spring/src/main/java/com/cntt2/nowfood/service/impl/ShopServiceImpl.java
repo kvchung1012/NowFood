@@ -76,7 +76,7 @@ public class ShopServiceImpl extends GenericServiceImpl<Shop,Integer> implements
     }
 
     @Override
-    public ShopDto findProductsById(Integer id) {
+    public ShopDto findDetailByShopId(Integer id) {
         Shop shop = this.shopRepository.findById(id).orElse(null);
         return this.shopMapper.toDto(shop);
     }

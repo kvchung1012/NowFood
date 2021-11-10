@@ -39,7 +39,15 @@ public class ShopController {
 
     @GetMapping(value = "/{id}/products")
     public ResponseEntity<?> getProductsByShopId(@PathVariable Integer id) {
-        ShopDto shop = shopService.findProductsById(id);
+        ShopDto shop = shopService.findDetailByShopId(id);
+        shop.setSizes(null);
+        return new ResponseEntity<>(new MessageEntity(200, shop), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}/sizes")
+    public ResponseEntity<?> getSizesByShopId(@PathVariable Integer id) {
+        ShopDto shop = shopService.findDetailByShopId(id);
+        shop.setProducts(null);
         return new ResponseEntity<>(new MessageEntity(200, shop), HttpStatus.OK);
     }
 
