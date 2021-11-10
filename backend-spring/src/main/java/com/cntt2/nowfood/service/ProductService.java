@@ -9,6 +9,8 @@ import com.cntt2.nowfood.dto.product.ProductFormDto;
 import com.cntt2.nowfood.dto.product.ProductSearchDto;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 /**
  * @author Vanh
  * @version 1.0
@@ -18,6 +20,7 @@ public interface ProductService extends GenericService<Product, Integer> {
     Product findById(Integer id);
     ProductDetailDto findDetailById(Integer id);
     Page<ProductDto> findByShop(SearchDto dto, Shop shop);
+    List<ProductDto> findByShop(Integer id);
     Page<ProductDto> findByAdvSearch(ProductSearchDto dto);
-    ProductFormDto create(ProductFormDto dto);
+    ProductFormDto saveOrUpdate(ProductFormDto dto);
 }

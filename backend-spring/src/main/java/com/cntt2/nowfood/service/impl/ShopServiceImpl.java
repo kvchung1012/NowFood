@@ -3,6 +3,7 @@ package com.cntt2.nowfood.service.impl;
 import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
+import com.cntt2.nowfood.dto.shop.ShopDto;
 import com.cntt2.nowfood.dto.shop.ShopFormDto;
 import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.ShopMapper;
@@ -45,7 +46,8 @@ public class ShopServiceImpl extends GenericServiceImpl<Shop,Integer> implements
 
     @Override
     public ShopFormDto findById(Integer id) {
-        return null;
+        Shop entity = this.shopRepository.findById(id).orElse(null);
+        return this.shopMapper.toFormDto(entity);
     }
 
     @Override
@@ -54,17 +56,28 @@ public class ShopServiceImpl extends GenericServiceImpl<Shop,Integer> implements
     }
 
     @Override
-    public Optional<Shop> getOwnerLogin() {
+    public Optional<Shop> findByUser(String username) {
+        return shopRepository.findByOwner(username);
+    }
+
+    @Override
+    public Optional<Shop> getOwnerLogin(boolean isRequired) {
         UserPrincipal user = SecurityUtils.getCurrentUser();
         if(null != user){
             boolean isAdmin = user.getAuthorities().contains("ADMIN");
             Optional<Shop> owner = shopRepository.findByOwner(user.getUsername());
-            if(isAdmin){
+            if(isAdmin || !isRequired){
                 owner = Optional.empty();
-            } else if (owner.isEmpty())
+            } else if (owner.isEmpty() && isRequired)
                 throw new ValidException("Tài khoản chưa liên kết với cửa hàng !");
             return owner;
         }
         return Optional.empty();
+    }
+
+    @Override
+    public ShopDto findDetailByShopId(Integer id) {
+        Shop shop = this.shopRepository.findById(id).orElse(null);
+        return this.shopMapper.toDto(shop);
     }
 }

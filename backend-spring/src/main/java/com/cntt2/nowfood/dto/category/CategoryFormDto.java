@@ -1,4 +1,4 @@
-package com.cntt2.nowfood.dto.Category;
+package com.cntt2.nowfood.dto.category;
 
 import lombok.*;
 import javax.validation.constraints.NotNull;

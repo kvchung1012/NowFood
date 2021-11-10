@@ -59,16 +59,26 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   public Page<ProductDto> findByShop(SearchDto dto, Shop shop) {
     Pageable pageable = PageRequest.of(dto.getPageIndex() - 1, dto.getPageSize());
     Integer shopId = null;
-    if(null != shop) shopId = shop.getId();
+    if (null != shop) shopId = shop.getId();
     Page<Product> entities = productRepository.findByShop(shopId, pageable);
     return entities
             .map(productMapper::toDto);
   }
 
   @Override
+  public List<ProductDto> findByShop(Integer id) {
+    return
+            productRepository
+                    .findByShop(id)
+                    .stream()
+                    .map(productMapper::toDto)
+                    .collect(Collectors.toList());
+  }
+
+  @Override
   public Page<ProductDto> findByAdvSearch(ProductSearchDto dto) {
     Pageable pageable = CommonUtils.getPageRequest(dto);
-    Page<Product> entities = productRepository.findAdvSearch(dto,pageable);
+    Page<Product> entities = productRepository.findAdvSearch(dto, pageable);
     return entities.map(productMapper::toDto);
   }
 
@@ -112,16 +122,17 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
 
   @Transactional
   @Override
-  public ProductFormDto create(ProductFormDto dto) {
+  public ProductFormDto saveOrUpdate(ProductFormDto dto) {
     // 1. Mapping to Entity
     Product entity = this.productMapper.formToEntity(dto);
     // 2. Save
     // 2.1 get Shop by User login
-    Optional<Shop> owner = shopService.getOwnerLogin();
+    Optional<Shop> owner = shopService.getOwnerLogin(true);
     Shop shop = owner.orElse(null);
     entity.setShop(shop);
+    Integer shopId = CommonUtils.isNull(shop) ? null : shop.getId();
     // 2.2: valid sizes,options,categories
-    String valid = validProduct(dto, shop.getId());
+    String valid = validProduct(dto, shopId);
     if (!"".equals(valid)) {
       throw new ValidException(valid);
     }
