@@ -14,6 +14,6 @@ import java.util.List;
  */
 @Repository
 public interface CategoryByShopRepository extends JpaRepository<CategoryByShop,Integer> {
-    @Query("select c from CategoryByShop c where c.id in (:ids) and c.createdByShop = :shop")
+    @Query("select c from CategoryByShop c where c.id in (:ids) and ( c.createdByShop = :shop or :shop is null)")
     List<CategoryByShop> findByIds(List<Integer> ids, Integer shop);
 }

@@ -1,7 +1,8 @@
 package com.cntt2.nowfood.service;
 
-import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.domain.Size;
+import com.cntt2.nowfood.dto.size.SizeDto;
+import com.cntt2.nowfood.dto.size.SizeFormDto;
 
 import java.util.List;
 
@@ -12,4 +13,8 @@ import java.util.List;
  */
 public interface SizeService extends GenericService<Size,Integer> {
     List<Size> findByIds(List<Integer> ids);
+
+    SizeDto findById(Integer id);
+
+    SizeDto saveOrUpdate(SizeFormDto form);
 }

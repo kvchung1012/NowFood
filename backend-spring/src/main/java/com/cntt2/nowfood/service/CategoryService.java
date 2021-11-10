@@ -1,8 +1,7 @@
 package com.cntt2.nowfood.service;
 
 import com.cntt2.nowfood.domain.Category;
-import com.cntt2.nowfood.domain.Product;
-import com.cntt2.nowfood.dto.Category.CategoryFormDto;
+import com.cntt2.nowfood.dto.category.CategoryFormDto;
 
 import java.util.List;
 
@@ -14,6 +13,6 @@ import java.util.List;
 public interface CategoryService extends GenericService<Category, Integer> {
     List<Category>  getAll();
     Category findById(Integer id);
-    Category save(CategoryFormDto form);
+    Category saveOrUpdate(CategoryFormDto form);
 
 }
