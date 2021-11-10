@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useState,useEffect } from 'react'
 import { AgGridColumn, AgGridReact } from 'ag-grid-react'
 
 import { CPagination, CPaginationItem } from '@coreui/react';
@@ -13,16 +13,15 @@ import HeaderTable from './HeaderTable';
 import axios from 'axios'
 const TableComponent = (props) => {
 
-    const pagination = {
-        pageNumber: 1,
-        pageCount: 3,
-        pageSize: 10
-    }
 
     // eslint-disable-next-line react/prop-types
     const [fixHeader, setFixHeader] = useState(props.header);
     // eslint-disable-next-line react/prop-types
     const [urlConfig, setUrlConfig] = useState(props.url);
+    const [pagination,setPagination] = useState({   pageNumber: 1,
+                                                    pageCount: [1],
+                                                    pageSize: 10
+                                                })
     const [header, setHeader] = useState(fixHeader);
     const [rowData, setRowData] = useState([]);
 
@@ -34,29 +33,46 @@ const TableComponent = (props) => {
         alert(JSON.stringify(node.data));
     }
 
+    const ChangePageIndex = (i)=>{
+         setPagination({
+            ...pagination,
+            pageIndex : i
+         })
+    }
+
+    const ChangePageSize = (i)=>{
+        setPagination({
+           ...pagination,
+           pageSize : i
+        })
+    }
+
+
+    useEffect(() => {
+        updateData();
+    }, [pagination])
+
     const changeView = (data) => {
         setHeader(data);
     }
 
+    const updateData = () => {
+        axios({
+            url: urlConfig.url,
+            method: 'get',
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem('token'),
+                "Content-Type": 'application/json'
+            }
+        }).then(res => {
+            console.log(res)
+            setRowData(res.data)
+        }).catch(err => {
+            console.log(err);
+        })
+    };
+
     const onGridReady = (params) => {
-        const updateData = (data) => {
-            axios({
-                url: urlConfig.url,
-                method: 'get',
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem('token'),
-                    "Content-Type": 'application/json'
-                }
-            }).then(res => {
-                console.log(res)
-                setRowData(res.data)
-            }).catch(err => {
-                console.log(err);
-            })
-        };
-
-        updateData([])
-
         const tableEvent = (columns) => {
             setHeader(columns.map((e, i) => {
                 if (fixHeader[e.instanceId].field !== "Action")
@@ -146,9 +162,10 @@ const TableComponent = (props) => {
                 <CPaginationItem aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </CPaginationItem>
-                {
-                    Array.from(Array(pagination.pageCount).keys()).map((value, i) => <CPaginationItem key={i} >{i + 1}</CPaginationItem>)
-                }
+                    {
+                        pagination.pageCount.map((value, i) => 
+                            <CPaginationItem key={i} onClick={ChangePageIndex(i)} >{i + 1}</CPaginationItem>)
+                    }           
                 <CPaginationItem aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </CPaginationItem>
