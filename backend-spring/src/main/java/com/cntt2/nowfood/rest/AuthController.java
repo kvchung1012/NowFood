@@ -2,11 +2,13 @@ package com.cntt2.nowfood.rest;
 
 import com.cntt2.nowfood.config.security.JwtUtil;
 import com.cntt2.nowfood.config.security.UserPrincipal;
+import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.domain.Token;
 import com.cntt2.nowfood.dto.auth.JwtResponse;
 import com.cntt2.nowfood.dto.auth.LoginRequest;
 import com.cntt2.nowfood.dto.user.UserRegisterDto;
 import com.cntt2.nowfood.exceptions.MessageEntity;
+import com.cntt2.nowfood.service.ShopService;
 import com.cntt2.nowfood.service.TokenService;
 import com.cntt2.nowfood.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * @author Vanh
@@ -34,9 +37,8 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
-
+    private final ShopService shopService;
     private final TokenService tokenService;
-
     private final JwtUtil jwtUtil;
 
     @Value("${jwt.token.prefix}")
@@ -85,12 +87,18 @@ public class AuthController {
         }else if(userPrincipal.getVoided()){
             return ResponseEntity.ok().body(new MessageEntity(400,"Tài khoản của bạn đã bị khóa !"));
         }
+        Optional<Shop> shop = shopService.findByUser(login.getUsername());
+        Integer shopId = null;
+        if(!shop.isEmpty()){
+            shopId = shop.get().getId();
+        }
+        String role = userPrincipal.getRole();
         Token token = new Token();
         token.setToken(jwtUtil.generateToken(userPrincipal));
         token.setTokenExpDate(jwtUtil.generateExpirationDate());
         token.setCreatedBy(userPrincipal.getUsername());
         tokenService.createToken(token);
-        JwtResponse jwt = new JwtResponse(token.getToken(),userPrincipal.getUsername());
+        JwtResponse jwt = new JwtResponse(token.getToken(),userPrincipal.getUsername(),shopId,role);
         return ResponseEntity.ok(new MessageEntity(200,jwt));
     }
     @GetMapping(path = "/confirm")

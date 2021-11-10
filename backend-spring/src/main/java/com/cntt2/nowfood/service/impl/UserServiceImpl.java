@@ -99,6 +99,7 @@ public class UserServiceImpl implements UserService {
                 // Add Permission : USER_READ,USER_CREATE...
                 user.getRole().getPermissions().forEach(p -> authorities.add(p.getPermissionKey()));
             }
+            userPrincipal.setRole(user.getRole().getRoleKey());
             userPrincipal.setVoided(user.getVoided());
             userPrincipal.setEnabled(user.getEnabled());
             userPrincipal.setUserId(user.getId());
