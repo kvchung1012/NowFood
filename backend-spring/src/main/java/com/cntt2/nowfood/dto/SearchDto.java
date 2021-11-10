@@ -22,6 +22,7 @@ import java.util.UUID;
 public class SearchDto implements Serializable {
     private Integer id;
     private UUID uuid;
+    private Integer shopId;
     private Integer pageIndex;
     private Integer pageSize;
     private String keyword;

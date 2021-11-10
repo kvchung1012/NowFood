@@ -24,15 +24,15 @@ public class CommonUtils {
     }
     public static Pageable getPageRequest(SearchDto searchDto){
         List<Sort.Order> orders = new ArrayList<>();
-        if(searchDto.getPageIndex()<1) searchDto.setPageIndex(0);
+        if(searchDto.getPageIndex()<1) searchDto.setPageIndex(1);
         if(searchDto.getPageSize()<1) searchDto.setPageSize(10);
-        if(searchDto.getAsc() != ""){
-            orders.add(new Sort.Order(Sort.Direction.DESC,searchDto.getAsc()));
+        if(null != searchDto.getAsc() && searchDto.getAsc() != ""){
+            orders.add(new Sort.Order(Sort.Direction.ASC,searchDto.getAsc()));
         }
         if(searchDto.getDesc() != ""){
             orders.add(new Sort.Order(Sort.Direction.DESC,searchDto.getDesc()));
         }
-        return PageRequest.of(searchDto.getPageIndex(), searchDto.getPageSize(), Sort.by(orders));
+        return PageRequest.of(searchDto.getPageIndex()-1, searchDto.getPageSize(), Sort.by(orders));
     }
 
     public static boolean isNull(Object obj) {
