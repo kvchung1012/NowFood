@@ -1,8 +1,10 @@
 package com.cntt2.nowfood.service;
 
 import com.cntt2.nowfood.domain.Size;
+import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.size.SizeDto;
 import com.cntt2.nowfood.dto.size.SizeFormDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,4 +19,6 @@ public interface SizeService extends GenericService<Size,Integer> {
     SizeDto findById(Integer id);
 
     SizeDto saveOrUpdate(SizeFormDto form);
+
+    Page<SizeDto> findByAdvSearch(SearchDto dto);
 }
