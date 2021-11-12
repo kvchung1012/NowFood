@@ -11,6 +11,7 @@ import com.cntt2.nowfood.utils.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,10 +46,11 @@ public class SizeController {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(new MessageEntity(200,sizes), HttpStatus.OK);
     }
-    @ApiOperation(value = "Tìm kiếm cơ bản kích thước [Phân trang].")
-    @PostMapping("/simple")
-    public ResponseEntity<?> getListBasic(@Valid @RequestBody SearchDto form) {
-        return new ResponseEntity<>(new MessageEntity(200,null), HttpStatus.OK);
+    @ApiOperation(value = "Tìm kiếm nâng cao kích thước [Phân trang].")
+    @PostMapping("/search-adv")
+    public ResponseEntity<?> getListAdv(@Valid @RequestBody SearchDto dto) {
+        Page<SizeDto> result = sizeService.findByAdvSearch(dto);
+        return new ResponseEntity<>(new MessageEntity(200,result), HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody SizeFormDto form) {

@@ -30,7 +30,6 @@ public class ProductSearchDto extends SearchDto implements Serializable {
     private String name;
     private Boolean isMain;
     private Double rate;
-    private Integer shopId;
     private Integer sizeId;
     private Integer categoryId;
     private Integer categoryShopId;

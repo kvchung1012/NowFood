@@ -59,6 +59,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody ProductFormDto form) {
         // todos: author
+        form.setId(null);
         ProductFormDto result = productService.saveOrUpdate(form);
         return ResponseEntity.ok().body(new MessageEntity(200, result));
     }

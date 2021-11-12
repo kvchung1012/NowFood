@@ -2,6 +2,7 @@ package com.cntt2.nowfood.service.impl;
 
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.domain.Size;
+import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.size.SizeDto;
 import com.cntt2.nowfood.dto.size.SizeFormDto;
 import com.cntt2.nowfood.exceptions.ValidException;
@@ -9,7 +10,10 @@ import com.cntt2.nowfood.mapper.SizeMapper;
 import com.cntt2.nowfood.repository.SizeRepository;
 import com.cntt2.nowfood.service.ShopService;
 import com.cntt2.nowfood.service.SizeService;
+import com.cntt2.nowfood.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,5 +61,12 @@ public class SizeServiceImpl extends GenericServiceImpl<Size, Integer> implement
         entity = this.sizeMapper.toEntity(form,entity);
         entity = this.sizeRepository.save(entity);
         return sizeMapper.toDto(entity);
+    }
+
+    @Override
+    public Page<SizeDto> findByAdvSearch(SearchDto dto) {
+        Pageable pageable = CommonUtils.getPageRequest(dto);
+        Page<Size> entities = sizeRepository.findfindByAdvSearch(dto,pageable);
+        return entities.map(sizeMapper::toDto);
     }
 }

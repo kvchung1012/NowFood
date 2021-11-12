@@ -3,17 +3,19 @@ package com.cntt2.nowfood.service.impl;
 import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
+import com.cntt2.nowfood.dto.shop.ShopDetailDto;
 import com.cntt2.nowfood.dto.shop.ShopDto;
 import com.cntt2.nowfood.dto.shop.ShopFormDto;
 import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.ShopMapper;
 import com.cntt2.nowfood.repository.ShopRepository;
 import com.cntt2.nowfood.service.ShopService;
+import com.cntt2.nowfood.utils.CommonUtils;
 import com.cntt2.nowfood.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 /**
@@ -51,8 +53,10 @@ public class ShopServiceImpl extends GenericServiceImpl<Shop,Integer> implements
     }
 
     @Override
-    public Page<ShopFormDto> findByAdvSearch(SearchDto searchDto) {
-        return null;
+    public Page<ShopDto> findByAdvSearch(SearchDto dto) {
+        Pageable pageable = CommonUtils.getPageRequest(dto);
+        Page<Shop> entities = shopRepository.findByAdvSearch(dto,pageable);
+        return entities.map(shopMapper::toDto);
     }
 
     @Override
@@ -76,8 +80,8 @@ public class ShopServiceImpl extends GenericServiceImpl<Shop,Integer> implements
     }
 
     @Override
-    public ShopDto findDetailByShopId(Integer id) {
+    public ShopDetailDto findDetailByShopId(Integer id) {
         Shop shop = this.shopRepository.findById(id).orElse(null);
-        return this.shopMapper.toDto(shop);
+        return this.shopMapper.toDetailDto(shop);
     }
 }
