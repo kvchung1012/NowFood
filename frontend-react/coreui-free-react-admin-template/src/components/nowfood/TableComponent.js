@@ -1,9 +1,9 @@
-import { React, useState,useEffect } from 'react'
+import { React, useEffect, useState } from 'react'
 import { AgGridColumn, AgGridReact } from 'ag-grid-react'
 
 import { CPagination, CPaginationItem } from '@coreui/react';
 
-import { CButton } from '@coreui/react'
+import { CButton,CFormSelect } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilTrash, cilPencil } from '@coreui/icons'
 
@@ -13,48 +13,44 @@ import HeaderTable from './HeaderTable';
 import axios from 'axios'
 const TableComponent = (props) => {
 
+    const [request,setRequest] = useState({
+        pageIndex: 1,
+        pageSize: 5,
+        keyWord : '',
+        asc : '',
+        desc : ''
+    });
 
+    const [totalPage, setTotalPage] = useState([]);
+
+    // lưu lại thông tin header
     // eslint-disable-next-line react/prop-types
     const [fixHeader, setFixHeader] = useState(props.header);
+    
+    //cấu hình chung api
     // eslint-disable-next-line react/prop-types
     const [urlConfig, setUrlConfig] = useState(props.url);
-    const [pagination,setPagination] = useState({   pageNumber: 1,
-                                                    pageCount: [1],
-                                                    pageSize: 10
-                                                })
+    
+    // header trong agrid
     const [header, setHeader] = useState(fixHeader);
+    
+    // data in table
     const [rowData, setRowData] = useState([]);
 
-    const deleteRow = (node) => {
-        alert(JSON.stringify(node.data));
-    }
-
-    const editRow = (node) => {
-        alert(JSON.stringify(node.data));
-    }
-
-    const ChangePageIndex = (i)=>{
-         setPagination({
-            ...pagination,
-            pageIndex : i
-         })
-    }
-
-    const ChangePageSize = (i)=>{
-        setPagination({
-           ...pagination,
-           pageSize : i
-        })
-    }
-
-
-    useEffect(() => {
-        updateData();
-    }, [pagination])
-
-    const changeView = (data) => {
+    
+    // callback from header
+    const changeHeader = (data) => {
         setHeader(data);
     }
+
+    const setKeyWord = (data) => {
+       setRequest({...request,keyWord:data});
+    }
+
+    useEffect(()=>{
+        console.log(request)
+        updateData();
+    },[request])
 
     const updateData = () => {
         axios({
@@ -65,14 +61,15 @@ const TableComponent = (props) => {
                 "Content-Type": 'application/json'
             }
         }).then(res => {
-            console.log(res)
-            setRowData(res.data)
+            setTotalPage([1,2])
+            setRowData(res.data.data)
         }).catch(err => {
             console.log(err);
         })
     };
 
     const onGridReady = (params) => {
+
         const tableEvent = (columns) => {
             setHeader(columns.map((e, i) => {
                 if (fixHeader[e.instanceId].field !== "Action")
@@ -122,8 +119,16 @@ const TableComponent = (props) => {
         })
     };
 
+    const deleteRow = (node) => {
+        alert(JSON.stringify(node.data));
+    }
+
+    const editRow = (node) => {
+        alert(JSON.stringify(node.data));
+    }
+    
     return <div className="ag-theme-alpine" style={{ height: 450 }}>
-        <HeaderTable prop={header} callback={changeView} />
+        <HeaderTable prop={header} callbackHeader={changeHeader} callbackKeyWord={setKeyWord}/>
         <AgGridReact
             rowData={rowData}
             onGridReady={onGridReady}
@@ -157,15 +162,23 @@ const TableComponent = (props) => {
         </AgGridReact>
 
 
-        <div className="w-100 bg-white border-bottom border-start d-flex justify-content-end">
+        <div className="w-100 p-1 bg-white d-flex justify-content-between border-top-0" style={{border:"solid 1px #babfc7 !important"}}>
+            <div>
+                <CFormSelect size="sm" onChange={(e)=>{setRequest({...request,pageSize:e.target.options[e.target.options.selectedIndex].innerText} )}}>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">20</option>
+                </CFormSelect>
+            </div>
+            
             <CPagination aria-label="Page navigation example" className="align-items-center justify-content-end m-0">
                 <CPaginationItem aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </CPaginationItem>
-                    {
-                        pagination.pageCount.map((value, i) => 
-                            <CPaginationItem key={i} onClick={ChangePageIndex(i)} >{i + 1}</CPaginationItem>)
-                    }           
+                {
+                    totalPage.map((value, i) => 
+                        <CPaginationItem key={i} active={value===request.pageIndex} onClick={()=>setRequest({...request,pageIndex:value})}>{value}</CPaginationItem>)
+                }
                 <CPaginationItem aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </CPaginationItem>

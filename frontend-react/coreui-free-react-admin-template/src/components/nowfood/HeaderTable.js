@@ -1,18 +1,28 @@
 import { cilPencil } from "@coreui/icons"
 import CIcon from "@coreui/icons-react"
-import { CButton, COffcanvasBody, CCloseButton, COffcanvasTitle, COffcanvas, COffcanvasHeader, CFormCheck } from "@coreui/react"
+import {CFormInput, CButton, COffcanvasBody, CCloseButton, COffcanvasTitle, COffcanvas, COffcanvasHeader, CFormCheck } from "@coreui/react"
 import { React, useEffect, useState } from "react"
 const HeaderTable = (data) => {
     const [header, setHeader] = useState(data.prop);
+    const [keyWord, setKeyWord] = useState('');
     const [visible, setVisible] = useState(false);
     useEffect(() => {
-        data.callback(header);
+        data.callbackHeader(header);
     }, [header])
+
+
+    useEffect(() => {
+        data.callbackKeyWord(keyWord);
+    }, [keyWord])
+
 
     useEffect(() => {
         setHeader(data.prop)
     }, [data])
     return (<div className="d-flex justify-content-end p-2 pe-0">
+
+        <CFormInput type="text" className="w-25" placeholder="Nhập sau đó enter tìm kiếm" onKeyDown={(e)=>{ if(e.keyCode===13) setKeyWord(e.target.value)}}/>
+
         <CButton
             onClick={() => setVisible(!visible)}
             color=""
