@@ -24,8 +24,10 @@ public class CommonUtils {
     }
     public static Pageable getPageRequest(SearchDto searchDto){
         List<Sort.Order> orders = new ArrayList<>();
-        if(searchDto.getPageIndex()<1) searchDto.setPageIndex(1);
-        if(searchDto.getPageSize()<1) searchDto.setPageSize(10);
+        if(null == searchDto.getPageIndex() || searchDto.getPageIndex()<1)
+            searchDto.setPageIndex(1);
+        if(null == searchDto.getPageSize() || searchDto.getPageSize()<1)
+            searchDto.setPageSize(10);
         if(null != searchDto.getAsc() && searchDto.getAsc() != ""){
             orders.add(new Sort.Order(Sort.Direction.ASC,searchDto.getAsc()));
         } else if(searchDto.getDesc() != ""){
