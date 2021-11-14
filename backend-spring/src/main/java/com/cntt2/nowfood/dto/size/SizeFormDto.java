@@ -28,6 +28,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SizeFormDto implements Serializable {
     private Integer id;
+    private Boolean voided=false;
+    private Integer shopId;
     @NotNull
     @Size(max = 256, message="Tên kích thước không được vượt quá 256 kí tự!")
     private String name;

@@ -26,6 +26,7 @@ public class ProductFormDto implements Serializable {
     private String image;
     private String description;
     private Boolean isMain;
+    private Boolean voided=false;
     private List<ProductSizeDto> sizes = new ArrayList<>();
 
     private List<Integer> options = new ArrayList<>();

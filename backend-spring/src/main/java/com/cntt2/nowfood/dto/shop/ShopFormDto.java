@@ -6,6 +6,7 @@ import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,10 +22,12 @@ import java.util.Date;
 public class ShopFormDto implements Serializable {
 
     private Integer id;
-
+    private Boolean voided=false;
     @NotEmpty(message = "Tên cửa hàng không được để trống")
+    @Size(max = 256 , message="Tên cửa hàng không được quá 256 kí tự")
     private String shopName;
 
+    @Size(max = 256 , message="Đường dẫn ảnh không được quá 256 kí tự")
     private String shopImage;
 
     @NotEmpty(message = "Số điện thoại liên hệ không được để trống")
@@ -33,9 +36,11 @@ public class ShopFormDto implements Serializable {
 
     @NotEmpty(message = "Email không được để trống")
     @Email(message = "Email không hợp lệ")
+    @Size(max = 256 , message="Email không được quá 256 kí tự")
     private String shopEmail;
 
     @NotEmpty(message = "Địa chỉ cửa hàng không được để trống")
+    @Size(max = 256 , message="Địa chỉ không được quá 256 kí tự")
     private String shopAddress;
 
     private Date openTime;
