@@ -29,7 +29,8 @@ public interface ShopRepository extends JpaRepository<Shop,Integer> {
             "and (s.shopName LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
             "and (s.shopPhone LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
             "and (s.shopEmail LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
-            "and (s.shopAddress LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) "
+            "and (s.shopAddress LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
+            "and (s.voided = :#{#dto.getVoided()} or :#{#dto.getVoided()} is null) "
     )
     Page<Shop> findByAdvSearch(SearchDto dto, Pageable pageable);
 }

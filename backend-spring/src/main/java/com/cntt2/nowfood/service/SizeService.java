@@ -21,4 +21,6 @@ public interface SizeService extends GenericService<Size,Integer> {
     SizeDto saveOrUpdate(SizeFormDto form);
 
     Page<SizeDto> findByAdvSearch(SearchDto dto);
+
+    Size deleteById(Integer id);
 }

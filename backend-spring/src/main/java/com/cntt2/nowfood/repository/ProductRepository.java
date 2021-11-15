@@ -43,7 +43,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "and (s.shopName = :#{#dto.getKeyword()} or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '') "+
             "and (s.shopAddress = :#{#dto.getKeyword()} or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '') "+
             "and (pc.category.id = :#{#dto.getCategoryId()} or :#{#dto.getCategoryId()} is null ) "+
-            "and (pc.categoryByShop.id = :#{#dto.getCategoryShopId()} or :#{#dto.getCategoryShopId()} is null) "
+            "and (pc.categoryByShop.id = :#{#dto.getCategoryShopId()} or :#{#dto.getCategoryShopId()} is null) " +
+            "and (p.voided = :#{#dto.getVoided()} or :#{#dto.getVoided()} is null) "
     )
     Page<Product> findAdvSearch(ProductSearchDto dto,Pageable pageable);
 }

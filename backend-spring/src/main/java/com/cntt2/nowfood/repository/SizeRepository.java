@@ -25,7 +25,8 @@ public interface SizeRepository extends JpaRepository<Size,Integer> {
             "and (s.id = :#{#dto.getId()} or :#{#dto.getId()} is null) " +
             "and (s.createdByShop.id = :#{#dto.getShopId()} or :#{#dto.getShopId()} is null) " +
             "and (s.uuid = :#{#dto.getUuid()} or :#{#dto.getUuid()} is null) " +
-            "and (s.name LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) "
+            "and (s.name LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
+            "and (s.voided = :#{#dto.getVoided()} or :#{#dto.getVoided()} is null) "
     )
     Page<Size> findfindByAdvSearch(SearchDto dto, Pageable pageable);
 }
