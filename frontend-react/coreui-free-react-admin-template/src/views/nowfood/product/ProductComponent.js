@@ -42,7 +42,7 @@ const ProductComponent = () => {
         }
     ]
     const urlConfig={
-        url : baseUrl+'api/categories'
+        url : baseUrl+'api/categories/search-adv'
     }
 
     return <TableComponent header={head} url={urlConfig}/>
