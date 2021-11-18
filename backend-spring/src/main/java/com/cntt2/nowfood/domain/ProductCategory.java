@@ -16,11 +16,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductCategory extends BaseEntity{
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "ProductId")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "CategoryId")
     private Category category;
 
@@ -28,8 +28,4 @@ public class ProductCategory extends BaseEntity{
     @JoinColumn(name = "CategoryByShopId")
     private CategoryByShop categoryByShop;
 
-    public ProductCategory(Product product, Category category) {
-        this.product = product;
-        this.category = category;
-    }
 }

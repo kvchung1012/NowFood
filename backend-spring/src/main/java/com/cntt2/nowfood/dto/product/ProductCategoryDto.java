@@ -1,7 +1,7 @@
 package com.cntt2.nowfood.dto.product;
 
-import com.cntt2.nowfood.domain.Category;
-import com.cntt2.nowfood.domain.CategoryByShop;
+import com.cntt2.nowfood.dto.category.CategoryDto;
+import com.cntt2.nowfood.dto.categorybyshop.CategoryByShopDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +19,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductCategoryDto implements Serializable {
-    private Category category;
-    private CategoryByShop categoryByShop;
+    private CategoryDto category;
+    private CategoryByShopDto categoryByShop;
 }

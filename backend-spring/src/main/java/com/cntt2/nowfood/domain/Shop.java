@@ -1,5 +1,6 @@
 package com.cntt2.nowfood.domain;
 
+import com.cntt2.nowfood.utils.CommonUtils;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -77,4 +78,10 @@ public class Shop extends BaseEntity {
     )
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Size> sizes = new ArrayList<>();
+
+    @PrePersist
+    @PreUpdate
+    public void setSlug() {
+        this.slug = CommonUtils.toSlug(this.shopName);
+    }
 }

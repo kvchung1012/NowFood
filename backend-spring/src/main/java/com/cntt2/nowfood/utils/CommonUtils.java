@@ -9,8 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.NumberUtils;
 
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * @author Vanh
@@ -18,6 +20,24 @@ import java.util.*;
  * @date 10/20/2021 8:00 PM
  */
 public class CommonUtils {
+
+    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+    private static final Pattern IMAGE = Pattern.compile("[^\\w-.]");
+    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
+
+    public static String toSlug(String input) {
+        String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
+        String normalized = Normalizer.normalize(nowhitespace, Normalizer.Form.NFD);
+        String slug = NONLATIN.matcher(normalized).replaceAll("");
+        return slug.toLowerCase(Locale.ENGLISH);
+    }
+    public static String toImageUrl(String input) {
+        String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
+        String normalized = Normalizer.normalize(nowhitespace, Normalizer.Form.NFD);
+        String slug = IMAGE.matcher(normalized).replaceAll("");
+        return slug.toLowerCase(Locale.ENGLISH);
+    }
+
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
     public CommonUtils() {

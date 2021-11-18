@@ -20,7 +20,7 @@ public class ProductOption extends BaseEntity {
     @Column(name="MainProductId")
     private Integer mainProductId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "SubProductId")
     private Product subProduct;
 }
