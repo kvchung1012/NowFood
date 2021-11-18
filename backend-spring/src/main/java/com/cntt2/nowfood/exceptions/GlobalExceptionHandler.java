@@ -7,6 +7,7 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,6 +46,13 @@ public class GlobalExceptionHandler {
         BindingResult result = ex.getBindingResult();
         FieldError error = result.getFieldError();
         return ResponseEntity.ok().body(this.processFieldError(error, locale));
+    }
+    @ExceptionHandler({BindException.class})
+    protected ResponseEntity<MessageEntity> handleBindException(BindException e, Locale locale) {
+        String errorMessage = "Tham số không hợp lệ!";
+        if (e.getBindingResult().hasErrors())
+            errorMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        return ResponseEntity.ok().body(new MessageEntity(400,errorMessage));
     }
 
     @ExceptionHandler({EntityNotFoundException.class})
