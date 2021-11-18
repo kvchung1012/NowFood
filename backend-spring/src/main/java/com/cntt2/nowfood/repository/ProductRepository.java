@@ -1,7 +1,6 @@
 package com.cntt2.nowfood.repository;
 
 import com.cntt2.nowfood.domain.Product;
-import com.cntt2.nowfood.dto.product.ProductDto;
 import com.cntt2.nowfood.dto.product.ProductSearchDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +19,9 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByNameContaining(String name, Pageable page);
 
+    @Query("select p from Product p where p.id in :ids")
+    List<Product> findByIds(List<Integer> ids);
+
     @Query("select p from Product p where p.id in :ids and p.isMain = false and (p.shop.id = :shop or :shop is null)")
     List<Product> findOptionsByIds(List<Integer> ids, Integer shop);
 
@@ -36,12 +38,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "and (p.shop.id = :#{#dto.getShopId()} or :#{#dto.getShopId()} is null) " +
             "and (p.id = :#{#dto.getId()} or :#{#dto.getId()} is null) " +
             "and (p.uuid = :#{#dto.getUuid()} or :#{#dto.getUuid()} is null) " +
-            "and (p.name LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
-            "and (p.name LIKE %:#{#dto.getName()}% or :#{#dto.getName()} is null or :#{#dto.getName()} = '') " +
-            "and (p.isMain = :#{#dto.getIsMain()} or :#{#dto.getIsMain()} is null ) " +
+            "and (p.name LIKE %:#{#dto.getKeyword()}% " +
+            "or s.shopName = :#{#dto.getKeyword()} " +
+            "or s.shopAddress = :#{#dto.getKeyword()} " +
+            "or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' " +
+            ") and (p.isMain = :#{#dto.getIsMain()} or :#{#dto.getIsMain()} is null ) " +
             "and (p.rate = :#{#dto.getRate()} or :#{#dto.getRate()} is null) " +
-            "and (s.shopName = :#{#dto.getKeyword()} or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '') "+
-            "and (s.shopAddress = :#{#dto.getKeyword()} or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '') "+
             "and (pc.category.id = :#{#dto.getCategoryId()} or :#{#dto.getCategoryId()} is null ) "+
             "and (pc.categoryByShop.id = :#{#dto.getCategoryShopId()} or :#{#dto.getCategoryShopId()} is null) " +
             "and (p.voided = :#{#dto.getVoided()} or :#{#dto.getVoided()} is null) "
