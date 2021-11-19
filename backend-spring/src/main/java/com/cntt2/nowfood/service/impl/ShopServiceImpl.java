@@ -75,8 +75,11 @@ public class ShopServiceImpl extends GenericServiceImpl<Shop,Integer> implements
             } else if (owner.isEmpty() && isRequired)
                 throw new ValidException("Tài khoản chưa liên kết với cửa hàng !");
             return owner;
+        }else if(isRequired){
+            throw new ValidException("Bạn chưa đăng nhập!");
+        }else{
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
     @Override

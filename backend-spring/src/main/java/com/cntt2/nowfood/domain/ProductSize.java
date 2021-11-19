@@ -23,11 +23,11 @@ public class ProductSize extends BaseEntity {
     @Column(name="StockInDay",precision=10,scale=2)
     private Integer stockInDay;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "ProductId")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "SizeId")
     private Size size;
 

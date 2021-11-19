@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -33,14 +34,13 @@ public class SizeServiceImpl extends GenericServiceImpl<Size, Integer> implement
 
     @Override
     public List<Size> findByIds(List<Integer> ids) {
-        return null;
+        return sizeRepository.findByIds(ids,null);
     }
 
     @Override
     public SizeDto findById(Integer id) {
         Size entity =repository.findById(id).orElse(null);
-        SizeDto dto = sizeMapper.toDto(entity);
-        return dto;
+        return sizeMapper.toDto(entity);
     }
 
     @Override
@@ -48,15 +48,24 @@ public class SizeServiceImpl extends GenericServiceImpl<Size, Integer> implement
         if(null == form){
             return null;
         }
+        Shop owner = shopService.getOwnerLogin(true).orElse(null);
         Size entity = null;
+        // Update
         if(null != form.getId()){
             entity = sizeRepository.findById(form.getId())
                     .orElseThrow(() -> new ValidException("Kích thước cập nhật không tồn tại!"));
         }
-        if(null == entity){
+        // Add
+        if(null == entity) {
             entity = new Size();
-            Shop shop = shopService.getOwnerLogin(true).orElse(null);
-            entity.setCreatedByShop(shop);
+            // Nếu là admin thì lấy thông tin shop từ form, còn không thì lấy từ thông tin login
+            if (null == owner) {
+                Shop shop = shopService.getById(form.getShopId());
+                if (null == shop) throw new ValidException("Cửa hàng không hợp lệ !");
+                entity.setCreatedByShop(shop);
+            } else {
+                entity.setCreatedByShop(owner);
+            }
         }
         entity = this.sizeMapper.toEntity(form,entity);
         entity = this.sizeRepository.save(entity);
@@ -66,7 +75,22 @@ public class SizeServiceImpl extends GenericServiceImpl<Size, Integer> implement
     @Override
     public Page<SizeDto> findByAdvSearch(SearchDto dto) {
         Pageable pageable = CommonUtils.getPageRequest(dto);
-        Page<Size> entities = sizeRepository.findfindByAdvSearch(dto,pageable);
+        Page<Size> entities = sizeRepository.findfindByAdvSearch(dto, pageable);
         return entities.map(sizeMapper::toDto);
+    }
+
+    @Override
+    @Transactional
+    public Size deleteById(Integer id) {
+        Shop owner = shopService.getOwnerLogin(true).orElse(null);
+        Size old = this.sizeRepository.findById(id)
+                .orElseThrow(() -> new ValidException("Kích thước không tồn tại"));
+        if (null != owner &&
+                !owner.getId().equals( old.getCreatedByShop().getId() )
+        ) {
+                throw new ValidException("Không thể xóa kích thước của cửa hàng khác");
+        }
+        this.sizeRepository.delete(old);
+        return old;
     }
 }

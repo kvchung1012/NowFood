@@ -26,10 +26,12 @@ public interface ShopRepository extends JpaRepository<Shop,Integer> {
             "where (1=1) " +
             "and (s.id = :#{#dto.getId()} or :#{#dto.getId()} is null) " +
             "and (s.uuid = :#{#dto.getUuid()} or :#{#dto.getUuid()} is null) " +
-            "and (s.shopName LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
-            "and (s.shopPhone LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
-            "and (s.shopEmail LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
-            "and (s.shopAddress LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) "
+            "and (s.shopName LIKE %:#{#dto.getKeyword()}% " +
+            "or s.shopPhone LIKE %:#{#dto.getKeyword()}% " +
+            "or s.shopEmail LIKE %:#{#dto.getKeyword()}% " +
+            "or s.shopAddress LIKE %:#{#dto.getKeyword()}% " +
+            "or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
+            "and (s.voided = :#{#dto.getVoided()} or :#{#dto.getVoided()} is null) "
     )
     Page<Shop> findByAdvSearch(SearchDto dto, Pageable pageable);
 }

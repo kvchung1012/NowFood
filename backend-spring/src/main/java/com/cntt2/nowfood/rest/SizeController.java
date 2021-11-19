@@ -66,7 +66,7 @@ public class SizeController {
     }
     @DeleteMapping(value ="/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        Size result = sizeService.delete(id);
+        Size result = sizeService.deleteById(id);
         return new ResponseEntity<>(new MessageEntity(200, !CommonUtils.isNull(result)), HttpStatus.OK);
     }
 }

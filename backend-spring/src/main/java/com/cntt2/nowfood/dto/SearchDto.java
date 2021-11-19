@@ -21,10 +21,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SearchDto implements Serializable {
     private Integer id;
+    private Boolean voided;
     private UUID uuid;
     private Integer shopId;
-    private Integer pageIndex;
-    private Integer pageSize;
+    private Integer pageIndex=0;
+    private Integer pageSize=5;
     private String keyword;
     private String  asc;
     private String desc="createdDate";

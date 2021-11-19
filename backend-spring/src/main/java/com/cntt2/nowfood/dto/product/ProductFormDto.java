@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,12 +22,17 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductFormDto implements Serializable {
     private Integer id;
+    private Integer shopId;
+    @NotEmpty(message ="Tên sản phẩm không được để trống !")
+    @Size(max = 256,message ="Tên sản phẩm không được quá 256 kí tự !")
     private String name;
     private String image;
+    @Size(max = 1280,message ="Chi tiết sản phẩm không được quá 1280 kí tự !")
     private String description;
     private Boolean isMain;
+    private Boolean voided=false;
+    private Double price;
     private List<ProductSizeDto> sizes = new ArrayList<>();
-
     private List<Integer> options = new ArrayList<>();
     @Size(message = "Danh mục sản phẩm không được để trống", min = 1)
     private List<Integer> categories = new ArrayList<>();

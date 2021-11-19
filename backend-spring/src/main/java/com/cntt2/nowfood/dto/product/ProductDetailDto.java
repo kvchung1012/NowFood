@@ -1,10 +1,14 @@
 package com.cntt2.nowfood.dto.product;
 
+import com.cntt2.nowfood.dto.category.CategoryDto;
+import com.cntt2.nowfood.dto.categorybyshop.CategoryByShopDto;
 import lombok.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vanh
@@ -19,5 +23,7 @@ import java.util.List;
 public class ProductDetailDto extends ProductDto implements Serializable {
     private List<ProductSizeDto> productSizes = new ArrayList<>();
     private List<ProductDto> productOptions = new ArrayList<>();
-    private List<ProductCategoryDto> productCategories = new ArrayList<>();
+    private Set<CategoryDto> categories = new HashSet<>();
+    private Set<CategoryByShopDto> categoryByShop = new HashSet<>();
+
 }
