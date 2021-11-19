@@ -16,7 +16,7 @@ const TableComponent = (props) => {
     const [request, setRequest] = useState({
         pageIndex: 1,
         pageSize: 5,
-        keyWord: '',
+        keyword: '',
         asc: '',
         desc: '',
         id: null,
@@ -46,7 +46,7 @@ const TableComponent = (props) => {
     }
 
     const setKeyWord = (data) => {
-        setRequest({ ...request, keyWord: data });
+        setRequest({ ...request, keyword: data });
     }
 
     useEffect(() => {
@@ -63,7 +63,7 @@ const TableComponent = (props) => {
             },
             data: request,
         }).then(res => {
-
+            console.log(request)
             let start = 1, end = res.data.data.totalPages;
             if (end > 4) {
                 if (request.pageIndex >= 2 && request.pageIndex <= end - 2) {
@@ -130,10 +130,17 @@ const TableComponent = (props) => {
             });
 
             column.addEventListener('movingChanged', function (e) {
-                if (!e.column.moving) {
-                    let columns = params.columnApi.columnModel.gridColumns;
-                    tableEvent(columns);
+                try{
+                    if (!e.column.moving) {
+                        let columns = params.columnApi.columnModel.gridColumns;
+                        //tableEvent(columns);
+                        return;
+                    }
                 }
+                catch{
+
+                }
+                
             });
         })
     };
@@ -146,7 +153,7 @@ const TableComponent = (props) => {
         alert(JSON.stringify(node.data));
     }
 
-    return <div className="ag-theme-alpine" style={{ height: 450 }}>
+    return <div className="ag-theme-alpine" style={{ height: 500 }}>
         <HeaderTable prop={header} callbackHeader={changeHeader} callbackKeyWord={setKeyWord} />
         <AgGridReact
             rowData={rowData}
@@ -155,6 +162,7 @@ const TableComponent = (props) => {
                 sortable: true,
                 resizable: true,
             }}
+            suppressDragLeaveHidesColumns={true}
             animateRows={true}
             frameworkComponents={{
                 cellActionComponent: (node) => {

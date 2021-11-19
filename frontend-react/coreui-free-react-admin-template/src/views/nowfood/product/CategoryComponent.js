@@ -4,7 +4,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import TableComponent from 'src/components/nowfood/TableComponent';
 
-const ProductComponent = () => {
+const CategoryComponent = () => {
     const baseUrl = useSelector((state) => state.baseUrl);
     const head = [
         {
@@ -13,7 +13,7 @@ const ProductComponent = () => {
             sort: null,
             resizable: true,
             hide: false,
-            pinned: ''
+            pinned: '',
         },
         {
             field: 'code',
@@ -42,9 +42,9 @@ const ProductComponent = () => {
         }
     ]
     const urlConfig={
-        url : baseUrl+'api/products/search-adv'
+        url : baseUrl+'api/categories/search-adv'
     }
 
     return <TableComponent header={head} url={urlConfig}/>
 }
-export default ProductComponent
+export default CategoryComponent
