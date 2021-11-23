@@ -67,11 +67,11 @@ public class ProductController {
     @PostMapping()
     public ResponseEntity<?> create(String form, @RequestParam("imagesUrl") MultipartFile images) throws IOException {
         // check isImage + getFileName
-        ProductFormDto data = getProductFormDto(form);
+        ProductFormDto data = getDataFrom(form);
         String fileName = getFileName(images);
         // create
         data.setId(null);
-        ProductFormDto result = getProductFormDto(data, images, fileName);
+        ProductFormDto result = saveOrUpdate(data, images, fileName);
         return new ResponseEntity<>(new MessageEntity(200, result), HttpStatus.OK);
     }
 
@@ -79,14 +79,14 @@ public class ProductController {
     @ApiOperation(value = "Cập nhật sản phẩm, 1 sản phẩm có [0,n] size ___ [1,n] danh mục sản phẩm ___ [1,n] danh mục sản phẩm của cửa hàng")
     @PutMapping()
     public ResponseEntity<?> update(String form, @RequestParam("imagesUrl") MultipartFile images) throws IOException {
-        ProductFormDto data = getProductFormDto(form);
+        ProductFormDto data = getDataFrom(form);
         String fileName = getFileName(images);
         // create
-        ProductFormDto result = getProductFormDto(data, images, fileName);
+        ProductFormDto result = saveOrUpdate(data, images, fileName);
         return new ResponseEntity<>(new MessageEntity(200, result), HttpStatus.OK);
     }
 
-    private ProductFormDto getProductFormDto(ProductFormDto form, MultipartFile images, String fileName) throws IOException {
+    private ProductFormDto saveOrUpdate(ProductFormDto form, MultipartFile images, String fileName) throws IOException {
         form.setImage(fileName);
         // save
         ProductFormDto result = productService.saveOrUpdate(form);
@@ -118,7 +118,7 @@ public class ProductController {
         return fileName;
     }
 
-    private ProductFormDto getProductFormDto(String form) throws com.fasterxml.jackson.core.JsonProcessingException {
+    private ProductFormDto getDataFrom(String form) throws com.fasterxml.jackson.core.JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ProductFormDto data = objectMapper.readValue(form, ProductFormDto.class);
         // valid product

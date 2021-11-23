@@ -82,7 +82,7 @@ public class ShopController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','APPROVE_SHOP')")
     public ResponseEntity<ShopFormDto> create(@Valid @RequestBody ShopFormDto dto) {
         dto.setId(null);
         ShopFormDto result = shopService.createShop(dto);

@@ -29,6 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${endpoints.cors.allow-credentials}")
     private boolean allowCredentials;
 
+    @Value("${resources.images-directory}")
+    private String urlImages;
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -39,14 +41,12 @@ public class WebConfig implements WebMvcConfigurer {
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        exposeDirectory("product-photos", registry);
+        exposeDirectory(urlImages + "/products", registry);
     }
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
         Path uploadDir = Paths.get(dirName);
         String uploadPath = uploadDir.toFile().getAbsolutePath();
-
         if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
-
-        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:/"+ uploadPath + "/");
+        registry.addResourceHandler("/product-photos/**").addResourceLocations("file:/"+ uploadPath + "/");
     }
 }

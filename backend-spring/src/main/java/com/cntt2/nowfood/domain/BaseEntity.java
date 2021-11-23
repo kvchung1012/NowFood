@@ -37,8 +37,7 @@ public class BaseEntity implements Serializable {
     )
     @Column(
             name = "uuid",
-            unique = true,
-            nullable = false
+            unique = true
     )
     private UUID uuid;
     @Column(
