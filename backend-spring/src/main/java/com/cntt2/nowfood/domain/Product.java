@@ -64,7 +64,7 @@ public class Product extends BaseEntity{
 
     // Todos: Product 1 -n ProductOptions
     @OneToMany(
-            mappedBy = "subProduct",
+            mappedBy = "mainProduct",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
@@ -106,7 +106,7 @@ public class Product extends BaseEntity{
             if (productOptions == null) {
                 productOptions = new HashSet<>();
             }
-            ProductOption option = new ProductOption(this.getId(), product);
+            ProductOption option = new ProductOption(this, product);
             productOptions.add(option);
         }
     }

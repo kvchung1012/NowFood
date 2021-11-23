@@ -1,10 +1,9 @@
 package com.cntt2.nowfood.config.security;
 
-import com.cntt2.nowfood.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -21,6 +20,7 @@ public class UserPrincipal implements UserDetails {
 
     private Integer userId;
     private String username;
+    @JsonIgnore
     private String password;
     private Boolean enabled;
     private Boolean voided;

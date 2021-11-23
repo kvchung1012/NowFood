@@ -1,6 +1,8 @@
 package com.cntt2.nowfood.domain;
 
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 
@@ -17,10 +19,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class ProductOption extends BaseEntity {
 
-    @Column(name="MainProductId")
-    private Integer mainProductId;
-
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "MainProductId")
+    private Product mainProduct;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "SubProductId")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Product subProduct;
 }
