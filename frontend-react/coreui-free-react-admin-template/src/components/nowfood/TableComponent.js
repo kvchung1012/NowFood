@@ -12,7 +12,6 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import HeaderTable from './HeaderTable';
 import axios from 'axios'
 const TableComponent = (props) => {
-
     const [request, setRequest] = useState({
         pageIndex: 1,
         pageSize: 5,
@@ -31,7 +30,7 @@ const TableComponent = (props) => {
 
     //cấu hình chung api
     // eslint-disable-next-line react/prop-types
-    const [urlConfig, setUrlConfig] = useState(props.url);
+    const [urlConfig, setUrlConfig] = useState(props.config);
 
     // header trong agrid
     const [header, setHeader] = useState(fixHeader);
@@ -51,7 +50,7 @@ const TableComponent = (props) => {
 
     useEffect(() => {
         updateData();
-    }, [request])
+    }, [request,props])
 
     const updateData = () => {
         axios({
@@ -63,7 +62,6 @@ const TableComponent = (props) => {
             },
             data: request,
         }).then(res => {
-            console.log(request)
             let start = 1, end = res.data.data.totalPages;
             if (end > 4) {
                 if (request.pageIndex >= 2 && request.pageIndex <= end - 2) {
@@ -120,8 +118,17 @@ const TableComponent = (props) => {
             // add lắng nghe sự kiện cho từng header
             const column = params.columnApi.getColumn(el.field);
             column.addEventListener('sortChanged', function (e) {
-                let sort = e.column.sort === 'asc' || e.column.sort == null ? true : false;
-                updateData([])
+                let sort = e.column.sort;
+                debugger
+                if (sort === 'asc') {
+                    setRequest({ ...request, asc: e.column.colId })
+                }
+                else if (sort === 'desc') {
+                    setRequest({ ...request, desc: e.column.colId })
+                }
+                else {
+                    setRequest({ ...request, asc: '', desc: '' })
+                }
             });
 
             column.addEventListener('visibleChanged', function (e) {
@@ -130,17 +137,17 @@ const TableComponent = (props) => {
             });
 
             column.addEventListener('movingChanged', function (e) {
-                try{
+                try {
                     if (!e.column.moving) {
-                        let columns = params.columnApi.columnModel.gridColumns;
+                        //let columns = params.columnApi.columnModel.gridColumns;
                         //tableEvent(columns);
                         return;
                     }
                 }
-                catch{
+                catch {
 
                 }
-                
+
             });
         })
     };
@@ -148,13 +155,20 @@ const TableComponent = (props) => {
     const deleteRow = (node) => {
         alert(JSON.stringify(node.data));
     }
-
+    
     const editRow = (node) => {
-        alert(JSON.stringify(node.data));
+        // eslint-disable-next-line react/prop-types
+        props.editData(node.data)
+        //alert(JSON.stringify(node.data));
+    }
+
+    const btnCreateClick = () => {
+        // eslint-disable-next-line react/prop-types
+        props.btnCreateClick()
     }
 
     return <div className="ag-theme-alpine" style={{ height: 500 }}>
-        <HeaderTable prop={header} callbackHeader={changeHeader} callbackKeyWord={setKeyWord} />
+        <HeaderTable prop={header} callbackHeader={changeHeader} callbackKeyWord={setKeyWord} btnCreateClick={btnCreateClick} />
         <AgGridReact
             rowData={rowData}
             onGridReady={onGridReady}
@@ -199,14 +213,14 @@ const TableComponent = (props) => {
             </div>
 
             <CPagination aria-label="Page navigation example" className="align-items-center justify-content-end m-0">
-                <CPaginationItem aria-label="Previous">
+                <CPaginationItem aria-label="Previous" onClick={() => setRequest({ ...request, pageIndex: 1 })}>
                     <span aria-hidden="true">&laquo;</span>
                 </CPaginationItem>
                 {
                     totalPage.map((value, i) =>
                         <CPaginationItem key={i} active={value === request.pageIndex} onClick={() => setRequest({ ...request, pageIndex: value })}>{value}</CPaginationItem>)
                 }
-                <CPaginationItem aria-label="Next">
+                <CPaginationItem aria-label="Next" onClick={() => setRequest({ ...request, pageIndex: request.totalPages })}>
                     <span aria-hidden="true">&raquo;</span>
                 </CPaginationItem>
             </CPagination>

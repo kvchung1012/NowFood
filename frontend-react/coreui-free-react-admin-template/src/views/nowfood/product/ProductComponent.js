@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import TableComponent from 'src/components/nowfood/TableComponent';
-
+import { useHistory } from "react-router-dom"
 const ProductComponent = () => {
+    const history = useHistory()
     const baseUrl = useSelector((state) => state.baseUrl);
     const head = [
         {
@@ -16,7 +17,7 @@ const ProductComponent = () => {
             pinned: ''
         },
         {
-            field: 'code',
+            field: 'name',
             flex: 1,
             sort: null,
             resizable: true,
@@ -24,7 +25,23 @@ const ProductComponent = () => {
             pinned: ''
         },
         {
-            field: 'name',
+            field: 'image',
+            flex: 1,
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'description',
+            flex: 1,
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'isMain',
             flex: 1,
             sort: null,
             resizable: true,
@@ -41,10 +58,22 @@ const ProductComponent = () => {
             cellRenderer: "cellActionComponent"
         }
     ]
-    const urlConfig={
-        url : baseUrl+'api/products/search-adv'
+    const [config,setConfig] = useState({
+        url: baseUrl + 'api/products/search-adv',
+        reLoadData:false
+    })
+
+    const openCreateForm = () => {
+        history.push("/create-product")
     }
 
-    return <TableComponent header={head} url={urlConfig}/>
+    const openEditForm = (data) => {
+        history.push("/create-product")
+    }
+
+    return  (
+        <div>
+            <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm}/>
+        </div>)
 }
 export default ProductComponent

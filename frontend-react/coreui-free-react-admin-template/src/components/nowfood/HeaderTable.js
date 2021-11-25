@@ -1,7 +1,7 @@
 import { cilPencil } from "@coreui/icons"
 import CIcon from "@coreui/icons-react"
 import { BsFillEyeFill,BsFillEyeSlashFill,BsPinAngleFill,BsPin,BsPinFill } from "react-icons/bs";
-import {CFormInput, CButton, COffcanvasBody, CCloseButton, COffcanvasTitle, COffcanvas, COffcanvasHeader, CFormCheck } from "@coreui/react"
+import {CFormInput, CButton, COffcanvasBody, CCloseButton, COffcanvasTitle, COffcanvas, COffcanvasHeader } from "@coreui/react"
 import { React, useEffect, useState } from "react"
 const HeaderTable = (data) => {
     const [header, setHeader] = useState(data.prop);
@@ -21,11 +21,17 @@ const HeaderTable = (data) => {
     useEffect(() => {
         setHeader(data.prop)
     }, [data])
+
+
+    const btnCreateClick = ()=>{
+        data.btnCreateClick()
+    }
+
     return (<div className="d-flex justify-content-end p-2 pe-0">
 
         <CFormInput type="text" className="w-25" placeholder="Nhập sau đó enter tìm kiếm" onKeyDown={(e)=>{ if(e.keyCode===13) setKeyWord(e.target.value)}}/>
         <CButton
-            onClick={() => setVisible(!visible)}
+            onClick={() => btnCreateClick()}
             color="primary"
             variant={"outline"}
             className="ms-1"
