@@ -40,11 +40,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "and (p.shop.id = :#{#dto.getShopId()} or :#{#dto.getShopId()} is null) " +
             "and (p.id = :#{#dto.getId()} or :#{#dto.getId()} is null) " +
             "and (p.uuid = :#{#dto.getUuid()} or :#{#dto.getUuid()} is null) " +
-            "and (p.name LIKE %:#{#dto.getKeyword()}% " +
-            "or s.shopName = :#{#dto.getKeyword()} " +
-            "or s.shopAddress = :#{#dto.getKeyword()} " +
+            "and ( " +
+            "p.name LIKE %:#{#dto.getKeyword()}% " +
+            "or s.shopName LIKE %:#{#dto.getKeyword()}% " +
+            "or s.shopAddress LIKE %:#{#dto.getKeyword()}% " +
             "or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' " +
-            ") and (p.isMain = :#{#dto.getIsMain()} or :#{#dto.getIsMain()} is null ) " +
+            ") " +
+            "and (p.isMain = :#{#dto.getIsMain()} or :#{#dto.getIsMain()} is null ) " +
             "and (p.rate = :#{#dto.getRate()} or :#{#dto.getRate()} is null) " +
             "and (pc.category.id = :#{#dto.getCategoryId()} or :#{#dto.getCategoryId()} is null ) "+
             "and (pc.categoryByShop.id = :#{#dto.getCategoryShopId()} or :#{#dto.getCategoryShopId()} is null) " +

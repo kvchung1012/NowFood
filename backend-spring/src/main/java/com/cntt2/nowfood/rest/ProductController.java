@@ -71,9 +71,19 @@ public class ProductController {
         return ResponseEntity.ok().body(new MessageEntity(200, products));
     }
 
+    @ApiOperation(value = "Danh sách sản phẩm theo shop[Phân trang nâng cao].")
+    @PostMapping(value = "/shop/search-adv")
+    public ResponseEntity<?> searchAdv(@RequestBody ProductSearchDto searchDto) {
+        Integer shopId = null;
+        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        if(shop.isPresent())
+            searchDto.setShopId(shop.get().getId());
+        Page<ProductDto> page = productService.findByAdvSearch(searchDto);
+        return new ResponseEntity<>(new MessageEntity(200, page), HttpStatus.OK);
+    }
     @ApiOperation(value = "Danh sách sản phẩm [Phân trang nâng cao].")
     @PostMapping(value = "/search-adv")
-    public ResponseEntity<?> searchAdv(@RequestBody ProductSearchDto searchDto) {
+    public ResponseEntity<?> searchAdvByShop(@RequestBody ProductSearchDto searchDto) {
         Page<ProductDto> page = productService.findByAdvSearch(searchDto);
         return new ResponseEntity<>(new MessageEntity(200, page), HttpStatus.OK);
     }
