@@ -20,7 +20,7 @@ public interface ProductService extends GenericService<Product, Integer> {
     Product findById(Integer id);
     ProductDetailDto findDetailById(Integer id);
     Page<ProductDto> findByShop(SearchDto dto, Shop shop);
-    List<ProductDto> findByShop(Integer id);
+    List<ProductDto> findByShop(Integer id,Boolean isMain);
     Page<ProductDto> findByAdvSearch(ProductSearchDto dto);
     ProductFormDto saveOrUpdate(ProductFormDto form);
 }

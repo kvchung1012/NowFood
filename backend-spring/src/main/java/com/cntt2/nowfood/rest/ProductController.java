@@ -1,5 +1,6 @@
 package com.cntt2.nowfood.rest;
 
+import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.product.ProductDetailDto;
 import com.cntt2.nowfood.dto.product.ProductDto;
 import com.cntt2.nowfood.dto.product.ProductFormDto;
@@ -8,6 +9,7 @@ import com.cntt2.nowfood.exceptions.MessageEntity;
 import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.ProductMapper;
 import com.cntt2.nowfood.service.ProductService;
+import com.cntt2.nowfood.service.ShopService;
 import com.cntt2.nowfood.utils.FileUploadUtil;
 import com.cntt2.nowfood.utils.ValidateUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -35,15 +38,27 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final ShopService shopService;
     private final ProductMapper productMapper;
     private final ValidateUtils<ProductFormDto> validateProduct;
     @Value("${resources.images-directory}")
     public String imageUrl;
+    private Boolean isMain = true;
 
     @ApiOperation(value = "Danh sách tất cả sản phẩm theo shop [Không phân trang].")
     @GetMapping("/shop/{id}")
     public ResponseEntity<?> getByShop(@PathVariable Integer id) {
-        List<ProductDto> products = productService.findByShop(id);
+        List<ProductDto> products = productService.findByShop(id,isMain);
+        return ResponseEntity.ok().body(new MessageEntity(200, products));
+    }
+    @ApiOperation(value = "Danh sách tất cả sản phẩm theo shop [Không phân trang].")
+    @GetMapping("/shop")
+    public ResponseEntity<?> getByShop(@RequestParam Boolean isMain) {
+        Integer shopId = null;
+        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        if(shop.isPresent())
+            shopId = shop.get().getId();
+        List<ProductDto> products = productService.findByShop(shopId,isMain);
         return ResponseEntity.ok().body(new MessageEntity(200, products));
     }
 

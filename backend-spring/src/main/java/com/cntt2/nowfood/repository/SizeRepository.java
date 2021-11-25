@@ -2,6 +2,7 @@ package com.cntt2.nowfood.repository;
 
 import com.cntt2.nowfood.domain.Size;
 import com.cntt2.nowfood.dto.SearchDto;
+import com.cntt2.nowfood.dto.size.SizeDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +30,9 @@ public interface SizeRepository extends JpaRepository<Size,Integer> {
             "and (s.voided = :#{#dto.getVoided()} or :#{#dto.getVoided()} is null) "
     )
     Page<Size> findfindByAdvSearch(SearchDto dto, Pageable pageable);
+
+    @Query(value = " select s from Size s " +
+            "where s.createdByShop.id = :id "
+    )
+    List<Size> findByShopId(Integer id);
 }

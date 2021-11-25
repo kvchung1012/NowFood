@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vanh
@@ -20,7 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByNameContaining(String name, Pageable page);
 
     @Query("select p from Product p where p.id in :ids")
-    List<Product> findByIds(List<Integer> ids);
+    Set<Product> findByIds(Set<Integer> ids);
 
     @Query("select p from Product p where p.id in :ids and p.isMain = false and (p.shop.id = :shop or :shop is null)")
     List<Product> findOptionsByIds(List<Integer> ids, Integer shop);
@@ -28,8 +29,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("select p from Product p where p.shop.id = :id or :id is null")
     Page<Product> findByShop(Integer id, Pageable pageable);
 
-    @Query("select p from Product p where p.shop.id = :id or :id is null")
-    List<Product> findByShop(Integer id);
+    @Query("select p from Product p where (p.shop.id = :id or :id is null) " +
+            " and (p.isMain = :isMain or :isMain is null) ")
+    List<Product> findByShop(Integer id,Boolean isMain);
 
     @Query(value = "select p from Product p " +
             "left join p.productCategories pc " +

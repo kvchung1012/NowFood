@@ -1,11 +1,13 @@
 package com.cntt2.nowfood.rest;
 
+import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.domain.Size;
 import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.size.SizeDto;
 import com.cntt2.nowfood.dto.size.SizeFormDto;
 import com.cntt2.nowfood.exceptions.MessageEntity;
 import com.cntt2.nowfood.mapper.SizeMapper;
+import com.cntt2.nowfood.service.ShopService;
 import com.cntt2.nowfood.service.SizeService;
 import com.cntt2.nowfood.utils.CommonUtils;
 import io.swagger.annotations.Api;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -31,12 +34,25 @@ import java.util.stream.Collectors;
 @Api(tags = "Size")
 public class SizeController {
     private final SizeService sizeService;
+    private final ShopService shopService;
     private final SizeMapper sizeMapper;
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         SizeDto size = sizeService.findById(id);
         return new ResponseEntity<>(new MessageEntity(200,size), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/shop")
+    public ResponseEntity<?> getListByShop() {
+        Integer shopId = null;
+        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        if(shop.isPresent())
+            shopId = shop.get().getId();
+        List<SizeDto> sizes = sizeService.findByShopId(shopId)
+                .stream().map(sizeMapper::toDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(new MessageEntity(200,sizes), HttpStatus.OK);
     }
 
     @GetMapping

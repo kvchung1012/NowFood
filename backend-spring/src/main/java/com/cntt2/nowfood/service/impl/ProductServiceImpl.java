@@ -86,10 +86,10 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   }
 
   @Override
-  public List<ProductDto> findByShop(Integer id) {
+  public List<ProductDto> findByShop(Integer id,Boolean isMain) {
     return
             productRepository
-                    .findByShop(id)
+                    .findByShop(id,isMain)
                     .stream()
                     .map(productMapper::toDto)
                     .collect(Collectors.toList());

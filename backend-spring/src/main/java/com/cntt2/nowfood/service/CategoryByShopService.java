@@ -6,6 +6,7 @@ import com.cntt2.nowfood.dto.categorybyshop.CategoryByShopDto;
 import com.cntt2.nowfood.dto.categorybyshop.CategoryByShopFormDto;
 import org.springframework.data.domain.Page;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,4 +24,6 @@ public interface CategoryByShopService extends GenericService<CategoryByShop,Int
     CategoryByShop saveOrUpdate(CategoryByShopFormDto form);
 
     CategoryByShop deleteById(Integer id);
+
+    Collection<CategoryByShop> findByShopId(Integer shopId);
 }
