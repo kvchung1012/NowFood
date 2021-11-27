@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 
 /**
@@ -20,6 +21,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ProductDto extends BaseDto implements Serializable {
     private String name;
+    private Double price;
+    private Integer totalOrder;
     private String image;
     private String slug;
     private String description;
