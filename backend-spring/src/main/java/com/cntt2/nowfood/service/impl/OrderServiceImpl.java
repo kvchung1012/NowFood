@@ -5,19 +5,22 @@ import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.domain.Order;
 import com.cntt2.nowfood.domain.Product;
 import com.cntt2.nowfood.domain.Shop;
-import com.cntt2.nowfood.dto.cart.CartDto;
-import com.cntt2.nowfood.dto.cart.FeeOrder;
-import com.cntt2.nowfood.dto.cart.OrderDto;
+import com.cntt2.nowfood.dto.order.CartDto;
+import com.cntt2.nowfood.dto.order.FeeOrder;
+import com.cntt2.nowfood.dto.order.OrderDto;
+import com.cntt2.nowfood.dto.order.OrderSearchDto;
 import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.OrderMapper;
 import com.cntt2.nowfood.repository.OrderRepository;
 import com.cntt2.nowfood.repository.ProductRepository;
-import com.cntt2.nowfood.repository.ShopRepository;
 import com.cntt2.nowfood.repository.UserRepository;
 import com.cntt2.nowfood.service.OrderService;
+import com.cntt2.nowfood.utils.CommonUtils;
 import com.cntt2.nowfood.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +43,6 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> implements
         OrderService {
     private final ProductRepository productRepository;
-    private final ShopRepository shopRepository;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
@@ -113,5 +115,39 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
         String uri = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee";
         ResponseEntity<FeeOrder> response =  restTemplate.postForEntity(uri,request, FeeOrder.class);
         return response.getBody();
+    }
+
+    @Override
+    public Page<OrderDto> findByAdvSearch(OrderSearchDto form) {
+        Pageable pageable = CommonUtils.getPageRequest(form);
+        Page<Order> ordes = orderRepository.findByAdvSearch(form,pageable);
+        return ordes.map(orderMapper::toDto);
+    }
+
+    @Override
+    public OrderDto findById(Integer id) {
+        Order order = orderRepository.findById(id).orElseThrow(()-> new ValidException("Không tìm thấy đơn hàng!"));
+        return orderMapper.toDto(order);
+    }
+
+    @Override
+    public OrderDto approve(Integer id) {
+        Order order = orderRepository.findById(id).orElseThrow(()-> new ValidException("Không tìm thấy đơn hàng!"));
+        if(order.getOrderStatus() != Constants.OrderStatus.PENDING){
+            throw new ValidException("Đơn hàng không ở trạng thái chờ xác nhận !");
+        }
+        order.setOrderStatus(Constants.OrderStatus.CONFIRMED);
+        order = orderRepository.save(order);
+        return orderMapper.toDto(order);
+    }
+    @Override
+    public OrderDto reject(Integer id) {
+        Order order = orderRepository.findById(id).orElseThrow(()-> new ValidException("Không tìm thấy đơn hàng!"));
+        if(order.getOrderStatus() != Constants.OrderStatus.PENDING){
+            throw new ValidException("Đơn hàng không ở trạng thái chờ xác nhận !");
+        }
+        order.setOrderStatus(Constants.OrderStatus.CANCELED);
+        order = orderRepository.save(order);
+        return orderMapper.toDto(order);
     }
 }

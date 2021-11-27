@@ -1,8 +1,8 @@
 package com.cntt2.nowfood.mapper;
 
 import com.cntt2.nowfood.domain.Order;
-import com.cntt2.nowfood.dto.cart.CartDto;
-import com.cntt2.nowfood.dto.cart.OrderDto;
+import com.cntt2.nowfood.dto.order.CartDto;
+import com.cntt2.nowfood.dto.order.OrderDto;
 import org.mapstruct.Mapper;
 
 /**

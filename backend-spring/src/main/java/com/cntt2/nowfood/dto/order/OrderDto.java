@@ -1,4 +1,4 @@
-package com.cntt2.nowfood.dto.cart;
+package com.cntt2.nowfood.dto.order;
 
 import com.cntt2.nowfood.common.Constants;
 import com.cntt2.nowfood.dto.product.ProductDto;
