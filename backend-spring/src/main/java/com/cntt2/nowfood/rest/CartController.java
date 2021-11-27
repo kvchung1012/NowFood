@@ -1,7 +1,7 @@
 package com.cntt2.nowfood.rest;
 
-import com.cntt2.nowfood.dto.cart.CartDto;
-import com.cntt2.nowfood.dto.cart.OrderDto;
+import com.cntt2.nowfood.dto.order.CartDto;
+import com.cntt2.nowfood.dto.order.OrderDto;
 import com.cntt2.nowfood.exceptions.MessageEntity;
 import com.cntt2.nowfood.service.OrderService;
 import io.swagger.annotations.Api;

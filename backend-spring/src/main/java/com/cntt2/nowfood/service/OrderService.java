@@ -1,10 +1,11 @@
 package com.cntt2.nowfood.service;
 
 import com.cntt2.nowfood.domain.Order;
-import com.cntt2.nowfood.domain.Product;
-import com.cntt2.nowfood.dto.cart.CartDto;
-import com.cntt2.nowfood.dto.cart.FeeOrder;
-import com.cntt2.nowfood.dto.cart.OrderDto;
+import com.cntt2.nowfood.dto.order.CartDto;
+import com.cntt2.nowfood.dto.order.FeeOrder;
+import com.cntt2.nowfood.dto.order.OrderDto;
+import com.cntt2.nowfood.dto.order.OrderSearchDto;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Vanh
@@ -14,4 +15,8 @@ import com.cntt2.nowfood.dto.cart.OrderDto;
 public interface OrderService extends GenericService<Order, Integer>{
     OrderDto checkout(CartDto form);
     FeeOrder getFeeOrder(Order order);
+    Page<OrderDto> findByAdvSearch(OrderSearchDto form);
+    OrderDto findById(Integer id);
+    OrderDto approve(Integer id);
+    OrderDto reject(Integer id);
 }

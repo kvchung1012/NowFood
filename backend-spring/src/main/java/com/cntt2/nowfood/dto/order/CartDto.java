@@ -1,15 +1,10 @@
-package com.cntt2.nowfood.dto.cart;
+package com.cntt2.nowfood.dto.order;
 
 import com.cntt2.nowfood.common.Constants;
-import com.cntt2.nowfood.domain.OrderDetail;
-import com.cntt2.nowfood.domain.Shop;
-import com.cntt2.nowfood.domain.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.joda.time.DateTime;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
