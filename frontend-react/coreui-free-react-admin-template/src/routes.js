@@ -4,6 +4,8 @@ import ShopCategoryComponent from './views/nowfood/shopcategory/ShopCategoryComp
 import ShopComponent from './views/nowfood/shop/ShopComponent'
 import SizeComponent from './views/nowfood/size/SizeComponent'
 import CreateProductComponent from './views/nowfood/product/CreateProductComponent'
+import OrderComponent from './views/nowfood/order/OrderComponent'
+import OrderDetailComponent from './views/nowfood/order/OrderDetailComponent'
 
 // const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 // const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -104,6 +106,8 @@ const routes = [
   { path: '/shops', name: 'Cửa hàng đăng ký', component: ShopComponent },
   { path: '/sizes', name: 'Kích cỡ món ăn', component: SizeComponent },
   { path: '/create-product', name: 'Thêm mới món ăn', component: CreateProductComponent },
+  { path: '/order', name: 'Quản lý đơn hàng', component: OrderComponent },
+  { path: '/order-detail/:id', name: 'Chi tiết đơn hàng', component: OrderDetailComponent },
 ]
 
 export default routes

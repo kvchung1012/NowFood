@@ -11,6 +11,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import HeaderTable from './HeaderTable';
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 const TableComponent = (props) => {
     const [request, setRequest] = useState({
         pageIndex: 1,
@@ -53,36 +54,56 @@ const TableComponent = (props) => {
     }, [request,props])
 
     const updateData = () => {
-        axios({
-            url: urlConfig.url,
-            method: 'post',
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem('token'),
-                "Content-Type": 'application/json'
-            },
-            data: request,
-        }).then(res => {
-            let start = 1, end = res.data.data.totalPages;
-            if (end > 4) {
-                if (request.pageIndex >= 2 && request.pageIndex <= end - 2) {
-                    start = request.pageIndex - 1;
-                    end = request.pageIndex + 2;
+        // eslint-disable-next-line react/prop-types
+        if(props.config.table ==='order-detail'){
+            axios({
+                url: urlConfig.url,
+                method: 'get',
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token'),
+                    "Content-Type": 'application/json'
+                },
+                data: {},
+            }).then(res => {
+                console.log(res.data.data)
+                setRowData(res.data.data.orderDetails)
+            }).catch(err => {
+                console.log(err);
+            })
+        }
+        else{
+            axios({
+                url: urlConfig.url,
+                method: 'post',
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token'),
+                    "Content-Type": 'application/json'
+                },
+                data: request,
+            }).then(res => {
+                let start = 1, end = res.data.data.totalPages;
+                if (end > 4) {
+                    if (request.pageIndex >= 2 && request.pageIndex <= end - 2) {
+                        start = request.pageIndex - 1;
+                        end = request.pageIndex + 2;
+                    }
+                    else if (request.pageIndex > res.data.data.totalPages - 2) {
+                        start = res.data.data.totalPages - 3;
+                        end = res.data.data.totalPages;
+                    }
+                    else {
+                        start = 1;
+                        end = 4;
+                    }
                 }
-                else if (request.pageIndex > res.data.data.totalPages - 2) {
-                    start = res.data.data.totalPages - 3;
-                    end = res.data.data.totalPages;
-                }
-                else {
-                    start = 1;
-                    end = 4;
-                }
-            }
-
-            setTotalPage(Array(end - start + 1).fill().map((_, idx) => start + idx))
-            setRowData(res.data.data.content)
-        }).catch(err => {
-            console.log(err);
-        })
+    
+                setTotalPage(Array(end - start + 1).fill().map((_, idx) => start + idx))
+                setRowData(res.data.data.content)
+            }).catch(err => {
+                console.log(err);
+            })
+        }
+        
     };
 
     const onGridReady = (params) => {
@@ -197,6 +218,13 @@ const TableComponent = (props) => {
                             </CButton>
                         </div>)
                 },
+                cellLinkOrderDetail: (node) => {
+                    return <Link to={{
+                        pathname: `order-detail/${node.data.id}`,
+                        state: { id: node.data.id }
+                      }}
+                    >Chi tiết</Link>
+                }
             }}
         >
             {header.map(column => (<AgGridColumn {...column} key={column.field} hide={column.hide} />))}

@@ -35,7 +35,7 @@ const SizeComponent = () => {
         }
     ]
     const [config,setConfig] = useState({
-        url: baseUrl + 'api/sizes/search-adv',
+        url: baseUrl + 'api/shops/sizes/search-adv',
         reLoadData:false
     })
 

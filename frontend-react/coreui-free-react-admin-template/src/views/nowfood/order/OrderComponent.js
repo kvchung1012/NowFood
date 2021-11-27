@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import TableComponent from 'src/components/nowfood/TableComponent';
-import CreateCategoryComponent from './CreateCategoryComponent';
 
 const OrderComponent = () => {
     const baseUrl = useSelector((state) => state.baseUrl);
@@ -11,27 +10,89 @@ const OrderComponent = () => {
     const head = [
         {
             field: 'id',
-            flex: 1,
             sort: null,
             resizable: true,
             hide: false,
             pinned: '',
         },
         {
-            field: 'code',
-            flex: 1,
+            field: 'shipName',
             sort: null,
             resizable: true,
             hide: false,
             pinned: ''
         },
         {
-            field: 'name',
-            flex: 1,
+            field: 'shipAddress',
             sort: null,
             resizable: true,
             hide: false,
             pinned: ''
+        },
+        {
+            field: 'shipMobie',
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'shipPrice',
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'fee',
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'totalPrice',
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'orderStatus',
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'orderType',
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'paymentPayMethod',
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'paymentPayStatus',
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'Detail',
+            width: 120,
+            sortable: false,
+            hide: false,
+            resizable: false,
+            pinned: 'right',
+            cellRenderer: "cellLinkOrderDetail"
         },
         {
             field: 'Action',
@@ -45,50 +106,23 @@ const OrderComponent = () => {
     ]
 
     const [config, setConfig] = useState({
-        url: baseUrl + '/api/shops/orders',
+        url: baseUrl + 'api/shops/orders',
         reLoadData: false
     })
 
-    const [category, setCategory] = useState({
-        data: {
-            id: 0,
-            code: '',
-            name: ''
-        },
-        visible: false
-    }
-    )
+    
 
     const openCreateForm = () => {
-        setCategory({
-            data: {
-                id: 0,
-                code: '',
-                name: ''
-            },
-            visible: true
-        })
+        
     }
 
     const openEditForm = (data) => {
-        console.log(data)
-        setCategory({
-            data: data,
-            visible: true
-        })
-    }
-
-    const changeVisible = (value) => {
-        setCategory({
-            ...category,
-            visible: value
-        })
+        
     }
 
     return (
         <div>
             <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm} />
-            (<CreateCategoryComponent changeVisible={changeVisible} data={category} />)
         </div>)
 
 }

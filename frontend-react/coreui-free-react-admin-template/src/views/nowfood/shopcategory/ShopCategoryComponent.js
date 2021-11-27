@@ -35,7 +35,7 @@ const ShopCategoryComponent = () => {
         }
     ]
     const [config,setConfig] = useState({
-        url: baseUrl + 'api/shop-category/search-adv',
+        url: baseUrl + 'api/shops/category-shop/search-adv',
         reLoadData:false
     })
 

@@ -25,25 +25,31 @@ const _nav = [
     component: CNavItem,
     name: 'Danh mục món ăn',
     to: '/shop-category',
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Danh mục',
     to: '/category',
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Sản phẩm',
     to: '/product',
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Kích cỡ món',
     to: '/sizes',
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Đơn hàng',
+    to: '/order',
+    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
   },
 
   // {
