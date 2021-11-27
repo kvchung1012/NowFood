@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/sizes/**").permitAll()
                 .antMatchers("/api/common/**").permitAll()
                 .antMatchers(SWAGGER_2_WHITELIST).permitAll()
-                //.anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }

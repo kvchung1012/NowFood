@@ -2,11 +2,14 @@ package com.cntt2.nowfood.rest;
 
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
+import com.cntt2.nowfood.dto.order.OrderDto;
+import com.cntt2.nowfood.dto.order.OrderSearchDto;
 import com.cntt2.nowfood.dto.shop.ShopDetailDto;
 import com.cntt2.nowfood.dto.shop.ShopDto;
 import com.cntt2.nowfood.dto.shop.ShopFormDto;
 import com.cntt2.nowfood.exceptions.MessageEntity;
 import com.cntt2.nowfood.mapper.ShopMapper;
+import com.cntt2.nowfood.service.OrderService;
 import com.cntt2.nowfood.service.ShopService;
 import com.cntt2.nowfood.utils.CommonUtils;
 import io.swagger.annotations.Api;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +37,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ShopController {
     private final ShopService shopService;
+    private final OrderService orderService;
     private final ShopMapper shopMapper;
 
     @GetMapping(value = "/{id}")
@@ -46,12 +51,20 @@ public class ShopController {
         Page<ShopDto> result = shopService.findByAdvSearch(dto);
         return new ResponseEntity<>(new MessageEntity(200,result), HttpStatus.OK);
     }
-
     @GetMapping(value = "/{id}/products")
     public ResponseEntity<?> getProductsByShopId(@PathVariable Integer id) {
         ShopDetailDto shop = shopService.findDetailByShopId(id);
         shop.setSizes(null);
         return new ResponseEntity<>(new MessageEntity(200, shop), HttpStatus.OK);
+    }
+    @ApiOperation(value = "Tìm kiếm đơn hàng nâng cao shop [Phân trang].")
+    @PostMapping(value = "/orders")
+    public ResponseEntity<?> getOrders(@RequestBody OrderSearchDto form) {
+        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        if(shop.isPresent())
+            form.setShopId(shop.get().getId());
+        Page<OrderDto> orders = orderService.findByAdvSearch(form);
+        return new ResponseEntity<>(new MessageEntity(200, orders), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/sizes")
