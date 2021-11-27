@@ -17,6 +17,7 @@ public interface SizeService extends GenericService<Size,Integer> {
     List<Size> findByIds(List<Integer> ids);
 
     SizeDto findById(Integer id);
+    List<Size> findByShopId(Integer id);
 
     SizeDto saveOrUpdate(SizeFormDto form);
 

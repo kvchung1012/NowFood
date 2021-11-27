@@ -35,4 +35,8 @@ public class SystemMasterData extends BaseEntity {
     // Thứ tự ưu tiên
     @Column(name = "SortOrder")
     private Integer sortOrder;
+    @Override
+    public String toString() {
+        return "";
+    }
 }

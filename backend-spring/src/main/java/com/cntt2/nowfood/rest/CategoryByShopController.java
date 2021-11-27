@@ -6,7 +6,9 @@ import com.cntt2.nowfood.dto.SearchDto;
 import com.cntt2.nowfood.dto.categorybyshop.CategoryByShopDto;
 import com.cntt2.nowfood.dto.categorybyshop.CategoryByShopFormDto;
 import com.cntt2.nowfood.dto.shop.ShopFormDto;
+import com.cntt2.nowfood.dto.size.SizeDto;
 import com.cntt2.nowfood.exceptions.MessageEntity;
+import com.cntt2.nowfood.mapper.CategoryByShopMapper;
 import com.cntt2.nowfood.service.CategoryByShopService;
 import com.cntt2.nowfood.service.ShopService;
 import io.swagger.annotations.Api;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Vanh
@@ -31,6 +35,7 @@ import java.util.List;
 public class CategoryByShopController {
 
     private final CategoryByShopService categoryByShopService;
+    private final CategoryByShopMapper categoryByShopMapper;
     private final ShopService shopService;
 
     @GetMapping(value = "/{id}")
@@ -43,6 +48,17 @@ public class CategoryByShopController {
     public ResponseEntity<?> getList() {
         List<CategoryByShopDto> categories = categoryByShopService.findAll();
         return new ResponseEntity<>(new MessageEntity(200, categories), HttpStatus.OK);
+    }
+    @GetMapping(value="/shop")
+    public ResponseEntity<?> getListByShop() {
+        Integer shopId = null;
+        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        if(shop.isPresent())
+            shopId = shop.get().getId();
+        List<CategoryByShopDto> sizes = categoryByShopService.findByShopId(shopId)
+                .stream().map(categoryByShopMapper::toDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(new MessageEntity(200,sizes), HttpStatus.OK);
     }
 
     @PostMapping(value = "/search-adv")

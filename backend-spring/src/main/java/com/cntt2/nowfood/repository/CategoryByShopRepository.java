@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,4 +30,8 @@ public interface CategoryByShopRepository extends JpaRepository<CategoryByShop,I
             "and (c.voided = :#{#dto.getVoided()} or :#{#dto.getVoided()} is null) "
     )
     Page<CategoryByShop> findByAdvSearch(SearchDto dto, Pageable pageable);
+
+    @Query(value = "select c from CategoryByShop c " +
+            "where c.createdByShop = :shopId ")
+    Collection<CategoryByShop> findByShopId(Integer shopId);
 }

@@ -44,6 +44,11 @@ public class SizeServiceImpl extends GenericServiceImpl<Size, Integer> implement
     }
 
     @Override
+    public List<Size> findByShopId(Integer id) {
+        return sizeRepository.findByShopId(id);
+    }
+
+    @Override
     public SizeDto saveOrUpdate(SizeFormDto form) {
         if(null == form){
             return null;

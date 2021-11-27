@@ -70,7 +70,7 @@ public class ShopServiceImpl extends GenericServiceImpl<Shop,Integer> implements
         if(null != user){
             boolean isAdmin = user.getAuthorities().contains("ADMIN");
             Optional<Shop> owner = shopRepository.findByOwner(user.getUsername());
-            if(isAdmin || !isRequired){
+            if(isAdmin && !isRequired){
                 owner = Optional.empty();
             } else if (owner.isEmpty() && isRequired)
                 throw new ValidException("Tài khoản chưa liên kết với cửa hàng !");

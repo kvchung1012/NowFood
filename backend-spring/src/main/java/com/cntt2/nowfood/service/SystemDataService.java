@@ -10,6 +10,7 @@ import java.util.List;
  * @version 1.0
  * @date 11/10/2021 5:50 PM
  */
-public interface CommonService extends GenericService<SystemMasterData, Integer> {
+public interface SystemDataService extends GenericService<SystemMasterData, Integer> {
     List<SystemMasterData> getByParentId(Integer parentId);
+    List<SystemMasterData> getByParentCode(String code);
 }

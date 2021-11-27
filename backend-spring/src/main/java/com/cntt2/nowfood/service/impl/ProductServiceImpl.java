@@ -57,15 +57,20 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
     Optional<Product> product = productRepository.findById(id);
     ProductDetailDto data = productMapper.toDetailDto(product.orElse(null));
     List<ProductCategory> categories = productCategoryRepository.findByProductId(data.getId());
-    data.getCategories().addAll(
-            categories.stream()
-                    .map(x -> productCategoryMapper.toCategoryDto(x.getCategory()))
+    data.setProductOptions(
+            product.get().getProductOptions().stream()
+                    .map(x -> productMapper.toDto(x.getSubProduct()))
                     .collect(Collectors.toList())
     );
-    data.getCategoryByShop().addAll(
+    data.setCategories(
+            categories.stream()
+                    .map(x -> productCategoryMapper.toCategoryDto(x.getCategory()))
+                    .collect(Collectors.toSet())
+    );
+    data.setCategoryByShop(
             categories.stream()
                     .map(x -> productCategoryMapper.toCategoryByShopDto(x.getCategoryByShop()))
-                    .collect(Collectors.toList())
+                    .collect(Collectors.toSet())
     );
     return data;
   }
@@ -81,10 +86,10 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   }
 
   @Override
-  public List<ProductDto> findByShop(Integer id) {
+  public List<ProductDto> findByShop(Integer id,Boolean isMain) {
     return
             productRepository
-                    .findByShop(id)
+                    .findByShop(id,isMain)
                     .stream()
                     .map(productMapper::toDto)
                     .collect(Collectors.toList());
