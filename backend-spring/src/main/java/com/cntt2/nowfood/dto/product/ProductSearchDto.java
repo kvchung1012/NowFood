@@ -9,13 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Vanh
@@ -31,6 +28,6 @@ public class ProductSearchDto extends SearchDto implements Serializable {
     private Boolean isMain;
     private Double rate;
     private Integer sizeId;
-    private Integer categoryId;
-    private Integer categoryShopId;
+    private Set<Integer> categoryId = new HashSet<>();
+    private Set<Integer> categoryShopId = new HashSet<>();
 }
