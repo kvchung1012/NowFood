@@ -49,17 +49,6 @@ public class CategoryByShopController {
         List<CategoryByShopDto> categories = categoryByShopService.findAll();
         return new ResponseEntity<>(new MessageEntity(200, categories), HttpStatus.OK);
     }
-    @GetMapping(value="/shop")
-    public ResponseEntity<?> getListByShop() {
-        Integer shopId = null;
-        Optional<Shop> shop = shopService.getOwnerLogin(false);
-        if(shop.isPresent())
-            shopId = shop.get().getId();
-        List<CategoryByShopDto> sizes = categoryByShopService.findByShopId(shopId)
-                .stream().map(categoryByShopMapper::toDto)
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(new MessageEntity(200,sizes), HttpStatus.OK);
-    }
 
     @PostMapping(value = "/search-adv")
     public ResponseEntity<?> getListAdv(@Valid @RequestBody SearchDto dto) {
