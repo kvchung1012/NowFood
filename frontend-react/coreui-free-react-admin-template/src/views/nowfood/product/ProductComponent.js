@@ -59,7 +59,7 @@ const ProductComponent = () => {
         }
     ]
     const [config,setConfig] = useState({
-        url: baseUrl + 'api/products/search-adv',
+        url: baseUrl + 'api/products/shop/search-adv',
         reLoadData:false
     })
 

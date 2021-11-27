@@ -96,9 +96,17 @@ const ShopComponent = () => {
         reLoadData:false
     })
 
-    return  (
+    const openCreateForm = () => {
+        
+    }
+
+    const openEditForm = (data) => {
+        
+    }
+
+    return (
         <div>
-            <TableComponent header={head} config={config} />
+            <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm} />
         </div>)
 }
 export default ShopComponent

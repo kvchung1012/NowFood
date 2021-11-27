@@ -5,7 +5,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import TableComponent from 'src/components/nowfood/TableComponent';
 import CreateCategoryComponent from './CreateCategoryComponent';
 
-const CategoryComponent = () => {
+const OrderComponent = () => {
     const baseUrl = useSelector((state) => state.baseUrl);
 
     const head = [
@@ -45,7 +45,7 @@ const CategoryComponent = () => {
     ]
 
     const [config, setConfig] = useState({
-        url: baseUrl + 'api/categories/search-adv',
+        url: baseUrl + '/api/shops/orders',
         reLoadData: false
     })
 
@@ -92,4 +92,4 @@ const CategoryComponent = () => {
         </div>)
 
 }
-export default CategoryComponent
+export default OrderComponent

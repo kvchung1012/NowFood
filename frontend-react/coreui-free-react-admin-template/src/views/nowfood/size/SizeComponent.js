@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import TableComponent from 'src/components/nowfood/TableComponent';
+import CreateSizeComponent from './CreateSizeComponent';
 
 const SizeComponent = () => {
     const baseUrl = useSelector((state) => state.baseUrl);
@@ -38,9 +39,47 @@ const SizeComponent = () => {
         reLoadData:false
     })
 
-    return  (
+    const [size, setsize] = useState({
+        data: {
+            id: 0,
+            code: '',
+            name: ''
+        },
+        visible: false
+    }
+    )
+
+    const openCreateForm = () => {
+        setsize({
+            data: {
+                id: 0,
+                code: '',
+                name: ''
+            },
+            visible: true
+        })
+    }
+
+    const openEditForm = (data) => {
+        console.log(data)
+        setsize({
+            data: data,
+            visible: true
+        })
+    }
+
+    const changeVisible = (value) => {
+        setsize({
+            ...size,
+            visible: value
+        })
+    }
+
+    return (
         <div>
-            <TableComponent header={head} config={config} />
+            <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm} />
+            (<CreateSizeComponent changeVisible={changeVisible} data={size} />)
         </div>)
+
 }
 export default SizeComponent

@@ -19,7 +19,6 @@ const CreateProductComponent = () => {
 
     const [currentSize,setCurrentSize] = useState({
         idSize : 0,
-        stockInDay : 0,
         price : 0,
         sizeName : '',
     })
@@ -69,7 +68,6 @@ const CreateProductComponent = () => {
     }
 
     const getFileFromDom = (e)=>{
-        debugger
         const file = e.target.files[0];
         const objectURL =window.URL.createObjectURL(file);
         setProduct({...product,image:objectURL})
@@ -114,7 +112,8 @@ const CreateProductComponent = () => {
     }
 
     const clickChooseSize = ()=>{
-        if(currentSize.idSize==0 || currentSize.stockInDay == 0 || currentSize.price == 0 || currentSize.stockInDay == "" || currentSize.price == ""){
+        debugger
+        if(currentSize.idSize==0 || currentSize.price == 0 || currentSize.price == ""){
             alert("Điền đầy đủ vào");
             return
         }
@@ -161,15 +160,21 @@ const CreateProductComponent = () => {
                     shopCategories : listCategoryShopSelected.map((val,key)=>val.id),
                     options : visibleCombo?listComboProducts.map((val,key)=>val.id):[],
                     sizes : !visibleCombo?listSizeSelected.map((val,key)=>{return{
-                        stockInDay : val.stockInDay,
                         price : val.price,
                         idSize : val.idSize
                     }}):[],
                     })
         let data = new FormData();
         data.append('imagesUrl', formData);
-        data.append('form', JSON.stringify(product));
-        console.log(data)
+        data.append('form', JSON.stringify({...product,
+            categories : listCategorySelected.map((val,key)=>val.id),
+            shopCategories : listCategoryShopSelected.map((val,key)=>val.id),
+            options : visibleCombo?listComboProducts.map((val,key)=>val.id):[],
+            sizes : !visibleCombo?listSizeSelected.map((val,key)=>{return{
+                price : val.price,
+                idSize : val.idSize
+            }}):[],
+            }));
         axios({
             url: baseUrl+'api/products',
             method: 'post',
@@ -179,7 +184,9 @@ const CreateProductComponent = () => {
             },
             data: data,
         }).then(res => {
-            console.log(res);
+           if(res.data.code==200){
+               alert("Thêm thành công sản phẩm")
+           }
         }).catch(err => {
             console.log(err);
             alert("Đã có lỗi xảy ra");
@@ -193,36 +200,33 @@ const CreateProductComponent = () => {
 
     // call data
     useEffect(() => {
-        axios.get(baseUrl+'api/products',{
+        axios.get(baseUrl+'api/products/shop?isMain=false',{headers:{
             "Authorization": "Bearer " + localStorage.getItem('token'),
             "Content-Type": 'application/json'
-        }).then(res=>{
+        }}).then(res=>{
             console.log(res);
             setListProducts(res.data.data)
         })
 
-        axios.get(baseUrl+'api/categories',{
+        axios.get(baseUrl+'api/categories',{headers:{
             "Authorization": "Bearer " + localStorage.getItem('token'),
             "Content-Type": 'application/json'
-        }).then(res=>{
-            console.log(res);
+        }}).then(res=>{
             setListCategory(res.data.data)
         })
 
-        axios.get(baseUrl+'api/shop-category',{
+        axios.get(baseUrl+'api/shop-category/shop',{headers:{
             "Authorization": "Bearer " + localStorage.getItem('token'),
             "Content-Type": 'application/json'
-        }).then(res=>{
-            console.log(res);
+        }}).then(res=>{
             setListCategoryShop(res.data.data)
         })
 
 
-        axios.get(baseUrl+'api/sizes',{
+        axios.get(baseUrl+'api/sizes/shop',{headers:{
             "Authorization": "Bearer " + localStorage.getItem('token'),
             "Content-Type": 'application/json'
-        }).then(res=>{
-            console.log(res);
+        }}).then(res=>{
             setListSize(res.data.data)
         })
     }, [])
@@ -266,8 +270,8 @@ const CreateProductComponent = () => {
 
                                 <div className="mt-2">
                                     {
-                                        listCategorySelected.map((val,key)=><>
-                                            <CButton variant="outline" color="primary me-2 mt-2 position-relative">
+                                        listCategorySelected.map((val,key)=><div key={key}>
+                                            <CButton variant="outline" key={key} color="primary me-2 mt-2 position-relative">
                                                 {val.name}
                                                 <CBadge className="border border-light p-2" 
                                                         color="danger" position="top-end" 
@@ -276,7 +280,7 @@ const CreateProductComponent = () => {
                                                     <span className="visually-hidden">x</span>
                                                 </CBadge>
                                             </CButton>
-                                        </>)
+                                        </div>)
                                     }
                                 </div>
                         </CCol>
@@ -293,8 +297,8 @@ const CreateProductComponent = () => {
 
                                 <div className="mt-2">
                                     {
-                                        listCategoryShopSelected.map((val,key)=><>
-                                            <CButton variant="outline" val={key} color="primary me-2 mt-2 position-relative">
+                                        listCategoryShopSelected.map((val,key)=><div key={key}>
+                                            <CButton variant="outline" key={key} val={key} color="primary me-2 mt-2 position-relative">
                                                 {val.name}
                                                 <CBadge className="border border-light p-2" 
                                                         color="danger" position="top-end" 
@@ -303,7 +307,7 @@ const CreateProductComponent = () => {
                                                     <span className="visually-hidden">x</span>
                                                 </CBadge>
                                             </CButton>
-                                        </>)
+                                        </div>)
                                     }
                                 </div>
                         </CCol>
@@ -352,20 +356,11 @@ const CreateProductComponent = () => {
                                         <CFormInput type="number" 
                                                 //value={product.name}
                                                 placeholder="Nhập đơn giá"
-                                                value ={currentSize.stockInDay}
-                                                onChange={(e)=>setCurrentSize({...currentSize,stockInDay :e.target.value})}
+                                                value ={currentSize.price}
+                                                onChange={(e)=>setCurrentSize({...currentSize,price :e.target.value})}
                                                 maxLength={10}
                                                 required/>
                                     </CCol>   
-                                    <CCol md={4} >
-                                        <CFormInput type="number"
-                                                maxLength={4} 
-                                                //value={product.name}
-                                                onChange={(e)=>setCurrentSize({...currentSize,price:e.target.value})}
-                                                placeholder="Nhập số lượng món hôm nay"
-                                                required/>
-                                    </CCol>
-
                                     <CCol md={4}>
                                         <CButton variant="outline" color="primary" onClick={()=>clickChooseSize()}>
                                             Thêm tùy chọn
@@ -374,9 +369,9 @@ const CreateProductComponent = () => {
 
                                     <div className="mt-2">
                                     {
-                                        listSizeSelected.map((val,key)=><>
+                                        listSizeSelected.map((val,key)=><div key={key}>
                                             <CButton variant="outline" key={key} color="primary me-2 mt-2 position-relative">
-                                                {val.sizeName +" - "+ val.price +"VND - "+ val.stockInDay}
+                                                {val.sizeName +" - "+ val.price +"VND"}
                                                 <CBadge className="border border-light p-2" 
                                                         color="danger" position="top-end" 
                                                         shape="rounded-circle" 
@@ -384,7 +379,7 @@ const CreateProductComponent = () => {
                                                     <span className="visually-hidden">x</span>
                                                 </CBadge>
                                             </CButton>
-                                        </>)
+                                        </div>)
                                     }
                                 </div>
                                 </CCol>

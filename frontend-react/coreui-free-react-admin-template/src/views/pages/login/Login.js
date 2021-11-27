@@ -42,12 +42,10 @@ const Login = () => {
       event.stopPropagation()
     } else {
       var obj = {
-        username: userName,
-        password: passWord
+        password: passWord,
+        username: userName
       }
-      axios.post(baseUrl + "api/auth/login",obj, {
-        cancelToken: ourRequest.token,
-      }).then(res => {
+      axios.post(baseUrl + "api/auth/login",obj).then(res => {
         console.log(res);
         if(res.data.code===200){
           localStorage.setItem("token", res.data.data.token);
@@ -58,10 +56,10 @@ const Login = () => {
         else{
           alert(res.data.message);
         }
-        
+
       }).catch(err => {
         console.log(err);
-        alert("Mật khẩu hoặc tài khoản không đúng");
+        //alert("Mật khẩu hoặc tài khoản không đúng");
       })
     }
     setValidated(true)
