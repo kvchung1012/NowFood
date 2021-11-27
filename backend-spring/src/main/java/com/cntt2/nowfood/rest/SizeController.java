@@ -43,18 +43,6 @@ public class SizeController {
         return new ResponseEntity<>(new MessageEntity(200,size), HttpStatus.OK);
     }
 
-    @GetMapping(value="/shop")
-    public ResponseEntity<?> getListByShop() {
-        Integer shopId = null;
-        Optional<Shop> shop = shopService.getOwnerLogin(false);
-        if(shop.isPresent())
-            shopId = shop.get().getId();
-        List<SizeDto> sizes = sizeService.findByShopId(shopId)
-                .stream().map(sizeMapper::toDto)
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(new MessageEntity(200,sizes), HttpStatus.OK);
-    }
-
     @GetMapping
     public ResponseEntity<?> getList() {
         List<SizeDto> sizes = sizeService.getAll()

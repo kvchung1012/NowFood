@@ -2,15 +2,21 @@ package com.cntt2.nowfood.rest;
 
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.SearchDto;
+import com.cntt2.nowfood.dto.categorybyshop.CategoryByShopDto;
 import com.cntt2.nowfood.dto.order.OrderDto;
 import com.cntt2.nowfood.dto.order.OrderSearchDto;
 import com.cntt2.nowfood.dto.shop.ShopDetailDto;
 import com.cntt2.nowfood.dto.shop.ShopDto;
 import com.cntt2.nowfood.dto.shop.ShopFormDto;
+import com.cntt2.nowfood.dto.size.SizeDto;
 import com.cntt2.nowfood.exceptions.MessageEntity;
+import com.cntt2.nowfood.mapper.CategoryByShopMapper;
 import com.cntt2.nowfood.mapper.ShopMapper;
+import com.cntt2.nowfood.mapper.SizeMapper;
+import com.cntt2.nowfood.service.CategoryByShopService;
 import com.cntt2.nowfood.service.OrderService;
 import com.cntt2.nowfood.service.ShopService;
+import com.cntt2.nowfood.service.SizeService;
 import com.cntt2.nowfood.utils.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,9 +42,13 @@ import java.util.stream.Collectors;
 @Api(tags = "Shop")
 @RequiredArgsConstructor
 public class ShopController {
+    private final CategoryByShopService categoryByShopService;
     private final ShopService shopService;
     private final OrderService orderService;
+    private final SizeService sizeService;
     private final ShopMapper shopMapper;
+    private final CategoryByShopMapper categoryByShopMapper;
+    private final SizeMapper sizeMapper;
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
@@ -65,6 +75,46 @@ public class ShopController {
             form.setShopId(shop.get().getId());
         Page<OrderDto> orders = orderService.findByAdvSearch(form);
         return new ResponseEntity<>(new MessageEntity(200, orders), HttpStatus.OK);
+    }
+    @ApiOperation(value = "Lấy danh mục theo quán ăn .")
+    @GetMapping(value="/category-shop")
+    public ResponseEntity<?> getCategoriesByShop() {
+        Integer shopId = null;
+        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        if(shop.isPresent())
+            shopId = shop.get().getId();
+        List<CategoryByShopDto> sizes = categoryByShopService.findByShopId(shopId)
+                .stream().map(categoryByShopMapper::toDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(new MessageEntity(200,sizes), HttpStatus.OK);
+    }
+    @PostMapping(value = "/category-shop/search-adv")
+    public ResponseEntity<?> getCategoryByShopAdv(@Valid @RequestBody SearchDto dto) {
+        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        if(shop.isPresent())
+            dto.setShopId(shop.get().getId());
+        Page<CategoryByShopDto> result = categoryByShopService.findByAdvSearch(dto);
+        return new ResponseEntity<>(new MessageEntity(200, result), HttpStatus.OK);
+    }
+    @GetMapping(value="/sizes")
+    public ResponseEntity<?> getSizes() {
+        Integer shopId = null;
+        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        if(shop.isPresent())
+            shopId = shop.get().getId();
+        List<SizeDto> sizes = sizeService.findByShopId(shopId)
+                .stream().map(sizeMapper::toDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(new MessageEntity(200,sizes), HttpStatus.OK);
+    }
+    @ApiOperation(value = "Tìm kiếm nâng cao kích thước [Phân trang].")
+    @PostMapping("/sizes/search-adv")
+    public ResponseEntity<?> getSizesAdv(@Valid @RequestBody SearchDto dto) {
+        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        if(shop.isPresent())
+            dto.setShopId(shop.get().getId());
+        Page<SizeDto> result = sizeService.findByAdvSearch(dto);
+        return new ResponseEntity<>(new MessageEntity(200,result), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/sizes")
