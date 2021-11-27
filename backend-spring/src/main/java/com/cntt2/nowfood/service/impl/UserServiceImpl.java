@@ -1,10 +1,13 @@
 package com.cntt2.nowfood.service.impl;
 
+import com.cntt2.nowfood.common.Constants;
 import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.domain.ConfirmationToken;
+import com.cntt2.nowfood.domain.Role;
 import com.cntt2.nowfood.domain.User;
 import com.cntt2.nowfood.dto.user.UserRegisterDto;
 import com.cntt2.nowfood.mapper.UserMapper;
+import com.cntt2.nowfood.repository.RoleRepository;
 import com.cntt2.nowfood.repository.UserRepository;
 import com.cntt2.nowfood.service.ConfirmTokenService;
 import com.cntt2.nowfood.service.EmailService;
@@ -18,6 +21,8 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.cntt2.nowfood.common.Constants.ROLE_ADMIN;
+
 /**
  * @author Vanh
  * @version 1.0
@@ -28,6 +33,7 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final EmailService emailService;
     private final ConfirmTokenService confirmTokenService;
 
@@ -42,6 +48,10 @@ public class UserServiceImpl implements UserService {
         user.setUuid(UUID.randomUUID());
         user.setEnabled(false);
         user.setVoided(false);
+        // set member
+        Role role = new Role();
+        role = roleRepository.findByRoleKey(Constants.ROLE_CUSTOMER);
+        user.setRole(role);
         UserRegisterDto result = userMapper.toUserRegisterDto(userRepository.saveAndFlush(user));
         //todos: confirm email
         String confirmToken = confirmTokenService.generateToken(user);

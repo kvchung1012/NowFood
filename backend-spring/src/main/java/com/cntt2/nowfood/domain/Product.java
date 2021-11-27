@@ -48,6 +48,12 @@ public class Product extends BaseEntity{
     @Column(name = "Price")
     private Double price;
 
+    @Column(name = "TotalOrder")
+    private Integer totalOrder=0;
+
+    @Column(name ="IsSoldOut")
+    private Boolean isSoldOut=false;
+
     // Todos: Mapping to Restaurant
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="createdByShop")
