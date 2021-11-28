@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+
+<body>
+    <header class="d-flex justify-content-between align-items-center">
+        <div class="logo d-flex">
+            <a href="">
+                <img src="https://shopeefood.vn/app/assets/img/shopeefoodvn.png?4aa1a38e8da801f4029b80734905f3f7" alt="" />
+            </a>
+            <!-- <div class="main-nav d-flex">
+                <ul class="
+              d-flex
+              justify-content-center
+              align-items-center
+              list-unstyled
+              mb-0 
+            ">
+                    <li class="item-nav-link"><a href="">Đồ ăn</a></li>
+                    <li class="item-nav-link"><a href="">Thực phẩm</a></li>
+                    <li class="item-nav-link"><a href="">Bia</a></li>
+                    <li class="item-nav-link"><a href="">Hoa</a></li>
+                    <li class="item-nav-link"><a href="">Siêu thị</a></li>
+                    <li class="item-nav-link"><a href="">Thuốc</a></li>
+                    <li class="item-nav-link"><a href="">Thú cưng</a></li>
+                </ul>
+            </div> -->
+        </div>
+        <div class="action">
+            <button class="search" onclick="searchRes()"><i class="fas fa-search"></i></button>
+            <button class="btn-login">Đăng nhập</button>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="content-main">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="catagory col-lg-2 pt-2 pb-2">
+                        <ul class="list-unstyled">
+                            <li>
+                                <span>Phân loại</span>
+                                <ul class="list-unstyled ps-2 list-category">
+                                    <!-- list category -->
+                                    
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Danh sách các món ăn được hiển thị -->
+                    <div class="list-restaurent col-lg-10">
+                        <div class="container-fluid p-0">
+                            <div class="row gx-3 gy-3 row-res list-product">
+                                <!--List Product in here-->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- phân trang -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination d-flex justify-content-center mb-0 mt-3">
+                       
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="search-banner d-flex justify-content-center">
+            <div class="overlay"></div>
+            <div class="action-search-res text-center">
+                <button id="btn-close"><i class="bi bi-x"></i></button>
+                <img src="https://shopeefood.vn/app/assets/img/bg-search.png?40df121cbb04a250ef2bd237a1e621b1" alt="">
+                <p class="sub-title">Đặt Đồ ăn, giao hàng từ 20'... có 31466 địa điểm ở Hà Nội từ 00:00 - 23:59</p>
+                <input id="inp-search" name="myinput" type="text" value="" autofocus>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container-fluid p-0">
+            <div class="row gx-1">
+                <div class="col-lg-3">
+                    <p class="title-footer">Công ty</p>
+                    <ul class="list-unstyled">
+                        <li><a href="">Giới thiệu</a></li>
+                        <li><a href="">Trung tâm Trợ giúp</a></li>
+                        <li><a href="">Quy chế</a></li>
+                        <li><a href="">Điều khoản sử dụng</a></li>
+                        <li><a href="">Bảo mật thông tin</a></li>
+                        <li><a href="">Giải quyết khiếu nại</a></li>
+                        <li>
+                            <a href="">Liên hệ</a>
+                        </li>
+                        <li>
+                            <a href="">Hợp tác nhân viên giao nhận</a>
+                        </li>
+                        <li>
+                            <a href="">Đăng ký quán</a>
+                        </li>
+                        <li>
+                            <a href="">ShopeeFood Uni</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <p class="title-footer">Ứng dụng ShopeeFood</p>
+                    <ul class="list-unstyled download-source">
+                        <li>
+                            <a href=""><img src="https://shopeefood.vn/app/assets/img/AppStore-vn.png?1afe809ef1884945ef4a05dacec7679e" alt=""></a>
+                        </li>
+                        <li>
+                            <a href=""><img src="https://shopeefood.vn/app/assets/img/PlayStore-vn.png?a5bc23fd384a415654c9115efebb67db" alt=""></a>
+                        </li>
+                        <li>
+                            <a href=""><img src="https://shopeefood.vn/app/assets/img/Huawei-gallery-vn.png?a17f5e9f3500255a52ec23de20dc115a" alt=""></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 logo-footer text-center">
+                    <a href="">
+                        <img src="https://shopeefood.vn/app/assets/img/Logo-ShopeefoodVN.png?a233b36c37415f85f46c25a6cd0963aa" alt="">
+                    </a>
+                    <p>© 2021 ShopeeFood</p>
+                    <div class="social-network">
+                        <a href=""><i class="fab fa-facebook"></i></a>
+                        <a href=""><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-end">
+                    <p class="title-footer">Địa chỉ công ty</p>
+                    <div class="block-last">
+                        <span>
+                            <p>Công Ty Cổ Phần Foody</p>
+                            <p>Lầu G, Tòa nhà Jabes 1,</p>
+                            <p>số 244 đường Cống Quỳnh, phường Phạm Ngũ Lão, Quận 1, TPHCM</p>
+                            <p>Giấy CN ĐKDN số: 0311828036</p>
+                            <p>do Sở Kế hoạch và Đầu tư TP.HCM cấp ngày 11/6/2012,</p>
+                            <p>sửa đổi lần thứ 23, ngày 10/12/2020</p>
+                            <p>Số điện thoại: 1900 2042</p>
+                            <p>Email: <a href="">info@shopeefood.vn</a></p>
+                        </span>
+                    </div>
+                    <a href="">
+                        <img class="image-license" src="https://shopeefood.vn/app/assets/img/gov_seals1.jpg?4534b28245a7aad9805fbddc90f873d8" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="./scripts/input.js"></script>
+    <script src="./scripts/data.js"></script>
+</body>
+
+</html>
