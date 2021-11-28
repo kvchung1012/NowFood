@@ -5,7 +5,6 @@ import { Redirect } from 'react-router'
 
 const DefaultLayout = () => {
   const isLogin = useSelector((state) => state.isLogin)
-
   return isLogin ? (
     <div>
       <AppSidebar />

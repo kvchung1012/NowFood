@@ -46,6 +46,7 @@ const Login = () => {
         username: userName
       }
       axios.post(baseUrl + "api/auth/login",obj).then(res => {
+        debugger
         console.log(res);
         if(res.data.code===200){
           localStorage.setItem("token", res.data.data.token);

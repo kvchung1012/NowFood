@@ -17,19 +17,19 @@ import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 const _nav = [
    {
     component: CNavItem,
-    name: 'Shop',
+    name: 'Quản lý shop',
     to: '/shops',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Danh mục món ăn',
+    name: 'Danh mục của bạn',
     to: '/shop-category',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Danh mục',
+    name: 'Danh mục hệ thống',
     to: '/category',
     icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
   },
