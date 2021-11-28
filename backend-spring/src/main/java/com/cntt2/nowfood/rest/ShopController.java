@@ -78,12 +78,20 @@ public class ShopController {
     }
     @ApiOperation(value = "Lấy danh mục theo quán ăn .")
     @GetMapping(value="/category-shop")
-    public ResponseEntity<?> getCategoriesByShop() {
+    public ResponseEntity<?> getCategories() {
         Integer shopId = null;
         Optional<Shop> shop = shopService.getOwnerLogin(false);
         if(shop.isPresent())
             shopId = shop.get().getId();
         List<CategoryByShopDto> sizes = categoryByShopService.findByShopId(shopId)
+                .stream().map(categoryByShopMapper::toDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(new MessageEntity(200,sizes), HttpStatus.OK);
+    }
+    @ApiOperation(value = "Lấy danh mục theo quán ăn .")
+    @GetMapping(value="/{id}/category-shop")
+    public ResponseEntity<?> getCategoriesByShop(@PathVariable Integer id) {
+        List<CategoryByShopDto> sizes = categoryByShopService.findByShopId(id)
                 .stream().map(categoryByShopMapper::toDto)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(new MessageEntity(200,sizes), HttpStatus.OK);
