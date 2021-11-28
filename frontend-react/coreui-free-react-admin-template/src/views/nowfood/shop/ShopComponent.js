@@ -3,9 +3,8 @@ import { useSelector } from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import TableComponent from 'src/components/nowfood/TableComponent';
-import { useHistory } from "react-router-dom"
-const ProductComponent = () => {
-    const history = useHistory()
+
+const ShopComponent = () => {
     const baseUrl = useSelector((state) => state.baseUrl);
     const head = [
         {
@@ -14,10 +13,10 @@ const ProductComponent = () => {
             sort: null,
             resizable: true,
             hide: false,
-            pinned: ''
+            pinned: '',
         },
         {
-            field: 'name',
+            field: 'shopName',
             flex: 1,
             sort: null,
             resizable: true,
@@ -25,7 +24,7 @@ const ProductComponent = () => {
             pinned: ''
         },
         {
-            field: 'image',
+            field: 'shopImage',
             flex: 1,
             sort: null,
             resizable: true,
@@ -33,7 +32,7 @@ const ProductComponent = () => {
             pinned: ''
         },
         {
-            field: 'description',
+            field: 'shopEmail',
             flex: 1,
             sort: null,
             resizable: true,
@@ -41,7 +40,41 @@ const ProductComponent = () => {
             pinned: ''
         },
         {
-            field: 'isMain',
+            field: 'shopPhone',
+            flex: 1,
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'shopRate',
+            flex: 1,
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        {
+            field: 'openTime',
+            flex: 1,
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        
+        {
+            field: 'closeTime',
+            flex: 1,
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: ''
+        },
+        
+        {
+            field: 'isActive',
             flex: 1,
             sort: null,
             resizable: true,
@@ -59,21 +92,21 @@ const ProductComponent = () => {
         }
     ]
     const [config,setConfig] = useState({
-        url: baseUrl + 'api/products/shop/search-adv',
+        url: baseUrl + 'api/shops/search-adv',
         reLoadData:false
     })
 
     const openCreateForm = () => {
-        history.push("/create-product")
+        
     }
 
     const openEditForm = (data) => {
-        history.push("/create-product")
+        
     }
 
-    return  (
+    return (
         <div>
-            <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm}/>
+            <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm} />
         </div>)
 }
-export default ProductComponent
+export default ShopComponent

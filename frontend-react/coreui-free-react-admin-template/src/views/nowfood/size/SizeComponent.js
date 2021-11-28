@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import TableComponent from 'src/components/nowfood/TableComponent';
-import { useHistory } from "react-router-dom"
-const ProductComponent = () => {
-    const history = useHistory()
+import CreateSizeComponent from './CreateSizeComponent';
+
+const SizeComponent = () => {
     const baseUrl = useSelector((state) => state.baseUrl);
     const head = [
         {
@@ -14,34 +14,10 @@ const ProductComponent = () => {
             sort: null,
             resizable: true,
             hide: false,
-            pinned: ''
+            pinned: '',
         },
         {
             field: 'name',
-            flex: 1,
-            sort: null,
-            resizable: true,
-            hide: false,
-            pinned: ''
-        },
-        {
-            field: 'image',
-            flex: 1,
-            sort: null,
-            resizable: true,
-            hide: false,
-            pinned: ''
-        },
-        {
-            field: 'description',
-            flex: 1,
-            sort: null,
-            resizable: true,
-            hide: false,
-            pinned: ''
-        },
-        {
-            field: 'isMain',
             flex: 1,
             sort: null,
             resizable: true,
@@ -59,21 +35,51 @@ const ProductComponent = () => {
         }
     ]
     const [config,setConfig] = useState({
-        url: baseUrl + 'api/products/shop/search-adv',
+        url: baseUrl + 'api/shops/sizes/search-adv',
         reLoadData:false
     })
 
+    const [size, setsize] = useState({
+        data: {
+            id: 0,
+            code: '',
+            name: ''
+        },
+        visible: false
+    }
+    )
+
     const openCreateForm = () => {
-        history.push("/create-product")
+        setsize({
+            data: {
+                id: 0,
+                code: '',
+                name: ''
+            },
+            visible: true
+        })
     }
 
     const openEditForm = (data) => {
-        history.push("/create-product")
+        console.log(data)
+        setsize({
+            data: data,
+            visible: true
+        })
     }
 
-    return  (
+    const changeVisible = (value) => {
+        setsize({
+            ...size,
+            visible: value
+        })
+    }
+
+    return (
         <div>
-            <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm}/>
+            <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm} />
+            (<CreateSizeComponent changeVisible={changeVisible} data={size} />)
         </div>)
+
 }
-export default ProductComponent
+export default SizeComponent

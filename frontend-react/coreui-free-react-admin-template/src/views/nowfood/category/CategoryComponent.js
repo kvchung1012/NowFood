@@ -3,13 +3,22 @@ import { useSelector } from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import TableComponent from 'src/components/nowfood/TableComponent';
-import { useHistory } from "react-router-dom"
-const ProductComponent = () => {
-    const history = useHistory()
+import CreateCategoryComponent from './CreateCategoryComponent';
+
+const CategoryComponent = () => {
     const baseUrl = useSelector((state) => state.baseUrl);
+
     const head = [
         {
             field: 'id',
+            flex: 1,
+            sort: null,
+            resizable: true,
+            hide: false,
+            pinned: '',
+        },
+        {
+            field: 'code',
             flex: 1,
             sort: null,
             resizable: true,
@@ -18,30 +27,6 @@ const ProductComponent = () => {
         },
         {
             field: 'name',
-            flex: 1,
-            sort: null,
-            resizable: true,
-            hide: false,
-            pinned: ''
-        },
-        {
-            field: 'image',
-            flex: 1,
-            sort: null,
-            resizable: true,
-            hide: false,
-            pinned: ''
-        },
-        {
-            field: 'description',
-            flex: 1,
-            sort: null,
-            resizable: true,
-            hide: false,
-            pinned: ''
-        },
-        {
-            field: 'isMain',
             flex: 1,
             sort: null,
             resizable: true,
@@ -58,22 +43,53 @@ const ProductComponent = () => {
             cellRenderer: "cellActionComponent"
         }
     ]
-    const [config,setConfig] = useState({
-        url: baseUrl + 'api/products/shop/search-adv',
-        reLoadData:false
+
+    const [config, setConfig] = useState({
+        url: baseUrl + 'api/categories/search-adv',
+        reLoadData: false
     })
 
+    const [category, setCategory] = useState({
+        data: {
+            id: 0,
+            code: '',
+            name: ''
+        },
+        visible: false
+    }
+    )
+
     const openCreateForm = () => {
-        history.push("/create-product")
+        setCategory({
+            data: {
+                id: 0,
+                code: '',
+                name: ''
+            },
+            visible: true
+        })
     }
 
     const openEditForm = (data) => {
-        history.push("/create-product")
+        console.log(data)
+        setCategory({
+            data: data,
+            visible: true
+        })
     }
 
-    return  (
+    const changeVisible = (value) => {
+        setCategory({
+            ...category,
+            visible: value
+        })
+    }
+
+    return (
         <div>
-            <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm}/>
+            <TableComponent header={head} config={config} btnCreateClick={openCreateForm} editData={openEditForm} />
+            (<CreateCategoryComponent changeVisible={changeVisible} data={category} />)
         </div>)
+
 }
-export default ProductComponent
+export default CategoryComponent

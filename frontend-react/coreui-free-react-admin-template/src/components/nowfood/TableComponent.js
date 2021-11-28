@@ -1,9 +1,9 @@
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import { AgGridColumn, AgGridReact } from 'ag-grid-react'
 
 import { CPagination, CPaginationItem } from '@coreui/react';
 
-import { CButton } from '@coreui/react'
+import { CButton, CFormSelect } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilTrash, cilPencil } from '@coreui/icons'
 
@@ -11,51 +11,102 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import HeaderTable from './HeaderTable';
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 const TableComponent = (props) => {
+    const [request, setRequest] = useState({
+        pageIndex: 1,
+        pageSize: 5,
+        keyword: '',
+        asc: '',
+        desc: '',
+        id: null,
+        shopId: null
+    });
 
-    const pagination = {
-        pageNumber: 1,
-        pageCount: 3,
-        pageSize: 10
-    }
+    const [totalPage, setTotalPage] = useState([]);
 
+    // lưu lại thông tin header
     // eslint-disable-next-line react/prop-types
     const [fixHeader, setFixHeader] = useState(props.header);
+
+    //cấu hình chung api
     // eslint-disable-next-line react/prop-types
-    const [urlConfig, setUrlConfig] = useState(props.url);
+    const [urlConfig, setUrlConfig] = useState(props.config);
+
+    // header trong agrid
     const [header, setHeader] = useState(fixHeader);
+
+    // data in table
     const [rowData, setRowData] = useState([]);
 
-    const deleteRow = (node) => {
-        alert(JSON.stringify(node.data));
-    }
 
-    const editRow = (node) => {
-        alert(JSON.stringify(node.data));
-    }
-
-    const changeView = (data) => {
+    // callback from header
+    const changeHeader = (data) => {
         setHeader(data);
     }
 
-    const onGridReady = (params) => {
-        const updateData = (data) => {
+    const setKeyWord = (data) => {
+        setRequest({ ...request, keyword: data });
+    }
+
+    useEffect(() => {
+        updateData();
+    }, [request,props])
+
+    const updateData = () => {
+        // eslint-disable-next-line react/prop-types
+        if(props.config.table ==='order-detail'){
             axios({
                 url: urlConfig.url,
                 method: 'get',
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem('token'),
                     "Content-Type": 'application/json'
-                }
+                },
+                data: {},
             }).then(res => {
-                console.log(res)
-                setRowData(res.data)
+                console.log(res.data.data)
+                setRowData(res.data.data.orderDetails)
             }).catch(err => {
                 console.log(err);
             })
-        };
+        }
+        else{
+            axios({
+                url: urlConfig.url,
+                method: 'post',
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token'),
+                    "Content-Type": 'application/json'
+                },
+                data: request,
+            }).then(res => {
+                let start = 1, end = res.data.data.totalPages;
+                if (end > 4) {
+                    if (request.pageIndex >= 2 && request.pageIndex <= end - 2) {
+                        start = request.pageIndex - 1;
+                        end = request.pageIndex + 2;
+                    }
+                    else if (request.pageIndex > res.data.data.totalPages - 2) {
+                        start = res.data.data.totalPages - 3;
+                        end = res.data.data.totalPages;
+                    }
+                    else {
+                        start = 1;
+                        end = 4;
+                    }
+                }
+    
+                setTotalPage(Array(end - start + 1).fill().map((_, idx) => start + idx))
+                setRowData(res.data.data.content)
+            }).catch(err => {
+                console.log(err);
+            })
+        }
+        
+    };
 
-        updateData([])
+    const onGridReady = (params) => {
 
         const tableEvent = (columns) => {
             setHeader(columns.map((e, i) => {
@@ -88,8 +139,17 @@ const TableComponent = (props) => {
             // add lắng nghe sự kiện cho từng header
             const column = params.columnApi.getColumn(el.field);
             column.addEventListener('sortChanged', function (e) {
-                let sort = e.column.sort === 'asc' || e.column.sort == null ? true : false;
-                updateData([])
+                let sort = e.column.sort;
+                debugger
+                if (sort === 'asc') {
+                    setRequest({ ...request, asc: e.column.colId })
+                }
+                else if (sort === 'desc') {
+                    setRequest({ ...request, desc: e.column.colId })
+                }
+                else {
+                    setRequest({ ...request, asc: '', desc: '' })
+                }
             });
 
             column.addEventListener('visibleChanged', function (e) {
@@ -98,16 +158,38 @@ const TableComponent = (props) => {
             });
 
             column.addEventListener('movingChanged', function (e) {
-                if (!e.column.moving) {
-                    let columns = params.columnApi.columnModel.gridColumns;
-                    tableEvent(columns);
+                try {
+                    if (!e.column.moving) {
+                        //let columns = params.columnApi.columnModel.gridColumns;
+                        //tableEvent(columns);
+                        return;
+                    }
                 }
+                catch {
+
+                }
+
             });
         })
     };
 
-    return <div className="ag-theme-alpine" style={{ height: 450 }}>
-        <HeaderTable prop={header} callback={changeView} />
+    const deleteRow = (node) => {
+        alert(JSON.stringify(node.data));
+    }
+    
+    const editRow = (node) => {
+        // eslint-disable-next-line react/prop-types
+        props.editData(node.data)
+        //alert(JSON.stringify(node.data));
+    }
+
+    const btnCreateClick = () => {
+        // eslint-disable-next-line react/prop-types
+        props.btnCreateClick()
+    }
+
+    return <div className="ag-theme-alpine" style={{ height: 500 }}>
+        <HeaderTable prop={header} callbackHeader={changeHeader} callbackKeyWord={setKeyWord} btnCreateClick={btnCreateClick} />
         <AgGridReact
             rowData={rowData}
             onGridReady={onGridReady}
@@ -115,6 +197,7 @@ const TableComponent = (props) => {
                 sortable: true,
                 resizable: true,
             }}
+            suppressDragLeaveHidesColumns={true}
             animateRows={true}
             frameworkComponents={{
                 cellActionComponent: (node) => {
@@ -135,21 +218,37 @@ const TableComponent = (props) => {
                             </CButton>
                         </div>)
                 },
+                cellLinkOrderDetail: (node) => {
+                    return <Link to={{
+                        pathname: `order-detail/${node.data.id}`,
+                        state: { id: node.data.id }
+                      }}
+                    >Chi tiết</Link>
+                }
             }}
         >
             {header.map(column => (<AgGridColumn {...column} key={column.field} hide={column.hide} />))}
         </AgGridReact>
 
 
-        <div className="w-100 bg-white border-bottom border-start d-flex justify-content-end">
+        <div className="w-100 pt-2 d-flex justify-content-between border-top-0" style={{ border: "solid 1px #babfc7 !important" }}>
+            <div>
+                <CFormSelect size="sm" onChange={(e) => { setRequest({ ...request, pageSize: e.target.options[e.target.options.selectedIndex].innerText }) }}>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">20</option>
+                </CFormSelect>
+            </div>
+
             <CPagination aria-label="Page navigation example" className="align-items-center justify-content-end m-0">
-                <CPaginationItem aria-label="Previous">
+                <CPaginationItem aria-label="Previous" onClick={() => setRequest({ ...request, pageIndex: 1 })}>
                     <span aria-hidden="true">&laquo;</span>
                 </CPaginationItem>
                 {
-                    Array.from(Array(pagination.pageCount).keys()).map((value, i) => <CPaginationItem key={i} >{i + 1}</CPaginationItem>)
+                    totalPage.map((value, i) =>
+                        <CPaginationItem key={i} active={value === request.pageIndex} onClick={() => setRequest({ ...request, pageIndex: value })}>{value}</CPaginationItem>)
                 }
-                <CPaginationItem aria-label="Next">
+                <CPaginationItem aria-label="Next" onClick={() => setRequest({ ...request, pageIndex: request.totalPages })}>
                     <span aria-hidden="true">&raquo;</span>
                 </CPaginationItem>
             </CPagination>

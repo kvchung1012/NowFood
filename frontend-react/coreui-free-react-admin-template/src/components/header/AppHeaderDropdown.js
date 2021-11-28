@@ -30,6 +30,8 @@ const AppHeaderDropdown = () => {
   function logOut() {
     console.log('out')
     dispatch({ type: 'set', isLogin: false })
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
   }
 
   return (
