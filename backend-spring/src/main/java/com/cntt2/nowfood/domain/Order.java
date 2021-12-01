@@ -91,19 +91,20 @@ public class Order extends BaseEntity {
     @NotFound(action = NotFoundAction.IGNORE)
     private Set<OrderDetail> orderDetails;
 
-    public void addOrderDetail(Product product,Integer quantity){
+    public void addOrderDetail(Product product,String productName,Double price,Integer quantity){
         if(orderDetails == null) orderDetails = new HashSet<>();
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrder(this);
         orderDetail.setProduct(product);
+        orderDetail.setProductName(productName);
+        orderDetail.setPrice(price);
         orderDetail.setQuantity(quantity);
-        orderDetail.setPrice(product.getPrice());
         orderDetails.add(orderDetail);
     }
     public Double getTotalPrice() {
         Double total = 0.0;
         if(orderDetails != null){
-            total = orderDetails.stream().mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity()).sum();
+            total = orderDetails.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
         }
         total += this.fee + this.shipPrice;
         return total;
