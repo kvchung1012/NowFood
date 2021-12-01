@@ -46,6 +46,7 @@ public class CartDto implements Serializable {
     @NoArgsConstructor
     public static class CartItemDto {
         private Integer productId;
+        private Integer sizeId;
         private Integer quantity=1;
     }
 }

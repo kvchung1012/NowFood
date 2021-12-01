@@ -14,7 +14,7 @@ import org.springframework.data.domain.Page;
  */
 public interface OrderService extends GenericService<Order, Integer>{
     OrderDto checkout(CartDto form);
-    FeeOrder getFeeOrder(Order order);
+    FeeOrder getShippingFee(Order order);
     Page<OrderDto> findByAdvSearch(OrderSearchDto form);
     OrderDto findById(Integer id);
     OrderDto approve(Integer id);

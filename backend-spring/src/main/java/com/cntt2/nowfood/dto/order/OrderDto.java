@@ -44,6 +44,7 @@ public class OrderDto{
     public static class OrderDetailDto{
         private ProductDto product;
         private Integer quantity=1;
+        private String productName;
         private Double price;
         private String note;
     }

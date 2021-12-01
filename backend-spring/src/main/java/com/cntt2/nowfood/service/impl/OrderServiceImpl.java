@@ -4,6 +4,7 @@ import com.cntt2.nowfood.common.Constants;
 import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.domain.Order;
 import com.cntt2.nowfood.domain.Product;
+import com.cntt2.nowfood.domain.ProductSize;
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.order.CartDto;
 import com.cntt2.nowfood.dto.order.FeeOrder;
@@ -53,50 +54,73 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
     @Transactional
     public OrderDto checkout(CartDto form) {
         Order entity = orderMapper.toEntity(form);
-        // add product check quantity
+        // Lấy danh sách sản phẩm có trong giỏ hàng
         Set<Integer> ids = form.getCartItems()
                 .stream()
                 .map(CartDto.CartItemDto::getProductId)
                 .collect(Collectors.toSet());
         Set<Product> products = productRepository.findByIds(ids);
-        // set shop order, get shop from first product
-        Product firstProduct = products.stream().findFirst().orElseThrow(()->new ValidException("Sản phẩm không hợp lệ!"));
-        Shop shop = firstProduct.getShop();
-        entity.setShop(shop);
-        // set Order detail
-        form.getCartItems().forEach(item -> {
-            Product product = products.stream().
-                    filter(x -> x.getId().equals(item.getProductId())).
-                    findFirst().orElseThrow(() ->
-                        new ValidException("Sản phẩm id= " + item.getProductId() + " không hợp lệ !")
-            );
-            if(product.getIsSoldOut())
-                new ValidException("Sản phẩm " + product.getName() + " đã hết hàng !");
-            if (!shop.getId().equals(product.getShop().getId()))
-                throw new ValidException("Các sản phẩm trong giỏ hàng không cùng 1 shop!");
-            entity.addOrderDetail(product, item.getQuantity());
-            // set totalOrder
-            Integer totalOrder = product.getTotalOrder()+item.getQuantity();
-            product.setTotalOrder(totalOrder);
-        });
+        if(products.isEmpty())
+            throw new ValidException("Sản phẩm trong giỏ hàng không hợp lệ!");
+        setOrderDetails(form, entity, products);
         // set payment status
         entity.setPaymentStatus(Constants.PaymentStatus.UNPAID);
         // set order status
         entity.setOrderStatus(Constants.OrderStatus.PENDING);
         // set Customer order
         UserPrincipal user = SecurityUtils.getCurrentUser();
-        if(user == null) new ValidException("User chưa đăng nhập");
-        entity.setCustomer(userRepository.findByUsername(user.getUsername()));
+        if(user != null){
+            entity.setCustomer(userRepository.findByUsername(user.getUsername()));
+        }
         // set fee order
-        entity.setShipPrice(getFeeOrder(entity).getData().getTotal());
+        Double shippingFee = getShippingFee(entity).getData().getTotal();
+        entity.setShipPrice(shippingFee);
         // set total order
-        entity.setTotalPrice(entity.getTotalPrice());
+        Double totalPrice = entity.getTotalPrice();
+        entity.setTotalPrice(totalPrice);
         Order result = orderRepository.save(entity);
         return orderMapper.toDto(result);
     }
 
+    private void setOrderDetails(CartDto form, Order entity, Set<Product> products) {
+        // Lấy ra shop của sản phẩm đầu tiên, so sanh với các sản phẩm còn lại trong giỏ hàng
+        Product firstProduct = products.iterator().next();
+        Shop shop = firstProduct.getShop();
+        entity.setShop(shop);
+        // set Order details
+        form.getCartItems().forEach(item -> {
+            Product product = products.stream().
+                    filter(x -> x.getId().equals(item.getProductId())).
+                    findFirst().orElseThrow(() ->
+                        new ValidException("Sản phẩm id= " + item.getProductId() + " không hợp lệ !")
+            );
+            Double price = product.getPrice();
+            String productName = product.getName();
+            // Nếu có size thì set lại giá trị price và productName theo size
+            if(item.getSizeId() != null){
+                // Lấy product size
+                ProductSize productSize = findProductSize(product,item.getSizeId());
+                if(productSize != null){
+                    price = productSize.getPrice();
+                    productName = productName + " - " + productSize.getSize().getName();
+                }
+            }
+            // Hết hàng
+            if(product.getIsSoldOut())
+                throw new ValidException("Sản phẩm " + product.getName() + " đã hết hàng !");
+            // Kiểm tra xem các sản phẩm có cùng cửa hàng không
+            Boolean isSameShop = shop.getId().equals(product.getShop().getId());
+            if (!isSameShop)
+                throw new ValidException("Các sản phẩm trong giỏ hàng không cùng 1 shop!");
+            entity.addOrderDetail(product,productName,price, item.getQuantity());
+            // set totalOrder cho product
+            Integer totalOrder = product.getTotalOrder()+item.getQuantity();
+            product.setTotalOrder(totalOrder);
+        });
+    }
+
     @Override
-    public FeeOrder getFeeOrder(Order order) {
+    public FeeOrder getShippingFee(Order order) {
         RestTemplate restTemplate = new RestTemplate();
         Map<String, Object> map = new HashMap<>();
         map.put("service_id", 53321);
@@ -126,13 +150,17 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
 
     @Override
     public OrderDto findById(Integer id) {
-        Order order = orderRepository.findById(id).orElseThrow(()-> new ValidException("Không tìm thấy đơn hàng!"));
+        Order order = getOrder(id);
         return orderMapper.toDto(order);
+    }
+
+    private Order getOrder(Integer id) {
+        return orderRepository.findById(id).orElseThrow(() -> new ValidException("Không tìm thấy đơn hàng!"));
     }
 
     @Override
     public OrderDto approve(Integer id) {
-        Order order = orderRepository.findById(id).orElseThrow(()-> new ValidException("Không tìm thấy đơn hàng!"));
+        Order order = getOrder(id);
         if(order.getOrderStatus() != Constants.OrderStatus.PENDING){
             throw new ValidException("Đơn hàng không ở trạng thái chờ xác nhận !");
         }
@@ -142,12 +170,17 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
     }
     @Override
     public OrderDto reject(Integer id) {
-        Order order = orderRepository.findById(id).orElseThrow(()-> new ValidException("Không tìm thấy đơn hàng!"));
+        Order order = getOrder(id);
         if(order.getOrderStatus() != Constants.OrderStatus.PENDING){
             throw new ValidException("Đơn hàng không ở trạng thái chờ xác nhận !");
         }
         order.setOrderStatus(Constants.OrderStatus.CANCELED);
         order = orderRepository.save(order);
         return orderMapper.toDto(order);
+    }
+    private ProductSize findProductSize(Product product,Integer sizeId){
+        return product.getProductSizes().
+                stream().filter(x -> x.getSize().getId().equals(sizeId)).
+                findFirst().orElse(null);
     }
 }
