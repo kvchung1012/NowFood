@@ -1,6 +1,7 @@
 package com.cntt2.nowfood.mapper;
 
 import com.cntt2.nowfood.domain.User;
+import com.cntt2.nowfood.dto.user.UserDto;
 import com.cntt2.nowfood.dto.user.UserRegisterDto;
 import org.mapstruct.Mapper;
 
@@ -13,5 +14,5 @@ import org.mapstruct.Mapper;
 public interface UserMapper {
     User userRegisterToUser(UserRegisterDto dto);
     UserRegisterDto toUserRegisterDto(User user);
-    UserRegisterDto toUser(User user);
+    UserDto toUserDto(User user);
 }
