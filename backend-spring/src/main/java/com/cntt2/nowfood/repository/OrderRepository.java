@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OrderRepository extends JpaRepository<Order,Integer> {
-    @Query(value = "select o from Order o " +
+    @Query(value = "select distinct o from Order o " +
             "left join o.shop s " +
             "left join o.customer c " +
             "where (1=1) " +

@@ -33,7 +33,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             " and (p.isMain = :isMain or :isMain is null) ")
     List<Product> findByShop(Integer id,Boolean isMain);
 
-    @Query(value = "select p from Product p " +
+    @Query(value = "select distinct p from Product p " +
             "left join p.productCategories pc " +
             "left join p.shop s " +
             "where (1=1) " +
