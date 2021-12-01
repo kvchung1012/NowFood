@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vanh
@@ -57,11 +58,17 @@ public class Shop extends BaseEntity {
     @Column(name = "IsMain")
     private Boolean isMain;
 
-    // 1 user - 1 shop
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "OwnerId")
     @NotFound(action = NotFoundAction.IGNORE)
     private User owner;
+
+    @OneToMany(
+            mappedBy = "shop",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private Set<User> members;
 
     @OneToMany(
             mappedBy = "shop",
