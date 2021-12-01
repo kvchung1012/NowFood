@@ -21,5 +21,6 @@ public interface ShopService extends GenericService<Shop,Integer> {
     Page<ShopDto> findByAdvSearch(SearchDto searchDto);
     Optional<Shop> findByUser(String username);
     Optional<Shop> getOwnerLogin(boolean isRequired);
+    Optional<Shop> getShopLogin(boolean isRequired);
     ShopDetailDto findDetailByShopId(Integer id);
 }

@@ -10,9 +10,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Locale;
@@ -67,6 +69,12 @@ public class GlobalExceptionHandler {
         ex.printStackTrace();
         MessageEntity msg = new MessageEntity(null,500, "409 Conflict", MessageType.ERROR);
         return new ResponseEntity(msg, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class, MethodArgumentTypeMismatchException.class})
+    protected ResponseEntity<MessageEntity> handleHttpRequestNotSupported(RuntimeException ex) {
+        ex.printStackTrace();
+        MessageEntity msg = new MessageEntity(null,400, ex.getMessage(), MessageType.ERROR);
+        return new ResponseEntity(msg, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({NullPointerException.class, IllegalArgumentException.class, IllegalStateException.class})

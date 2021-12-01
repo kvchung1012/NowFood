@@ -104,7 +104,7 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
 
   private String validProduct(ProductFormDto dto, Integer shopId) {
     if (null != dto.getSizes()) {
-      List<Integer> idsSize = dto.getSizes().stream().map(ProductSizeDto::getIdSize)
+      List<Integer> idsSize = dto.getSizes().stream().map(ProductFormDto.ProductSizeDto::getIdSize)
               .collect(Collectors.toList());
       List<Size> sizes = sizeRepository.findByIds(idsSize, shopId);
       if (idsSize.size() != sizes.size()) {
@@ -141,7 +141,7 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   }
 
   private Product valid(ProductFormDto form) {
-    Optional<Shop> owner = shopService.getOwnerLogin(true);
+    Optional<Shop> owner = shopService.getShopLogin(true);
     Boolean isAdmin = owner.isEmpty();
     // Nếu là admin thi thông tin cửa hàng được lấy từ form => check null
     if (isAdmin && form.getShopId() == null) throw new ValidException("Cửa hàng không được để trống !");

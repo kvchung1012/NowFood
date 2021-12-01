@@ -55,7 +55,7 @@ public class ProductController {
     @GetMapping("/shop")
     public ResponseEntity<?> getByShop(@RequestParam Boolean isMain) {
         Integer shopId = null;
-        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        Optional<Shop> shop = shopService.getShopLogin(false);
         if(shop.isPresent())
             shopId = shop.get().getId();
         List<ProductDto> products = productService.findByShop(shopId,isMain);
@@ -75,7 +75,8 @@ public class ProductController {
     @PostMapping(value = "/shop/search-adv")
     public ResponseEntity<?> searchAdv(@RequestBody ProductSearchDto searchDto) {
         Integer shopId = null;
-        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        Optional<Shop> shop = shopService.
+                getShopLogin(false);
         if(shop.isPresent())
             searchDto.setShopId(shop.get().getId());
         Page<ProductDto> page = productService.findByAdvSearch(searchDto);
