@@ -1,5 +1,6 @@
 package com.cntt2.nowfood.rest;
 
+import com.cntt2.nowfood.domain.Product;
 import com.cntt2.nowfood.domain.Shop;
 import com.cntt2.nowfood.dto.product.ProductDetailDto;
 import com.cntt2.nowfood.dto.product.ProductDto;
@@ -10,6 +11,7 @@ import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.ProductMapper;
 import com.cntt2.nowfood.service.ProductService;
 import com.cntt2.nowfood.service.ShopService;
+import com.cntt2.nowfood.utils.CommonUtils;
 import com.cntt2.nowfood.utils.FileUploadUtil;
 import com.cntt2.nowfood.utils.ValidateUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +29,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.cntt2.nowfood.common.Constants.IS_DELETE;
+import static com.cntt2.nowfood.common.Constants.IS_MAIN;
+
 /**
  * @author Vanh
  * @version 1.0
@@ -43,12 +48,11 @@ public class ProductController {
     private final ValidateUtils<ProductFormDto> validateProduct;
     @Value("${resources.images-directory}")
     public String imageUrl;
-    private Boolean isMain = true;
 
     @ApiOperation(value = "Danh sách tất cả sản phẩm theo shop [Không phân trang].")
     @GetMapping("/shop/{id}")
     public ResponseEntity<?> getByShop(@PathVariable Integer id) {
-        List<ProductDto> products = productService.findByShop(id,isMain);
+        List<ProductDto> products = productService.findByShop(id,IS_MAIN);
         return ResponseEntity.ok().body(new MessageEntity(200, products));
     }
     @ApiOperation(value = "Danh sách tất cả sản phẩm theo shop [Không phân trang].")
@@ -74,11 +78,9 @@ public class ProductController {
     @ApiOperation(value = "Danh sách sản phẩm theo shop[Phân trang nâng cao].")
     @PostMapping(value = "/shop/search-adv")
     public ResponseEntity<?> searchAdv(@RequestBody ProductSearchDto searchDto) {
-        Integer shopId = null;
         Optional<Shop> shop = shopService.
                 getShopLogin(false);
-        if(shop.isPresent())
-            searchDto.setShopId(shop.get().getId());
+        shop.ifPresent(value -> searchDto.setShopId(value.getId()));
         Page<ProductDto> page = productService.findByAdvSearch(searchDto);
         return new ResponseEntity<>(new MessageEntity(200, page), HttpStatus.OK);
     }
@@ -133,7 +135,10 @@ public class ProductController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         // todos: xóa sản phẩm
-        return ResponseEntity.ok().body(new MessageEntity(200,id.toString()));
+        Product product = productService.getById(id);
+        product.setVoided(IS_DELETE);
+        productService.save(product);
+        return ResponseEntity.ok().body(new MessageEntity(200, !CommonUtils.isNull(product)));
     }
     // function utils
     private String getFileName(MultipartFile images) {

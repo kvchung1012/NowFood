@@ -1,5 +1,6 @@
 package com.cntt2.nowfood.service.impl;
 
+import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,7 +53,7 @@ public class GenericServiceImpl<T, Idt extends Serializable> implements GenericS
     }
 
     public T getById(Idt id) {
-        return this.repository.findById(id).orElse(null);
+        return this.repository.findById(id).orElseThrow(()-> new ValidException("Không tìm thấy đối tượng"));
     }
 }
 

@@ -27,7 +27,7 @@ public interface CategoryByShopRepository extends JpaRepository<CategoryByShop,I
             "and (c.createdByShop = :#{#dto.getShopId()} or :#{#dto.getShopId()} is null) " +
             "and (c.uuid = :#{#dto.getUuid()} or :#{#dto.getUuid()} is null) " +
             "and (c.name LIKE %:#{#dto.getKeyword()}% or :#{#dto.getKeyword()} is null or :#{#dto.getKeyword()} = '' ) " +
-            "and (c.voided = :#{#dto.getVoided()} or :#{#dto.getVoided()} is null) "
+            "and (c.voided = :#{#dto.getVoided()} or c.voided = false) "
     )
     Page<CategoryByShop> findByAdvSearch(SearchDto dto, Pageable pageable);
 
