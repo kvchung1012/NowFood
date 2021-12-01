@@ -1,9 +1,6 @@
 package com.cntt2.nowfood.dto.product;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -39,4 +36,12 @@ public class ProductFormDto implements Serializable {
 
     @Size(message = "Danh mục sản phẩm của cửa hàng không được để trống", min = 1)
     private List<Integer> shopCategories = new ArrayList<>();
+
+    @Data
+    public static class ProductSizeDto{
+        private Double price;
+        private Integer stockInDay;
+        // Id size
+        private Integer idSize;
+    }
 }
