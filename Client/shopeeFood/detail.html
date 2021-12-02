@@ -106,31 +106,15 @@
                         <div class="title-cart p-2">
                             <p class="order-origin">Thông tin đơn hàng</span></i></p>
                         </div>
-                        <div class="acount-cart p-2">
-                            <!--List order-->
-                            <div class="item-menu mt-1 d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <img class="item-restaurant-img img-item19833 me-1" src="${baseUrl+val.image}" alt="">
-                                    <div class="item-restaurant-name">
-                                        <p>${val.price}</p>
-                                        <p class="mt-1">${val.price}</p>
-                                    </div>
-                                </div>
-                                <div class="price-btn d-flex">
-                                    <button class="btn-order m-1 text-center"><i class="fas fa-minus"></i></button>
-                                    <div class="food-price m-1">
-                                        <p>5</p>
-                                    </div>
-                                    <button class="btn-order m-1 text-center"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
+                        <div class="acount-cart list-order p-2">
+                            
                         </div>
                         <div class="acount-cart p-2 d-flex justify-content-between">
                             <span>Tổng Cộng</span>
-                            <p>0 <sup>đ</sup></p>
+                            <p class="total-price">0 <sup>đ</sup></p>
                         </div>
                         <div class="p-2 div-btn-ord">
-                            <button class="btn btn-order-b">Đặt trước</button>
+                            <button class="btn btn-order-b get-order">Đặt trước</button>
                         </div>
                     </div>
                 </div>
@@ -170,15 +154,13 @@
                 </div>
                 <div class="modal-body">
                   <h4>Mời bạn chọn size</h4>
-                  <div class="mt-2">
-                    <input type="checkbox" id="test">
-                    <label for="test">Size M</label>
-                    <span class="ms-2"><b>500.000 VND</b></span>
+                  <div class="list-option">
+
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                  <button type="button" class="btn btn-primary">Thêm giỏ hàng</button>
+                  <button type="button" class="btn btn-primary btnOrder">Thêm giỏ hàng</button>
                 </div>
               </div>
             </div>
