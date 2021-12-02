@@ -104,18 +104,26 @@
                     <!-- Gio hàng -->
                     <div class="col-lg-3 cart">
                         <div class="title-cart p-2">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="txt-acount-cart"><span class="cart-count">1</span> phần - 1 người</span>
-                                <button class="delete-cart">Xóa</button>
+                            <p class="order-origin">Thông tin đơn hàng</span></i></p>
+                        </div>
+                        <div class="acount-cart p-2">
+                            <!--List order-->
+                            <div class="item-menu mt-1 d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <img class="item-restaurant-img img-item19833 me-1" src="${baseUrl+val.image}" alt="">
+                                    <div class="item-restaurant-name">
+                                        <p>${val.price}</p>
+                                        <p class="mt-1">${val.price}</p>
+                                    </div>
+                                </div>
+                                <div class="price-btn d-flex">
+                                    <button class="btn-order m-1 text-center"><i class="fas fa-minus"></i></button>
+                                    <div class="food-price m-1">
+                                        <p>5</p>
+                                    </div>
+                                    <button class="btn-order m-1 text-center"><i class="fas fa-plus"></i></button>
+                                </div>
                             </div>
-                            <p class="order-origin"><i>Đơn hàng tạo bởi <span class="customer">Nguyễn Kim</span></i></p>
-                        </div>
-                        <div class="acount-cart p-2 d-flex justify-content-between">
-                            <span>Cộng</span>
-                            <p>0 <sup>đ</sup></p>
-                        </div>
-                        <div class="text-center input-promocode p-2">
-                            <p class="row-bill-restaurant txt-center"><span>(*)</span>Nhập mã khuyễn mãi ở bước hoàn tất</p>
                         </div>
                         <div class="acount-cart p-2 d-flex justify-content-between">
                             <span>Tổng Cộng</span>
@@ -159,12 +167,14 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLongTitle">Thông tin sản phẩm</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                 </div>
                 <div class="modal-body">
-                  
+                  <h4>Mời bạn chọn size</h4>
+                  <div class="mt-2">
+                    <input type="checkbox" id="test">
+                    <label for="test">Size M</label>
+                    <span class="ms-2"><b>500.000 VND</b></span>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>

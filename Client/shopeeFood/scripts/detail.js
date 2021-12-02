@@ -80,8 +80,8 @@ function OrderFood(id){
         contentType:'application/json',
         data: {},
         success : function(res){
+            $('#exampleModalCenter').modal('show');
             console.log(res);
         }
     })
-    $('#exampleModalCenter').modal('show');
 }

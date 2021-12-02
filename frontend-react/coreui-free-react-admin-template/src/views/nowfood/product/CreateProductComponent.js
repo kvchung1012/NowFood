@@ -215,7 +215,7 @@ const CreateProductComponent = () => {
             setListCategory(res.data.data)
         })
 
-        axios.get(baseUrl+'api/shop-category/shop',{headers:{
+        axios.get(baseUrl+'api/shops/category-shop',{headers:{
             "Authorization": "Bearer " + localStorage.getItem('token'),
             "Content-Type": 'application/json'
         }}).then(res=>{
@@ -223,7 +223,7 @@ const CreateProductComponent = () => {
         })
 
 
-        axios.get(baseUrl+'api/sizes/shop',{headers:{
+        axios.get(baseUrl+'api/shops/sizes',{headers:{
             "Authorization": "Bearer " + localStorage.getItem('token'),
             "Content-Type": 'application/json'
         }}).then(res=>{
