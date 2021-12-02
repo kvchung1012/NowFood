@@ -2,7 +2,10 @@ package com.cntt2.nowfood.service.impl;
 
 import com.cntt2.nowfood.domain.*;
 import com.cntt2.nowfood.dto.SearchDto;
-import com.cntt2.nowfood.dto.product.*;
+import com.cntt2.nowfood.dto.product.ProductDetailDto;
+import com.cntt2.nowfood.dto.product.ProductDto;
+import com.cntt2.nowfood.dto.product.ProductFormDto;
+import com.cntt2.nowfood.dto.product.ProductSearchDto;
 import com.cntt2.nowfood.exceptions.ValidException;
 import com.cntt2.nowfood.mapper.ProductCategoryMapper;
 import com.cntt2.nowfood.mapper.ProductMapper;
@@ -20,6 +23,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.cntt2.nowfood.common.Constants.ROLE_ADMIN;
 
 /**
  * @author Vanh
@@ -103,6 +108,8 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   }
 
   private String validProduct(ProductFormDto dto, Integer shopId) {
+    // 2.3 Valid các giá trị theo thông tin cửa hàng
+    // valid sizes = Shop id
     if (null != dto.getSizes()) {
       List<Integer> idsSize = dto.getSizes().stream().map(ProductFormDto.ProductSizeDto::getIdSize)
               .collect(Collectors.toList());
@@ -111,7 +118,7 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
         return "Kích thước món ăn không phù hợp với thông tin cửa hàng !";
       }
     }
-    // valid options
+    // valid options = shopId
     if (null != dto.getOptions()) {
       List<Product> products = productRepository.findOptionsByIds(dto.getOptions(), shopId);
       if (products.size() != dto.getOptions().size()) {
@@ -122,7 +129,7 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
     if (null != dto.getCategories()) {
       List<Category> categories = categoryRepository.findByIds(dto.getCategories());
       if (categories.size() != dto.getCategories().size()) {
-        return "Danh mục sản phẩm không phù hợp thông tin cửa hàng !";
+        return "Danh mục sản phẩm không chính xác !";
       }
     } else {
       return "Danh mục sản phẩm không được để trống ! ";
@@ -141,31 +148,31 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   }
 
   private Product valid(ProductFormDto form) {
-    Optional<Shop> owner = shopService.getShopLogin(true);
-    Boolean isAdmin = owner.isEmpty();
+    // 2.1 valid shop
+    Optional<Shop> shopLogin = shopService.getShopLogin(true);
+    Boolean isAdmin = CommonUtils.isLoginRole(ROLE_ADMIN);
     // Nếu là admin thi thông tin cửa hàng được lấy từ form => check null
     if (isAdmin && form.getShopId() == null) throw new ValidException("Cửa hàng không được để trống !");
-    Integer shopId = isAdmin ? form.getShopId() : owner.get().getId();
-    Product entity = null;
+    // Lấy shopId, nếu là tài khoản lk shop thì lấy theo thông tin login, là admin thì lấy trong form
+    Integer shopId = isAdmin ? form.getShopId() : shopLogin.get().getId();
+    Product entity;
     // update
-    if (!CommonUtils.isNull(form.getId())) {
+    if (form.getId() != null) {
       entity = this.productRepository.findById(form.getId())
               .orElseThrow(() -> new ValidException("Sản phẩm không tồn tại"));
-      if (!isAdmin && null != owner.get().getId()) {
-        Boolean isOwner = owner.get().getId().equals(entity.getShop().getId());
-        if (!isOwner)
-          throw new ValidException("Sản phẩm không thuộc về cửa hàng !");
-      }
+      // Check sản phẩm có thuộc về cửa hàng không
+      boolean isOwner = shopId.equals(entity.getShop().getId());
+      if (!isOwner)
+        throw new ValidException("Sản phẩm không thuộc về cửa hàng !");
     }
     // add
     else {
       entity = new Product();
-      // Nếu là admin thì lấy ở form, không thì lấy ở thông tin login
       Shop shop = this.shopService.getById(shopId);
       if (null == shop) throw new ValidException("Cửa hàng không hợp lệ ");
       entity.setShop(shop);
     }
-    // 2.2: valid sizes,options,categories
+    // 2.2: valid sizes,options,categories by shopId
     String valid = validProduct(form, shopId);
     if (!"".equals(valid)) {
       throw new ValidException(valid);
@@ -178,10 +185,10 @@ public class ProductServiceImpl extends GenericServiceImpl<Product, Integer> imp
   public ProductFormDto saveOrUpdate(ProductFormDto form) {
     if (form == null) return null;
     else {
-      // Check role
+      // 2.1->2.3: Valid các tham số theo shopId
       Product entity = valid(form);
       entity = productMapper.formToEntity(form, entity);
-      // 2.3: add sizes,options,categories to Product
+      // 2.4: add sizes,options,categories to Product
       entity = this.productRepository.save(entity);
       addProductSizes(form, entity);
       addOptions(form, entity);

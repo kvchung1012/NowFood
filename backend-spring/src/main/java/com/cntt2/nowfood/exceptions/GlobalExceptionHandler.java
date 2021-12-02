@@ -99,6 +99,6 @@ public class GlobalExceptionHandler {
         ex.printStackTrace();
         // todos: log database
         MessageEntity msg = new MessageEntity(null, "Đã có lỗi xảy ra, lỗi đã được thông báo đến admin, mã lỗi []!", MessageType.ERROR);
-        return new ResponseEntity(msg, HttpStatus.FORBIDDEN);
+        return new ResponseEntity(msg, HttpStatus.BAD_REQUEST);
     }
 }

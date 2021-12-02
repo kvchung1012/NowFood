@@ -10,6 +10,8 @@ public class Constants {
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ROLE_SHOP = "SHOP";
     public static final String ROLE_CUSTOMER = "CUSTOMER";
+    public static final Boolean IS_DELETE = true;
+    public static final Boolean IS_MAIN = true;
 
     public static enum OrderStatus {
         PENDING,

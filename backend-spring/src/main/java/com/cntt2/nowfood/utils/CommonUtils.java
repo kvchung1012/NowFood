@@ -1,5 +1,6 @@
 package com.cntt2.nowfood.utils;
 
+import com.cntt2.nowfood.config.security.UserPrincipal;
 import com.cntt2.nowfood.dto.SearchDto;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -24,6 +25,11 @@ public class CommonUtils {
     private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
     private static final Pattern IMAGE = Pattern.compile("[^\\w-.]");
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
+
+    public static Boolean isLoginRole(String role){
+        UserPrincipal userLogin = SecurityUtils.getCurrentUser();
+        return userLogin.getAuthorities().contains(role);
+    }
 
     public static String toSlug(String input) {
         String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");

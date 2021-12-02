@@ -30,7 +30,7 @@ import static com.cntt2.nowfood.common.Constants.ROLE_ADMIN;
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends GenericServiceImpl<User,Integer> implements UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;

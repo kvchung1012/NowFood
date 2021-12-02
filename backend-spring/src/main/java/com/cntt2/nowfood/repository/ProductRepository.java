@@ -26,14 +26,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("select p from Product p where p.id in :ids and p.isMain = false and (p.shop.id = :shop or :shop is null)")
     List<Product> findOptionsByIds(List<Integer> ids, Integer shop);
 
-    @Query("select p from Product p where p.shop.id = :id or :id is null")
+    @Query("select p from Product p where (p.shop.id = :id or :id is null) and p.voided = false ")
     Page<Product> findByShop(Integer id, Pageable pageable);
 
-    @Query("select p from Product p where (p.shop.id = :id or :id is null) " +
+    @Query("select p from Product p where (p.shop.id = :id or :id is null) and p.voided = false " +
             " and (p.isMain = :isMain or :isMain is null) ")
     List<Product> findByShop(Integer id,Boolean isMain);
 
-    @Query(value = "select p from Product p " +
+    @Query(value = "select distinct p from Product p " +
             "left join p.productCategories pc " +
             "left join p.shop s " +
             "where (1=1) " +
@@ -50,7 +50,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "and (p.rate = :#{#dto.getRate()} or :#{#dto.getRate()} is null) " +
             "and (pc.category.id in (:#{#dto.getCategoryId()}) or :#{#dto.getCategoryId().size()} < 1 ) "+
             "and (pc.categoryByShop.id in (:#{#dto.getCategoryShopId()}) or :#{#dto.getCategoryShopId().size()} <1) " +
-            "and (p.voided = :#{#dto.getVoided()} or :#{#dto.getVoided()} is null) "
+            "and (p.voided = :#{#dto.getVoided()} or p.voided = false ) "
     )
     Page<Product> findAdvSearch(ProductSearchDto dto,Pageable pageable);
 }
