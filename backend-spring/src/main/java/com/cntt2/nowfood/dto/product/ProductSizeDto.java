@@ -18,7 +18,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ProductSizeDto implements Serializable {
     private Double price;
-    private Integer stockInDay;
-    // Id size
-    private Integer idSize;
+    private SizeDto size;
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SizeDto{
+        private Integer id;
+        private String name;
+    }
 }

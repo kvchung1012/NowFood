@@ -53,7 +53,7 @@ public class SizeServiceImpl extends GenericServiceImpl<Size, Integer> implement
         if(null == form){
             return null;
         }
-        Shop owner = shopService.getOwnerLogin(true).orElse(null);
+        Shop owner = shopService.getShopLogin(true).orElse(null);
         Size entity = null;
         // Update
         if(null != form.getId()){
@@ -87,7 +87,7 @@ public class SizeServiceImpl extends GenericServiceImpl<Size, Integer> implement
     @Override
     @Transactional
     public Size deleteById(Integer id) {
-        Shop owner = shopService.getOwnerLogin(true).orElse(null);
+        Shop owner = shopService.getShopLogin(true).orElse(null);
         Size old = this.sizeRepository.findById(id)
                 .orElseThrow(() -> new ValidException("Kích thước không tồn tại"));
         if (null != owner &&

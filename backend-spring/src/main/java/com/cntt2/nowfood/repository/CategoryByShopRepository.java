@@ -32,6 +32,6 @@ public interface CategoryByShopRepository extends JpaRepository<CategoryByShop,I
     Page<CategoryByShop> findByAdvSearch(SearchDto dto, Pageable pageable);
 
     @Query(value = "select c from CategoryByShop c " +
-            "where c.createdByShop = :shopId ")
+            "where c.createdByShop = :shopId or :shopId is null")
     Collection<CategoryByShop> findByShopId(Integer shopId);
 }

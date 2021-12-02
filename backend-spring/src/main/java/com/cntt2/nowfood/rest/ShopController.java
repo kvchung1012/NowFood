@@ -70,7 +70,7 @@ public class ShopController {
     @ApiOperation(value = "Tìm kiếm đơn hàng nâng cao shop [Phân trang].")
     @PostMapping(value = "/orders")
     public ResponseEntity<?> getOrders(@RequestBody OrderSearchDto form) {
-        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        Optional<Shop> shop = shopService.getShopLogin(true);
         if(shop.isPresent())
             form.setShopId(shop.get().getId());
         Page<OrderDto> orders = orderService.findByAdvSearch(form);
@@ -80,7 +80,7 @@ public class ShopController {
     @GetMapping(value="/category-shop")
     public ResponseEntity<?> getCategories() {
         Integer shopId = null;
-        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        Optional<Shop> shop = shopService.getShopLogin(true);
         if(shop.isPresent())
             shopId = shop.get().getId();
         List<CategoryByShopDto> sizes = categoryByShopService.findByShopId(shopId)
@@ -98,7 +98,7 @@ public class ShopController {
     }
     @PostMapping(value = "/category-shop/search-adv")
     public ResponseEntity<?> getCategoryByShopAdv(@Valid @RequestBody SearchDto dto) {
-        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        Optional<Shop> shop = shopService.getShopLogin(true);
         if(shop.isPresent())
             dto.setShopId(shop.get().getId());
         Page<CategoryByShopDto> result = categoryByShopService.findByAdvSearch(dto);
@@ -107,7 +107,7 @@ public class ShopController {
     @GetMapping(value="/sizes")
     public ResponseEntity<?> getSizes() {
         Integer shopId = null;
-        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        Optional<Shop> shop = shopService.getShopLogin(true);
         if(shop.isPresent())
             shopId = shop.get().getId();
         List<SizeDto> sizes = sizeService.findByShopId(shopId)
@@ -118,7 +118,7 @@ public class ShopController {
     @ApiOperation(value = "Tìm kiếm nâng cao kích thước [Phân trang].")
     @PostMapping("/sizes/search-adv")
     public ResponseEntity<?> getSizesAdv(@Valid @RequestBody SearchDto dto) {
-        Optional<Shop> shop = shopService.getOwnerLogin(false);
+        Optional<Shop> shop = shopService.getShopLogin(true);
         if(shop.isPresent())
             dto.setShopId(shop.get().getId());
         Page<SizeDto> result = sizeService.findByAdvSearch(dto);

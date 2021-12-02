@@ -60,7 +60,7 @@ public class CategoryByShopServiceImpl extends GenericServiceImpl<CategoryByShop
     public CategoryByShop saveOrUpdate(CategoryByShopFormDto form) {
         CategoryByShop entity = null;
         // get  shop login, if admin = null, else = shopId
-        Shop owner = shopService.getOwnerLogin(true).orElse(null);
+        Shop owner = shopService.getShopLogin(true).orElse(null);
         if(null == form) return null;
         if (null != form.getId()) {
             entity = categoryByShopRepository.findById(form.getId()).orElse(null);
@@ -84,7 +84,7 @@ public class CategoryByShopServiceImpl extends GenericServiceImpl<CategoryByShop
 
     @Override
     public CategoryByShop deleteById(Integer id) {
-        Shop owner = shopService.getOwnerLogin(true).orElse(null);
+        Shop owner = shopService.getShopLogin(true).orElse(null);
         CategoryByShop old = this.categoryByShopRepository.findById(id)
                 .orElseThrow(() -> new ValidException("Danh mục không tồn tại"));
         if(null != owner){

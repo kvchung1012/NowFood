@@ -70,6 +70,11 @@ public class User extends BaseEntity {
     private Boolean enabled = false;
 
     @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
+    private Shop owner;
+
+    // user n-n roles
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ShopId")
     private Shop shop;
 
     // user n-n roles

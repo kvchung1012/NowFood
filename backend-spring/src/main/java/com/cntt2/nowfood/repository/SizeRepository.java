@@ -32,7 +32,7 @@ public interface SizeRepository extends JpaRepository<Size,Integer> {
     Page<Size> findfindByAdvSearch(SearchDto dto, Pageable pageable);
 
     @Query(value = " select s from Size s " +
-            "where s.createdByShop.id = :id "
+            "where s.createdByShop.id = :id or :id is null "
     )
     List<Size> findByShopId(Integer id);
 }
