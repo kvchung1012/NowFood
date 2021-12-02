@@ -17,7 +17,6 @@ import com.cntt2.nowfood.service.CategoryByShopService;
 import com.cntt2.nowfood.service.OrderService;
 import com.cntt2.nowfood.service.ShopService;
 import com.cntt2.nowfood.service.SizeService;
-import com.cntt2.nowfood.utils.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +30,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.cntt2.nowfood.common.Constants.IS_DELETE;
 
 /**
  * @author Vanh
@@ -71,8 +72,7 @@ public class ShopController {
     @PostMapping(value = "/orders")
     public ResponseEntity<?> getOrders(@RequestBody OrderSearchDto form) {
         Optional<Shop> shop = shopService.getShopLogin(true);
-        if(shop.isPresent())
-            form.setShopId(shop.get().getId());
+        shop.ifPresent(value -> form.setShopId(value.getId()));
         Page<OrderDto> orders = orderService.findByAdvSearch(form);
         return new ResponseEntity<>(new MessageEntity(200, orders), HttpStatus.OK);
     }
@@ -99,8 +99,7 @@ public class ShopController {
     @PostMapping(value = "/category-shop/search-adv")
     public ResponseEntity<?> getCategoryByShopAdv(@Valid @RequestBody SearchDto dto) {
         Optional<Shop> shop = shopService.getShopLogin(true);
-        if(shop.isPresent())
-            dto.setShopId(shop.get().getId());
+        shop.ifPresent(value -> dto.setShopId(value.getId()));
         Page<CategoryByShopDto> result = categoryByShopService.findByAdvSearch(dto);
         return new ResponseEntity<>(new MessageEntity(200, result), HttpStatus.OK);
     }
@@ -119,8 +118,7 @@ public class ShopController {
     @PostMapping("/sizes/search-adv")
     public ResponseEntity<?> getSizesAdv(@Valid @RequestBody SearchDto dto) {
         Optional<Shop> shop = shopService.getShopLogin(true);
-        if(shop.isPresent())
-            dto.setShopId(shop.get().getId());
+        shop.ifPresent(value -> dto.setShopId(value.getId()));
         Page<SizeDto> result = sizeService.findByAdvSearch(dto);
         return new ResponseEntity<>(new MessageEntity(200,result), HttpStatus.OK);
     }
@@ -148,8 +146,10 @@ public class ShopController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        Shop shop = shopService.delete(id);
-        return new ResponseEntity<>(new MessageEntity(200, !CommonUtils.isNull(shop)), HttpStatus.OK);
+        Shop shop = shopService.getById(id);
+        shop.setVoided(IS_DELETE);
+        shopService.save(shop);
+        return new ResponseEntity<>(new MessageEntity(200, true), HttpStatus.OK);
     }
 
     @PostMapping()

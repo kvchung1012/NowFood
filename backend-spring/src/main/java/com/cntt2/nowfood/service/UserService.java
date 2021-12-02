@@ -11,7 +11,7 @@ import java.util.Date;
  * @version 1.0
  * @date 10/9/2021 12:04 AM
  */
-public interface UserService {
+public interface UserService extends GenericService<User,Integer> {
     UserRegisterDto createUser(UserRegisterDto userDto);
     UserPrincipal findByUsername(String username);
     String validUser(UserRegisterDto userDto);
