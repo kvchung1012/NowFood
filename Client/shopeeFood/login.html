@@ -69,14 +69,14 @@
     <div class="main d-flex justify-content-center mt-5 mb-5">
         <div class="login-res text-center">
             <h5>Sign up</h5>
-            <form action="" id="form-log-in">
+            <form id="form-log-in">
                 <div class="d-flex align-items-center p-2 inp-form" id="inp-email">
                     <i class="far fa-envelope"></i>
-                    <input type="text" class="w-100 border-0 ps-2" placeholder="Username or email">
+                    <input type="text" name="username" class="w-100 border-0 ps-2" placeholder="Username or email">
                 </div>
                 <div class="d-flex align-items-center p-2 inp-form border-top-0" id="inp-pass">
                     <i class="fas fa-lock"></i>
-                    <input type="password" class="w-100 border-0 ps-2" placeholder="Password">
+                    <input type="password" name="password" class="w-100 border-0 ps-2" placeholder="Password">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <div>
@@ -86,7 +86,7 @@
                     <a href="/forgotPassword.html">Quên mật khẩu?</a>
                 </div>
                 <div class="mb-5 mt-3">
-                    <button class="w-100 text-uppercase border-0 btn-form" id="btn-form-login">Đăng nhập</button>
+                    <button type="button" class="w-100 text-uppercase border-0 btn-form" id="btn-form-login">Đăng nhập</button>
                 </div>
             </form>
             <div>
@@ -169,7 +169,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="/input.js"></script>
+    <script src="./scripts/input.js"></script>
+    <script src="./scripts/login.js"></script>
 </body>
 
 </html>

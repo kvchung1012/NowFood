@@ -87,16 +87,21 @@ function OrderFood(id) {
             if (res.data.productSizes.length == 0 && res.data.productOptions.length == 0) {
                 var cart = localStorage.getItem('cart') == null ? [] : JSON.parse(localStorage.getItem('cart'));
                 if (cart.filter(x => x.productId == id).length == 0) {
-                    cart.push({
-                        productId: id,
-                        sizeId: null,
-                        sizeName: '',
-                        stock: 1,
-                        price: res.data.price,
-                        product: res.data
-                    })
-                    localStorage.setItem('cart', JSON.stringify(cart))
-                    LoadListOrder();
+                    if (cart.length == 0 || cart[0].product.shop.id == res.data.shop.id) {
+                        cart.push({
+                            productId: id,
+                            sizeId: null,
+                            sizeName: '',
+                            stock: 1,
+                            price: res.data.price,
+                            product: res.data
+                        })
+                        localStorage.setItem('cart', JSON.stringify(cart))
+                        LoadListOrder();
+                    }
+                    else {
+                        alert("Bạn chỉ được đặt cùng 1 chỗ")
+                    }
                 }
                 else {
                     alert("Đã tồn tại trong giỏ hàng")
@@ -118,20 +123,26 @@ function OrderFood(id) {
                     let val = $('input[name=ChooseSize]').val();
                     var cart = localStorage.getItem('cart') == null ? [] : JSON.parse(localStorage.getItem('cart'));
                     if (cart.filter(x => x.productId === id).length == 0) {
-                        cart.push({
-                            productId: id,
-                            sizeId: val,
-                            sizeName: res.data.productSizes.filter(x => x.size.id == val)[0].name,
-                            stock: 1,
-                            price: res.data.productSizes.filter(x => x.size.id == val)[0].price,
-                            product: res.data,
-                        })
-                        localStorage.setItem('cart', JSON.stringify(cart))
-                        LoadListOrder();
+                        if (cart.length == 0 || cart[0].product.shop.id == res.data.shop.id) {
+                            cart.push({
+                                productId: id,
+                                sizeId: val,
+                                sizeName: '',
+                                stock: 1,
+                                price: res.data.price,
+                                product: res.data
+                            })
+                            localStorage.setItem('cart', JSON.stringify(cart))
+                            LoadListOrder();
+                        }
+                        else {
+                            alert("Bạn chỉ được đặt cùng 1 chỗ")
+                        }
                     }
                     else {
                         alert("Đã tồn tại trong giỏ hàng")
                     }
+
                     $('#exampleModalCenter').modal('hide');
                 })
 
@@ -160,20 +171,26 @@ function OrderFood(id) {
                 $('.btnOrder').on('click', function () {
                     var cart = localStorage.getItem('cart') == null ? [] : JSON.parse(localStorage.getItem('cart'));
                     if (cart.filter(x => x.productId == id).length == 0) {
-                        cart.push({
-                            productId: id,
-                            sizeId: null,
-                            sizeName: '',
-                            stock: 1,
-                            price: res.data.price,
-                            product: res.data
-                        })
-                        localStorage.setItem('cart', JSON.stringify(cart))
-                        LoadListOrder();
+                        if (cart.length == 0 || cart[0].product.shop.id == res.data.shop.id) {
+                            cart.push({
+                                productId: id,
+                                sizeId: null,
+                                sizeName: '',
+                                stock: 1,
+                                price: res.data.price,
+                                product: res.data
+                            })
+                            localStorage.setItem('cart', JSON.stringify(cart))
+                            LoadListOrder();
+                        }
+                        else {
+                            alert("Bạn chỉ được đặt cùng 1 chỗ")
+                        }
                     }
                     else {
                         alert("Đã tồn tại trong giỏ hàng")
                     }
+
                     $('#exampleModalCenter').modal('hide');
 
                 })
@@ -210,59 +227,85 @@ function LoadListOrder() {
     $('.list-order').html('');
     $('.list-order').append(row);
 
-    const sum = cart.reduce((partial_sum, a) => partial_sum + a.price*a.stock, 0);
+    const sum = cart.reduce((partial_sum, a) => partial_sum + a.price * a.stock, 0);
     $('.total-price').text(sum);
 }
 
 
 function AddStock(id) {
     let cart = JSON.parse(localStorage.getItem('cart'));
-    var index = cart.findIndex(x=>x.productId == id);
+    var index = cart.findIndex(x => x.productId == id);
     cart[index].stock++;
     localStorage.setItem('cart', JSON.stringify(cart));
-    LoadListOrder();  
+    LoadListOrder();
 }
 
 function SubStock(id) {
     let cart = JSON.parse(localStorage.getItem('cart'));
-    var index = cart.findIndex(x=>x.productId == id);
+    var index = cart.findIndex(x => x.productId == id);
     cart[index].stock--;
-    if(cart[index].stock===0)
-        cart.splice(index,1);
+    if (cart[index].stock === 0)
+        cart.splice(index, 1);
     localStorage.setItem('cart', JSON.stringify(cart));
-    LoadListOrder();  
+    LoadListOrder();
 }
 
 Order()
-function Order(){
-    $('.get-order').click(()=>{
+function Order() {
+    $('.get-order').click(() => {
+        if (localStorage.getItem('token') == null) {
+            location.href = "/login.html";
+            return;
+        }
         var cart = localStorage.getItem('cart') == null ? [] : JSON.parse(localStorage.getItem('cart'));
-        if(cart.length==0){
+        if (cart.length == 0) {
             alert("Bạn cần đặt sản phẩm");
             return;
         }
-        else{
-              let mobie = prompt("Please enter your phone:", "");
-              let address = prompt("Please enter your phone:", "");
-              let note = prompt("Please enter your phone:", "");
+        else {
+            var info = JSON.parse(localStorage.getItem('info'));
+            let mobie = prompt("Nhập số điện thoại của bạn:", info.phoneNumber);
+            let address = prompt("Nhập địa chỉ của bạn:", info.address);
+            let note = prompt("Bạn cần lưu ý gì cho cửa hàng không:", "");
 
-              var request = {
-                "cartItems": [
-                    cart.map((val,key)=>{
-                        return {
-                            "productId": val.productId,
-                            "quantity": val.stock,
-                            "sizeId": val.sizeId
-                          }
-                    })
-                ],
+            var request = {
+                "cartItems": cart.map((val, key) => {
+                    return {
+                        "productId": val.productId,
+                        "quantity": val.stock,
+                        "sizeId": val.sizeId
+                    }
+                })
+                ,
                 "note": note,
                 "orderType": "DELIVERY",
                 "paymentMethod": "ATM_PAYMENT",
                 "shipAddress": address,
                 "shipMobile": mobie,
-                "shipName": ""
-              }
+                "shipName": info.fullName
+            }
+
+            $.ajax({
+                url: `${baseUrl}/api/carts/checkout`,
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token'),
+                  },
+                data: JSON.stringify(request),
+                success: function (res) {
+                    if(res.code==200){
+                        alert("Đặt hàng thành công");
+                    }
+                    else{
+                        alert("Xem lại đơn hàng của bạn");
+                    }
+                },
+                error : function(res){
+                    alert("Đã có lỗi xảy ra !!");
+                }
+            })
         }
     })
 }
