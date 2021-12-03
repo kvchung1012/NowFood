@@ -2,6 +2,7 @@ import { React, useState,useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import {CButton,CForm,CCol,CFormInput, CFormLabel, COffcanvasBody, CCloseButton, COffcanvasTitle, COffcanvas, COffcanvasHeader } from "@coreui/react"
 import axios from 'axios'
+import swal from 'sweetalert';
 
 const CreateShopCategoryComponent = (props) => {
     const baseUrl = useSelector((state) => state.baseUrl);
@@ -29,7 +30,7 @@ const CreateShopCategoryComponent = (props) => {
                 },
                 data: size,
             }).then(res => {
-                alert("Thành công");
+                swal("Thành công");
                 setSize({
                     id : 0,
                     code :'',
@@ -37,7 +38,7 @@ const CreateShopCategoryComponent = (props) => {
                 });
                 setValidated(false)
             }).catch(err => {
-                alert("Đã có lỗi xảy ra");
+                swal("Đã có lỗi xảy ra");
             })
         }
     }

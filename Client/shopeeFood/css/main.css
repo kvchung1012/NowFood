@@ -1,798 +1,800 @@
-    * {
-        padding: 0;
-        margin: 0;
-    }
-    
-    body {
-        background: #f2f2f2 !important;
-        font-family: 'Sarabun', sans-serif !important;
-    }
-    
-    header {
-        background: #fff;
-        padding: 20px 50px;
-    }
-    
-    .logo img {
-        height: 30px;
-        object-fit: contain;
-    }
-    
-    .item-nav-link a {
-        text-decoration: none;
-        padding: 0 8px;
-        color: #252525;
-    }
-    
-    .item-nav-link a:hover {
-        color: #ee4d2d;
-    }
-    
-    .main-nav {
-        margin-left: 73px;
-    }
-    
-    .drop-menu {
-        padding-right: 60px;
-    }
-    
-    .dropdown-show {
-        background: #f2f2f2;
-        width: fit-content;
-        padding: 5px 10px;
-        border-radius: 3px;
-        margin-bottom: 3px;
-    }
-    
-    .dropdown-show button {
-        border: 0;
-        background: transparent;
-    }
-    
-    .dropdown-show i {
-        font-size: 0.9rem;
-        padding-left: 6px;
-    }
-    
-    .name-food {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        padding-top: 5px;
-    }
-    
-    .name-food span {
-        position: relative;
-        margin-left: 17px;
-        font-weight: 600;
-        color: #000;
-    }
-    
-    .name-food span:before {
-        position: absolute;
-        content: "";
-        left: -19px;
-        top: 2px;
-        width: 17px;
-        height: 17px;
-        background: url("https://shopeefood.vn/app/assets/img/partner2x.png?c0e5f47a050265e19076c2a23ce0544e");
-        background-size: cover;
-    }
-    
-    .list-drop-menu {
-        position: absolute;
-        z-index: 100;
-        margin-top: 3px;
-    }
-    
-    .item-drop-menu:hover {
-        background: #f2f2f2;
-    }
-    
-    .content-main {
-        padding: 20px 30px !important;
-    }
-    
-    .catagory {
-        background: #fff;
-        height: fit-content;
-        border-radius: 5px;
-    }
-    
-    .item-food {
-        position: relative;
-    }
-    
-    .item-food .restaurent {
-        color: #000;
-        text-decoration: none;
-        display: block;
-        transition: all .2s;
-    }
-    
-    .restaurent:hover {
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        border-radius: 7px;
-    }
-    
-    .status-circle {
-        background: rgb(35, 152, 57);
-        width: 17px;
-        height: 17px;
-        border-radius: 50%;
-        position: absolute;
-        border: 1px solid #fff;
-        left: 3px;
-        top: -5px;
-    }
-    
-    .action .search {
-        border: 0;
-        background-color: transparent;
-        margin-right: 15px;
-    }
-    
-    .btn-login {
-        background: transparent;
-        border: 1px solid #ee4d2d;
-        padding: 5px 13px;
-        color: #ee4d2d;
-        border-radius: 5px;
-    }
-    
-    .image-food {
-        width: 100%;
-        height: 138px;
-        object-fit: cover;
-        border-radius: 7px 7px 0 0;
-        border: 1px solid #ccc;
-        border-bottom: 0;
-        box-sizing: border-box;
-    }
-    
-    .intro-food {
-        background-color: #fff;
-        border-radius: 0 0 7px 7px;
-        padding: 0 7px;
-        border: 1px solid #ccc;
-        border-top: 0;
-    }
-    
-    .info-address {
-        font-size: 0.9rem;
-        color: #959595;
-        margin-bottom: 4px;
-        margin-top: 2px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    
-    .sale-food {
-        position: relative;
-        padding: 5px 0;
-    }
-    
-    .list-restauren-address {
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        font-size: 0.88rem;
-    }
-    
-    .sale-food:before {
-        position: absolute;
-        content: "";
-        top: 0px;
-        left: -7px;
-        right: -7px;
-        background: #d3d2d2;
-        height: 1px;
-    }
-    
-    .sale-food i {
-        color: rgba(209, 23, 23, 0.911);
-    }
-    
-    .sale-food span {
-        font-size: 0.92rem;
-        color: #187caa;
-        font-weight: 600;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    
-    footer {
-        padding: 20px 30px;
-    }
-    
-    footer a {
-        text-decoration: none;
-    }
-    
-    .download-source {
-        overflow: hidden;
-    }
-    
-    .download-source li {
-        margin-top: 18px;
-    }
-    
-    .download-source li img {
-        width: 122px;
-        height: 40px;
-    }
-    
-    .logo-footer img {
-        width: 100px;
-        height: 100px;
-        margin-top: 25px;
-        margin-bottom: 15px;
-    }
-    
-    .logo-footer p {
-        font-size: 0.82rem;
-        color: #959595;
-    }
-    
-    .social-network a {
-        padding: 5px;
-    }
-    
-    .social-network i {
-        font-size: 1.75rem;
-        color: #959595;
-        transition: all .5s linear;
-    }
-    
-    .social-network .fa-facebook:hover {
-        color: rgb(2, 136, 209);
-    }
-    
-    .social-network .fa-instagram:hover {
-        color: rgb(186, 48, 167);
-    }
-    
-    .image-license {
-        object-fit: contain;
-        width: 170px;
-    }
-    
-    .title-footer {
-        font-weight: 600;
-        font-size: 1.12rem;
-    }
-    
-    .block-last {
-        font-size: 0.95rem;
-    }
-    
-    .block-last p {
-        margin-bottom: 3px;
-    }
-    
-    .search-banner {
-        background: #000;
-        opacity: 0;
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 200;
-        transition: all .25s linear;
-        visibility: hidden;
-    }
-    
-    .show-search {
-        top: 0 !important;
-        opacity: 0.9 !important;
-        visibility: visible;
-    }
-    
-    .sub-title {
-        color: #fff;
-        padding-top: 10px;
-    }
-    
-    #inp-search {
-        right: -15%;
-        background: transparent;
-        border: 0;
-        border-bottom: 2px solid #ccc;
-        outline: none;
-        color: #fff;
-        position: absolute;
-        text-align: center;
-        left: -15%;
-        width: 130%;
-    }
-    
-    .action-search-res {
-        margin-top: 70px;
-        position: relative;
-        transform: translateY(-100%);
-        transition: all .3s linear;
-        height: fit-content;
-    }
-    
-    .show-action-search {
-        transform: translateY(0);
-    }
-    
-    .overlay {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        z-index: -1;
-    }
-    
-    #btn-close {
-        position: absolute;
-        right: -17%;
-        top: -40px;
-        border: 0 none;
-        background: transparent;
-        color: #fff;
-        font-size: 2rem
-    }
-    
-    .image-detail-food {
-        width: 100%;
-        object-fit: contain;
-    }
-    
-    .info-detail-food {
-        background: #fff;
-    }
-    
-    .content-detail {
-        padding: 20px 50px;
-        background: #fff;
-    }
-    
-    .title-menu {
-        padding: 10px 25px;
-        margin-bottom: 3px;
-        color: #cf2127;
-        font-weight: 600;
-    }
-    
-    .menu {
-        background: #fff;
-        border-radius: 5px;
-        height: fit-content;
-    }
-    
-    .list-menu {
-        padding: 10px 5px;
-    }
-    
-    .menu-item {
-        padding: 5px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    
-    .menu a {
-        text-decoration: none;
-        font-size: 0.82rem;
-        text-transform: uppercase;
-        color: #6d6f71;
-    }
-    
-    .promotions-order {
-        background: #fff;
-        padding-top: 5px;
-        border-radius: 3px;
-        height: 100%;
-    }
-    
-    .list-promotion-order {
-        background: #fbf9d8;
-        border: 1px dashed #575757;
-    }
-    
-    .promotion-item {
-        padding: 5px 10px;
-    }
-    
-    .image-promotion {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .formality {
-        padding: 5px 50px;
-    }
-    
-    .content {
-        font-size: 0.94rem;
-        margin-left: 30px;
-        border-bottom: 1px solid #bdbdbd;
-        width: 100%;
-    }
-    
-    .promotion-item:last-child .content {
-        border: 0;
-    }
-    
-    .icon-cotent-discount {
-        width: 80%;
-        cursor: pointer;
-    }
-    
-    .copy-code {
-        font-size: 0.83rem;
-        cursor: default;
-    }
-    
-    .menu-restaurant-list {
-        padding: 10px 20px;
-    }
-    
-    .menu-restaurant-list input {
-        width: 100%;
-        border: 0 none;
-        outline: none;
-        padding-left: 10px;
-    }
-    
-    .seach-menu-item {
-        border: 1px solid #ccc;
-        padding: 3px 10px;
-    }
-    
-    .item-restaurant-img {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        padding-right: 8px;
-    }
-    
-    .item-restaurant-name p {
-        margin-bottom: 5px;
-        line-height: 15px;
-        font-size: 0.80rem;
-        color: #575757;
-        font-weight: 600;
-    }
-    
-    .number-order {
-        color: #464646;
-    }
-    
-    .item-restaurant-name p:first-child {
-        font-weight: 600;
-        font-size: 1rem;
-        color: #464646;
-    }
-    
-    .food-price p {
-        line-height: 14px;
-        padding-bottom: 5px;
-    }
-    
-    .btn-order {
-        display: flex;
-        width: fit-content;
-        height: fit-content;
-        padding: 4px 5px;
-        border: 0 none;
-        background: #ee4d2d;
-        color: #fff;
-        border-radius: 3px;
-        font-size: 0.86rem;
-        margin-left: 10px;
-    }
-    
-    .price-btn p {
-        margin-bottom: 0;
-    }
-    
-    .intro-menu>p {
-        margin: 10px 0;
-        text-transform: uppercase;
-        color: #6d6f71;
-    }
-    
-    .initial-price del {
-        font-size: 0.8rem;
-        color: #6d6f71;
-    }
-    
-    .current-price {
-        font-size: 0.9rem;
-        color: #187caa;
-        font-weight: 600;
-    }
-    
-    .current-price sup {
-        color: #187caa;
-    }
-    
-    .cart {
-        padding: 0;
-        height: fit-content;
-        border: 1px solid #ebebeb;
-        border-radius: 3px;
-    }
-    
-    .cart p {
-        margin-bottom: 0;
-    }
-    
-    .txt-acount-cart {
-        font-size: 0.83rem;
-        background: #ebebeb;
-        color: #187caa;
-        font-weight: 600;
-        padding: 1px 7px;
-        border-radius: 3px;
-    }
-    
-    .txt-acount-cart:hover {
-        color: #fff;
-        background: #5d6d9a;
-        transition: all .5s;
-    }
-    
-    .title-cart {
-        background: #fff;
-        border-radius: 3px 3px 0 0;
-    }
-    
-    .cart .delete-cart {
-        border: 1px solid #ee4d2d;
-        color: #ee4d2d;
-        background: transparent;
-        padding: 0 5px;
-        font-size: 0.8rem;
-    }
-    
-    .order-origin {
-        font-size: 0.76rem;
-        font-weight: 600;
-        margin-bottom: 0;
-    }
-    
-    .customer {
-        color: #0288d1!important;
-    }
-    
-    .input-promocode {
-        background-color: #fbf9d8;
-    }
-    
-    .row-bill-restaurant {
-        font-size: 0.85rem;
-        margin-bottom: 0;
-    }
-    
-    .row-bill-restaurant span {
-        color: #ee4d2d;
-    }
-    
-    .btn-order-b {
-        width: 100%;
-        background: #ee4d2d;
-        color: #fff;
-    }
-    
-    .acount-cart {
-        border-top: 1px solid #ebebeb;
-        border-bottom: 1px solid #ebebeb;
-    }
-    
-    .div-btn-ord {
-        background: #fff;
-        border-radius: 0 0 3px 3px;
-    }
-    
-    .open-time span {
-        font-size: .9rem;
-    }
-    
-    .circle-detail-status {
-        height: 10px;
-        width: 10px;
-        border-radius: 50%;
-        background: #6cc942;
-    }
-    
-    .title-open {
-        color: #6cc942;
-        padding: 0 5px;
-    }
-    
-    .fa-clock {
-        padding: 0 5px;
-    }
-    
-    .cost-restaurant {
-        font-size: 0.9rem;
-        color: #959595;
-    }
-    
-    .link-page p {
-        margin-bottom: 8px;
-    }
-    
-    .service {
-        border-top: 1px solid #ebebeb;
-        padding-top: 10px;
-    }
-    
-    .service-charge {
-        position: relative;
-    }
-    
-    .service-charge::after {
-        content: "";
-        position: absolute;
-        top: 15px;
-        bottom: 15px;
-        width: 1px;
-        right: 0;
-        background: #ebebeb;
-    }
-    
-    .service-charge img {
-        position: absolute;
-        bottom: 0;
-    }
-    
-    .txt-sevice-red {
-        color: #ee4d2d!important;
-        font-weight: 600;
-        font-size: .9rem;
-    }
-    
-    .title-service {
-        font-size: 0.88rem;
-        margin-bottom: 0 !important;
-        color: #959595;
-    }
-    
-    .over-order {
-        display: flex;
-        justify-content: center;
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        visibility: hidden;
-    }
-    
-    .black-over {
-        background: #000;
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        left: 0;
-        transition: all .25s linear;
-        visibility: hidden;
-    }
-    
-    .show-black-over {
-        opacity: 0.6 !important;
-        visibility: visible !important;
-    }
-    
-    .notification {
-        background: #fff;
-        width: 60%;
-        height: fit-content;
-        margin-top: 60px;
-        border-radius: 4px;
-        transform: translateY(-150%);
-        z-index: 100;
-        transition: all .3s linear;
-        visibility: visible;
-    }
-    
-    .close-notifi {
-        position: absolute;
-        background: transparent;
-        border: 0 none;
-        font-size: 1.8rem;
-        top: 20px;
-        right: 19%;
-        z-index: 100;
-        color: #fff;
-    }
-    
-    .show-close-notifi {
-        visibility: visible;
-    }
-    
-    .show-notification {
-        transform: translateY(0);
-    }
-    
-    .dish-selection-notice {
-        padding: 15px 10px;
-    }
-    
-    .dish-selection-notice p {
-        margin-bottom: 25px;
-    }
-    
-    .shopee-notif {
-        background: #f2f2f2;
-        padding: 10px 10px;
-        border-radius: 4px 4px 0px 0;
-    }
-    
-    .shopee-notif span {
-        font-weight: 600;
-        padding-right: 8px;
-        font-size: 0.92rem;
-    }
-    
-    .shopee-notif span:first-child {
-        color: #ee4d2d;
-    }
-    
-    .btn-ok {
-        background: #ee4d2d;
-        color: #fff;
-        border: 0 none;
-        padding: 0 10px;
-        border-radius: 3px;
-    }
-    
-    .fly-item {
-        background: #187caa;
-        color: #fff;
-        position: absolute;
-        border-radius: 50%;
-        padding: 1px 6px;
-        font-size: 0.8rem;
-        transition: all 1.2s ease;
-    }
-    
-    .login-res {
-        width: 50%;
-        background: #fff;
-        padding: 15px 15px;
-    }
-    
-    .login-res h5 {
-        font-weight: 600;
-        margin-bottom: 18px;
-    }
-    
-    .inp-form {
-        border: 1px solid #ccc;
-    }
-    
-    .inp-form input {
-        outline: none;
-    }
-    
-    #inp-email {
-        border-radius: 3px 3px 0 0;
-    }
-    
-    #inp-pass {
-        border-radius: 0 0 3px 3px;
-    }
-    
-    .btn-form {
-        padding: 5px 0;
-        border-radius: 3px;
-        color: #fff;
-        background: #0288d1;
-    }
-    
-    .title-fogot {
-        text-align: center;
-    }
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: #f2f2f2 !important;
+    font-family: 'Sarabun', sans-serif !important;
+}
+
+header {
+    background: #fff;
+    padding: 20px 50px;
+}
+
+.logo img {
+    height: 30px;
+    object-fit: contain;
+}
+
+.item-nav-link a {
+    text-decoration: none;
+    padding: 0 8px;
+    color: #252525;
+}
+
+.item-nav-link a:hover {
+    color: #ee4d2d;
+}
+
+.main-nav {
+    margin-left: 73px;
+}
+
+.drop-menu {
+    padding-right: 60px;
+}
+
+.dropdown-show {
+    background: #f2f2f2;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-bottom: 3px;
+}
+
+.dropdown-show button {
+    border: 0;
+    background: transparent;
+}
+
+.dropdown-show i {
+    font-size: 0.9rem;
+    padding-left: 6px;
+}
+
+.name-food {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-top: 5px;
+}
+
+.name-food span {
+    position: relative;
+    margin-left: 17px;
+    font-weight: 600;
+    color: #000;
+}
+
+.name-food span:before {
+    position: absolute;
+    content: "";
+    left: -19px;
+    top: 2px;
+    width: 17px;
+    height: 17px;
+    background: url("https://shopeefood.vn/app/assets/img/partner2x.png?c0e5f47a050265e19076c2a23ce0544e");
+    background-size: cover;
+}
+
+.list-drop-menu {
+    position: absolute;
+    z-index: 100;
+    margin-top: 3px;
+}
+
+.item-drop-menu:hover {
+    background: #f2f2f2;
+}
+
+.content-main {
+    padding: 20px 30px !important;
+}
+
+.catagory {
+    background: #fff;
+    height: fit-content;
+    border-radius: 5px;
+}
+
+.item-food {
+    position: relative;
+}
+
+.item-food .restaurent {
+    color: #000;
+    text-decoration: none;
+    display: block;
+    transition: all .2s;
+}
+
+.restaurent:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 7px;
+}
+
+.status-circle {
+    background: rgb(35, 152, 57);
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    position: absolute;
+    border: 1px solid #fff;
+    left: 3px;
+    top: -5px;
+}
+
+.action .search {
+    border: 0;
+    background-color: transparent;
+    margin-right: 15px;
+}
+
+.btn-login {
+    background: transparent;
+    border: 1px solid #ee4d2d;
+    padding: 5px 13px;
+    color: #ee4d2d;
+    border-radius: 5px;
+}
+
+.image-food {
+    width: 100%;
+    height: 138px;
+    object-fit: contain;
+    border-radius: 7px 7px 0 0;
+    border: 1px solid #ccc;
+    border-bottom: 0;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.intro-food {
+    background-color: #fff;
+    border-radius: 0 0 7px 7px;
+    padding: 0 7px;
+    border: 1px solid #ccc;
+    border-top: 0;
+}
+
+.info-address {
+    font-size: 0.9rem;
+    color: #959595;
+    margin-bottom: 4px;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sale-food {
+    position: relative;
+    padding: 5px 0;
+}
+
+.list-restauren-address {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 0.88rem;
+}
+
+.sale-food:before {
+    position: absolute;
+    content: "";
+    top: 0px;
+    left: -7px;
+    right: -7px;
+    background: #d3d2d2;
+    height: 1px;
+}
+
+.sale-food i {
+    color: rgba(209, 23, 23, 0.911);
+}
+
+.sale-food span {
+    font-size: 0.92rem;
+    color: #187caa;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+footer {
+    padding: 20px 30px;
+}
+
+footer a {
+    text-decoration: none;
+}
+
+.download-source {
+    overflow: hidden;
+}
+
+.download-source li {
+    margin-top: 18px;
+}
+
+.download-source li img {
+    width: 122px;
+    height: 40px;
+}
+
+.logo-footer img {
+    width: 100px;
+    height: 100px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.logo-footer p {
+    font-size: 0.82rem;
+    color: #959595;
+}
+
+.social-network a {
+    padding: 5px;
+}
+
+.social-network i {
+    font-size: 1.75rem;
+    color: #959595;
+    transition: all .5s linear;
+}
+
+.social-network .fa-facebook:hover {
+    color: rgb(2, 136, 209);
+}
+
+.social-network .fa-instagram:hover {
+    color: rgb(186, 48, 167);
+}
+
+.image-license {
+    object-fit: contain;
+    width: 170px;
+}
+
+.title-footer {
+    font-weight: 600;
+    font-size: 1.12rem;
+}
+
+.block-last {
+    font-size: 0.95rem;
+}
+
+.block-last p {
+    margin-bottom: 3px;
+}
+
+.search-banner {
+    background: #000;
+    opacity: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    transition: all .25s linear;
+    visibility: hidden;
+}
+
+.show-search {
+    top: 0 !important;
+    opacity: 0.9 !important;
+    visibility: visible;
+}
+
+.sub-title {
+    color: #fff;
+    padding-top: 10px;
+}
+
+#inp-search {
+    right: -15%;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+    color: #fff;
+    position: absolute;
+    text-align: center;
+    left: -15%;
+    width: 130%;
+}
+
+.action-search-res {
+    margin-top: 70px;
+    position: relative;
+    transform: translateY(-100%);
+    transition: all .3s linear;
+    height: fit-content;
+}
+
+.show-action-search {
+    transform: translateY(0);
+}
+
+.overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+#btn-close {
+    position: absolute;
+    right: -17%;
+    top: -40px;
+    border: 0 none;
+    background: transparent;
+    color: #fff;
+    font-size: 2rem
+}
+
+.image-detail-food {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+}
+
+.info-detail-food {
+    background: #fff;
+}
+
+.content-detail {
+    padding: 20px 50px;
+    background: #fff;
+}
+
+.title-menu {
+    padding: 10px 25px;
+    margin-bottom: 3px;
+    color: #cf2127;
+    font-weight: 600;
+}
+
+.menu {
+    background: #fff;
+    border-radius: 5px;
+    height: fit-content;
+}
+
+.list-menu {
+    padding: 10px 5px;
+}
+
+.menu-item {
+    padding: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.menu a {
+    text-decoration: none;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    color: #6d6f71;
+}
+
+.promotions-order {
+    background: #fff;
+    padding-top: 5px;
+    border-radius: 3px;
+    height: 100%;
+}
+
+.list-promotion-order {
+    background: #fbf9d8;
+    border: 1px dashed #575757;
+}
+
+.promotion-item {
+    padding: 5px 10px;
+}
+
+.image-promotion {
+    width: 40px;
+    height: 40px;
+}
+
+.formality {
+    padding: 5px 50px;
+}
+
+.content {
+    font-size: 0.94rem;
+    margin-left: 30px;
+    border-bottom: 1px solid #bdbdbd;
+    width: 100%;
+}
+
+.promotion-item:last-child .content {
+    border: 0;
+}
+
+.icon-cotent-discount {
+    width: 80%;
+    cursor: pointer;
+}
+
+.copy-code {
+    font-size: 0.83rem;
+    cursor: default;
+}
+
+.menu-restaurant-list {
+    padding: 10px 20px;
+}
+
+.menu-restaurant-list input {
+    width: 100%;
+    border: 0 none;
+    outline: none;
+    padding-left: 10px;
+}
+
+.seach-menu-item {
+    border: 1px solid #ccc;
+    padding: 3px 10px;
+}
+
+.item-restaurant-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    padding-right: 8px;
+}
+
+.item-restaurant-name p {
+    margin-bottom: 5px;
+    line-height: 15px;
+    font-size: 0.80rem;
+    color: #575757;
+    font-weight: 600;
+}
+
+.number-order {
+    color: #464646;
+}
+
+.item-restaurant-name p:first-child {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #464646;
+}
+
+.food-price p {
+    line-height: 14px;
+    padding-bottom: 5px;
+}
+
+.btn-order {
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    padding: 4px 5px;
+    border: 0 none;
+    background: #ee4d2d;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 0.86rem;
+    margin-left: 10px;
+}
+
+.price-btn p {
+    margin-bottom: 0;
+}
+
+.intro-menu>p {
+    margin: 10px 0;
+    text-transform: uppercase;
+    color: #6d6f71;
+}
+
+.initial-price del {
+    font-size: 0.8rem;
+    color: #6d6f71;
+}
+
+.current-price {
+    font-size: 0.9rem;
+    color: #187caa;
+    font-weight: 600;
+}
+
+.current-price sup {
+    color: #187caa;
+}
+
+.cart {
+    padding: 0;
+    height: fit-content;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+}
+
+.cart p {
+    margin-bottom: 0;
+}
+
+.txt-acount-cart {
+    font-size: 0.83rem;
+    background: #ebebeb;
+    color: #187caa;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 3px;
+}
+
+.txt-acount-cart:hover {
+    color: #fff;
+    background: #5d6d9a;
+    transition: all .5s;
+}
+
+.title-cart {
+    background: #fff;
+    border-radius: 3px 3px 0 0;
+}
+
+.cart .delete-cart {
+    border: 1px solid #ee4d2d;
+    color: #ee4d2d;
+    background: transparent;
+    padding: 0 5px;
+    font-size: 0.8rem;
+}
+
+.order-origin {
+    font-size: 0.76rem;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.customer {
+    color: #0288d1!important;
+}
+
+.input-promocode {
+    background-color: #fbf9d8;
+}
+
+.row-bill-restaurant {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+}
+
+.row-bill-restaurant span {
+    color: #ee4d2d;
+}
+
+.btn-order-b {
+    width: 100%;
+    background: #ee4d2d;
+    color: #fff;
+}
+
+.acount-cart {
+    border-top: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
+}
+
+.div-btn-ord {
+    background: #fff;
+    border-radius: 0 0 3px 3px;
+}
+
+.open-time span {
+    font-size: .9rem;
+}
+
+.circle-detail-status {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: #6cc942;
+}
+
+.title-open {
+    color: #6cc942;
+    padding: 0 5px;
+}
+
+.fa-clock {
+    padding: 0 5px;
+}
+
+.cost-restaurant {
+    font-size: 0.9rem;
+    color: #959595;
+}
+
+.link-page p {
+    margin-bottom: 8px;
+}
+
+.service {
+    border-top: 1px solid #ebebeb;
+    padding-top: 10px;
+}
+
+.service-charge {
+    position: relative;
+}
+
+.service-charge::after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    bottom: 15px;
+    width: 1px;
+    right: 0;
+    background: #ebebeb;
+}
+
+.service-charge img {
+    position: absolute;
+    bottom: 0;
+}
+
+.txt-sevice-red {
+    color: #ee4d2d!important;
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+.title-service {
+    font-size: 0.88rem;
+    margin-bottom: 0 !important;
+    color: #959595;
+}
+
+.over-order {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    visibility: hidden;
+}
+
+.black-over {
+    background: #000;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    transition: all .25s linear;
+    visibility: hidden;
+}
+
+.show-black-over {
+    opacity: 0.6 !important;
+    visibility: visible !important;
+}
+
+.notification {
+    background: #fff;
+    width: 60%;
+    height: fit-content;
+    margin-top: 60px;
+    border-radius: 4px;
+    transform: translateY(-150%);
+    z-index: 100;
+    transition: all .3s linear;
+    visibility: visible;
+}
+
+.close-notifi {
+    position: absolute;
+    background: transparent;
+    border: 0 none;
+    font-size: 1.8rem;
+    top: 20px;
+    right: 19%;
+    z-index: 100;
+    color: #fff;
+}
+
+.show-close-notifi {
+    visibility: visible;
+}
+
+.show-notification {
+    transform: translateY(0);
+}
+
+.dish-selection-notice {
+    padding: 15px 10px;
+}
+
+.dish-selection-notice p {
+    margin-bottom: 25px;
+}
+
+.shopee-notif {
+    background: #f2f2f2;
+    padding: 10px 10px;
+    border-radius: 4px 4px 0px 0;
+}
+
+.shopee-notif span {
+    font-weight: 600;
+    padding-right: 8px;
+    font-size: 0.92rem;
+}
+
+.shopee-notif span:first-child {
+    color: #ee4d2d;
+}
+
+.btn-ok {
+    background: #ee4d2d;
+    color: #fff;
+    border: 0 none;
+    padding: 0 10px;
+    border-radius: 3px;
+}
+
+.fly-item {
+    background: #187caa;
+    color: #fff;
+    position: absolute;
+    border-radius: 50%;
+    padding: 1px 6px;
+    font-size: 0.8rem;
+    transition: all 1.2s ease;
+}
+
+.login-res {
+    width: 50%;
+    background: #fff;
+    padding: 15px 15px;
+}
+
+.login-res h5 {
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.inp-form {
+    border: 1px solid #ccc;
+}
+
+.inp-form input {
+    outline: none;
+}
+
+#inp-email {
+    border-radius: 3px 3px 0 0;
+}
+
+#inp-pass {
+    border-radius: 0 0 3px 3px;
+}
+
+.btn-form {
+    padding: 5px 0;
+    border-radius: 3px;
+    color: #fff;
+    background: #0288d1;
+}
+
+.title-fogot {
+    text-align: center;
+}

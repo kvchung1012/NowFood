@@ -4,7 +4,7 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/inde
 import { Redirect } from 'react-router'
 
 const DefaultLayout = () => {
-  const isLogin = useSelector((state) => state.isLogin)
+  const isLogin = localStorage.getItem('token') != null
   return isLogin ? (
     <div>
       <AppSidebar />

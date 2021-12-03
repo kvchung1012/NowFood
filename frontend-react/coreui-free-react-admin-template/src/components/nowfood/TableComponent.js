@@ -12,6 +12,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import HeaderTable from './HeaderTable';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 const TableComponent = (props) => {
     const [request, setRequest] = useState({
         pageIndex: 1,
@@ -39,6 +40,9 @@ const TableComponent = (props) => {
     // data in table
     const [rowData, setRowData] = useState([]);
 
+    const [orderType, setOrderType] = useState([]);
+    const [orderStatus, setOrderStatus] = useState([]);
+
 
     // callback from header
     const changeHeader = (data) => {
@@ -65,10 +69,9 @@ const TableComponent = (props) => {
                 },
                 data: {},
             }).then(res => {
-                console.log(res.data.data)
+                console.log(res.data.data);
                 setRowData(res.data.data.orderDetails)
             }).catch(err => {
-                console.log(err);
             })
         }
         else{
@@ -81,6 +84,7 @@ const TableComponent = (props) => {
                 },
                 data: request,
             }).then(res => {
+                console.log(res);
                 let start = 1, end = res.data.data.totalPages;
                 if (end > 4) {
                     if (request.pageIndex >= 2 && request.pageIndex <= end - 2) {
@@ -188,6 +192,44 @@ const TableComponent = (props) => {
         props.btnCreateClick()
     }
 
+
+    // mở rộng order
+
+    useEffect(() => {
+        axios({
+            url: "http://localhost:8081/api/common/system-keys",
+            method: 'get',
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem('token'),
+                "Content-Type": 'application/json'
+            },
+            data: {},
+        }).then(res => {
+            setOrderStatus(res.data.data.ORDER_STATUS)
+            setOrderType(res.data.data.ORDER_TYPE)
+        }).catch(err => {
+            console.log(err);
+        })
+    }, [])
+
+
+    function ChangeStatus(id,val){
+        if(id>0)
+            axios({
+                url: `http://localhost:8081/api/orders/${val==1?"approve":"reject"}/${id}`,
+                method: 'get',
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token'),
+                    "Content-Type": 'application/json'
+                },
+                data: {},
+            }).then(res => {
+                swal("Bạn vừa đổi trạng thái đơn hàng")
+            }).catch(err => {
+                console.log(err);
+            })
+    }
+
     return <div className="ag-theme-alpine" style={{ height: 500 }}>
         <HeaderTable prop={header} callbackHeader={changeHeader} callbackKeyWord={setKeyWord} btnCreateClick={btnCreateClick} />
         <AgGridReact
@@ -224,6 +266,14 @@ const TableComponent = (props) => {
                         state: { id: node.data.id }
                       }}
                     >Chi tiết</Link>
+                },
+
+                changeOrderStatus : (node) =>{
+                    return (<CFormSelect aria-label="select" onChange={(e)=>ChangeStatus(node.data.id,e.target.value)}>
+                                   <option selected={node.data.orderStatus === "PENDING"?true:false} value={0}>Đang chờ</option>
+                                   <option selected={node.data.orderStatus === "CONFIRMED"?true:false} value={1}>Duyệt</option>
+                                   <option selected={node.data.orderStatus === "CANCELED"?true:false} value={2}>Từ chối</option>
+                            </CFormSelect>)
                 }
             }}
         >

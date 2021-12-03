@@ -62,14 +62,16 @@ const OrderComponent = () => {
             sort: null,
             resizable: true,
             hide: false,
-            pinned: ''
+            pinned: '',
+            cellRenderer: "changeOrderStatus"
         },
         {
             field: 'orderType',
             sort: null,
             resizable: true,
             hide: false,
-            pinned: ''
+            pinned: '',
+            //cellRenderer: "changeOrderType"
         },
         {
             field: 'paymentPayMethod',

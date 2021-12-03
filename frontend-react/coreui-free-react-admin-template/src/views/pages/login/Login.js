@@ -25,7 +25,7 @@ const Login = () => {
   const history = useHistory()
 
   const dispatch = useDispatch()
-  const isLogin = useSelector((state) => state.isLogin)
+  const isLogin = localStorage.getItem('token') != null;
   const baseUrl = useSelector((state) => state.baseUrl);
 
   const [userName, setUserName] = useState('admin12345')
@@ -46,12 +46,9 @@ const Login = () => {
         username: userName
       }
       axios.post(baseUrl + "api/auth/login",obj).then(res => {
-        debugger
-        console.log(res);
         if(res.data.code===200){
           localStorage.setItem("token", res.data.data.token);
           localStorage.setItem("userName", res.data.data.username);
-          dispatch({ type: 'set', isLogin: true })
           history.push("/")
         }
         else{

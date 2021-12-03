@@ -1,8 +1,3 @@
-const params = new window.URLSearchParams(window.location.search);
-const idShop = params.get('Id');
-const productId = params.get('productId');
-const baseUrl = 'http://localhost:8081'
-
 GetCategoryByShop();
 GetShop();
 LoadListOrder();
@@ -46,7 +41,8 @@ function GetShop() {
                                     <button class="btn-order text-center" id="btn-order-item19833" onclick="OrderFood(${val.id})"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>`;
-                $('.intro-menu').append(row);
+                if(val.isMain)
+                    $('.intro-menu').append(row);
             })
         }
     })
@@ -108,6 +104,7 @@ function OrderFood(id) {
                 }
             }
             else if (res.data.productSizes.length > 0) {
+                $('.title-option').text('Mời bạn chọn size')
                 let row = ``;
                 res.data.productSizes.forEach((val, i) => {
                     row += `<div class="mt-2">
@@ -149,6 +146,7 @@ function OrderFood(id) {
                 $('#exampleModalCenter').modal('show');
             }
             else {
+                $('.title-option').text('Thông tin combo')
                 let row = ``;
                 res.data.productOptions.forEach((val, e) => {
                     row += `<div class="item-menu mt-1 d-flex justify-content-between">

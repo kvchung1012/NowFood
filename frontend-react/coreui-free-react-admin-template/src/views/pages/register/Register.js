@@ -17,6 +17,7 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
 import axios from 'axios'
+import swal from 'sweetalert'
 
 const Register = () => {
   const baseUrl = useSelector((state) => state.baseUrl);
@@ -53,7 +54,7 @@ const Register = () => {
         }).then(res => {
           console.log(res.data);
           if(res.data.code===200){
-              alert("Đăng ký thành công vui lòng trở lại trang đăng nhập")
+              swal("Đăng ký thành công vui lòng trở lại trang đăng nhập")
           }
           else{
               alert(res.data.message)

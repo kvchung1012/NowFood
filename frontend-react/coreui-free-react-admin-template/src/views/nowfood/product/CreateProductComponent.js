@@ -2,6 +2,7 @@ import { React, useState,useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux';
 import {CToaster,CToast,CToastBody,CToastHeader,CBadge,CButton,CForm,CCol,CFormInput, CFormLabel, CFormTextarea, CFormCheck, CFormSelect } from "@coreui/react"
 import axios from 'axios'
+import swal from 'sweetalert';
 
 const CreateProductComponent = () => {
     const baseUrl = useSelector((state) => state.baseUrl);
@@ -112,7 +113,6 @@ const CreateProductComponent = () => {
     }
 
     const clickChooseSize = ()=>{
-        debugger
         if(currentSize.idSize==0 || currentSize.price == 0 || currentSize.price == ""){
             alert("Điền đầy đủ vào");
             return
@@ -146,10 +146,10 @@ const CreateProductComponent = () => {
             alert("Bạn cần điền combo");
             return;
         }
-        if(!visibleCombo && listSizeSelected.length == 0){
-            alert("Bạn cần chọn size cho món");
-            return;
-        }
+        // if(!visibleCombo && listSizeSelected.length == 0){
+        //     alert("Bạn cần chọn size cho món");
+        //     return;
+        // }
         if(product.name === '' || product.price === ''){
             alert("Điền đầy đủ thông tin sản phẩm");
             return;
@@ -185,7 +185,7 @@ const CreateProductComponent = () => {
             data: data,
         }).then(res => {
            if(res.data.code==200){
-               alert("Thêm thành công sản phẩm")
+            swal("Thêm thành công sản phẩm")
            }
         }).catch(err => {
             console.log(err);

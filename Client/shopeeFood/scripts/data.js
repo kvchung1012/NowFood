@@ -1,6 +1,3 @@
-const baseUrl = 'http://localhost:8081'
-
-
 var requestProduct = {
     categoryId: [],
     categoryShopId: [],
@@ -8,6 +5,7 @@ var requestProduct = {
     keyword: "",
     pageIndex: 1,
     pageSize: 12,
+    desc : "totalOrder",
   }
 
 // call data
@@ -45,7 +43,7 @@ function GetProduct(){
         data: JSON.stringify(requestProduct)
         ,
         success : function(res){
-            console.log(res)
+            console.log("p",res)
             $('.list-product').html('');
             res.data.content.forEach((val,index)=>{
                     let row =  `<div class="col-3 item-food" id="f01">
@@ -58,6 +56,10 @@ function GetProduct(){
                                             </div>
                                             <p class="info-address" title="59 Khương Đình,Hà Nội">
                                                 ${val.shop.shopAddress}
+                                            </p>
+                                            
+                                            <p class="info-address text-center text-dark ${val.totalOrder>0?"":"d-none"}">
+                                                Đã được đặt ${val.totalOrder} lần
                                             </p>
                                         </div>
                                     </a>
